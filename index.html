@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Amour pour El Hachemiye</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-top: 2rem;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            color: #ffd1dc;
+            text-shadow: 0 0 10px rgba(255, 209, 220, 0.5);
+            font-weight: normal;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: #e6e6fa;
+            font-style: italic;
+            margin-bottom: 2rem;
+        }
+
+        .heart-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            margin: 3rem 0;
+        }
+
+        .bouquet-container {
+            position: relative;
+            width: 300px;
+            height: 400px;
+            margin: 2rem auto;
+        }
+
+        .bouquet {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            border-radius: 50% 50% 40% 40%;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .bouquet::before {
+            content: '';
+            position: absolute;
+            width: 120%;
+            height: 120%;
+            background: radial-gradient(circle at 30% 30%, #ff6b6b, transparent 50%),
+                        radial-gradient(circle at 70% 20%, #ffd93d, transparent 50%),
+                        radial-gradient(circle at 40% 70%, #6bcf7f, transparent 50%),
+                        radial-gradient(circle at 80% 70%, #4d96ff, transparent 50%);
+            animation: rotate 20s linear infinite;
+        }
+
+        .bouquet::after {
+            content: '';
+            position: absolute;
+            width: 90%;
+            height: 90%;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+        }
+
+        .candles {
+            position: absolute;
+            bottom: -20px;
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+        }
+
+        .candle {
+            width: 20px;
+            height: 100px;
+            background: linear-gradient(to right, #f8f8f8, #e6e6e6, #f8f8f8);
+            border-radius: 10px 10px 0 0;
+            position: relative;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .candle::before {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 25px;
+            height: 30px;
+            background: linear-gradient(to bottom, #ff9500, #ffcc00, #ff9500);
+            border-radius: 50% 50% 20% 20%;
+            animation: flicker 3s infinite alternate;
+        }
+
+        .message {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 800px;
+            margin: 2rem auto;
+            line-height: 1.8;
+            font-size: 1.2rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .highlight {
+            color: #ffd1dc;
+            font-weight: bold;
+            font-size: 1.3rem;
+        }
+
+        .signature {
+            text-align: right;
+            margin-top: 2rem;
+            font-style: italic;
+            font-size: 1.3rem;
+            color: #e6e6fa;
+        }
+
+        .rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .drop {
+            position: absolute;
+            width: 2px;
+            height: 30px;
+            background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.6));
+            animation: rain 1.5s linear infinite;
+        }
+
+        @keyframes rain {
+            0% {
+                transform: translateY(-100px);
+            }
+            100% {
+                transform: translateY(calc(100vh + 100px));
+            }
+        }
+
+        @keyframes flicker {
+            0%, 100% {
+                opacity: 1;
+                transform: translateX(-50%) scale(1);
+            }
+            50% {
+                opacity: 0.8;
+                transform: translateX(-50%) scale(1.05);
+            }
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            color: #ff6b6b;
+            opacity: 0;
+            animation: float 8s linear infinite;
+        }
+
+        @keyframes float {
+            0% {
+                opacity: 0;
+                transform: translateY(100vh) rotate(0deg);
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100px) rotate(360deg);
+            }
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 2rem;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .bouquet-container {
+                width: 250px;
+                height: 350px;
+            }
+            
+            .message {
+                padding: 1.5rem;
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="rain" id="rain"></div>
+    <div class="hearts" id="hearts"></div>
+    
+    <div class="container">
+        <header>
+            <h1>Pour El Hachemiye</h1>
+            <p class="subtitle">Une déclaration d'amour éternel</p>
+        </header>
+        
+        <div class="heart-section">
+            <div class="bouquet-container">
+                <div class="bouquet"></div>
+                <div class="candles">
+                    <div class="candle"></div>
+                    <div class="candle"></div>
+                    <div class="candle"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="message">
+            <p>Ma chère <span class="highlight">El Hachemiye</span>,</p>
+            <br>
+            <p>En ce moment où la pluie caresse doucement la terre, je veux que chaque goutte porte le message de mon amour pour toi.</p>
+            <br>
+            <p>Comme ces fleurs qui s'épanouissent au milieu des bougies, mon cœur s'illumine à ta présence. Tu es la lumière qui guide mes pas, la douceur qui apaise mes jours, la force qui anime mes rêves.</p>
+            <br>
+            <p>Je t'aime plus que les mots ne peuvent exprimer, plus que le temps ne peut mesurer. Mon amour pour toi est comme cette pluie éternelle - constante, rafraîchissante et essentielle à mon existence.</p>
+            <br>
+            <p>Que cette déclaration soit le témoignage de mon engagement envers toi, aujourd'hui, demain et pour toujours.</p>
+            
+            <div class="signature">
+                <p>Avec tout mon amour,</p>
+                <p>Pour l'éternité</p>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>Créé avec amour • Pour toi, El Hachemiye</p>
+    </footer>
+
+    <script>
+        // Créer l'effet de pluie
+        const rainContainer = document.getElementById('rain');
+        for (let i = 0; i < 100; i++) {
+            const drop = document.createElement('div');
+            drop.className = 'drop';
+            drop.style.left = Math.random() * 100 + 'vw';
+            drop.style.animationDuration = (Math.random() * 1 + 1) + 's';
+            drop.style.animationDelay = Math.random() * 2 + 's';
+            rainContainer.appendChild(drop);
+        }
+
+        // Créer les cœurs flottants
+        const heartsContainer = document.getElementById('hearts');
+        for (let i = 0; i < 20; i++) {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = '❤';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 5 + 5) + 's';
+            heart.style.animationDelay = Math.random() * 5 + 's';
+            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            heartsContainer.appendChild(heart);
+        }
+
+        // Effet de scintillement pour les bougies
+        const candles = document.querySelectorAll('.candle');
+        candles.forEach(candle => {
+            const flame = candle.querySelector('::before');
+            setInterval(() => {
+                candle.style.boxShadow = `0 0 ${Math.random() * 15 + 5}px rgba(255, 215, 0, ${Math.random() * 0.5 + 0.3})`;
+            }, 300);
+        });
+    </script>
+</body>
+</html>

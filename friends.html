@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="manifest" href="manifest.json"/>
+<meta name="theme-color" content="#1e90ff"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="ChatApp"/>
+<link rel="apple-touch-icon" href="icon.png"/>
+<title>Amis</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;font-family:Arial,sans-serif;background:#f0f2f5;}
+body{display:flex;justify-content:center;}
+.shell{width:100%;max-width:480px;background:white;min-height:100vh;display:flex;flex-direction:column;}
+.topbar{background:#1e90ff;color:white;padding:14px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.topbar h2{flex:1;font-size:16px;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.icon-btn{background:none;border:none;color:white;cursor:pointer;padding:6px;border-radius:50%;position:relative;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.icon-btn:hover{background:rgba(255,255,255,.2);}
+.icon-btn svg{width:22px;height:22px;}
+.my-avatar{width:36px;height:36px;border-radius:50%;overflow:hidden;cursor:pointer;border:2px solid rgba(255,255,255,.5);flex-shrink:0;}
+.my-avatar img{width:100%;height:100%;object-fit:cover;}
+.my-avatar-init{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;cursor:pointer;border:2px solid rgba(255,255,255,.5);flex-shrink:0;}
+.search-bar{padding:10px 14px;border-bottom:1px solid #f0f0f0;flex-shrink:0;}
+.search-bar input{width:100%;padding:9px 14px;border:1.5px solid #e8e8e8;border-radius:20px;font-size:14px;outline:none;background:#f8f8f8;}
+.search-bar input:focus{border-color:#1e90ff;background:white;}
+.list-area{flex:1;overflow-y:auto;}
+.friend-row{display:flex;align-items:center;border-bottom:1px solid #f5f5f5;}
+.friend-item{display:flex;align-items:center;padding:12px 16px;cursor:pointer;gap:12px;flex:1;}
+.friend-item:active{background:#f8f8f8;}
+.remove-btn{background:none;border:none;padding:12px;cursor:pointer;color:#ddd;flex-shrink:0;}
+.remove-btn:hover{color:#e74c3c;}
+.friend-info{flex:1;min-width:0;}
+.friend-name{font-size:15px;font-weight:600;color:#111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.friend-sub{font-size:13px;color:#999;margin-top:2px;}
+.friend-sub.new-msg{color:#1e90ff;font-weight:600;}
+.friend-meta{text-align:right;font-size:12px;color:#bbb;flex-shrink:0;}
+.empty-state{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#ccc;gap:12px;font-size:14px;padding:40px 20px;text-align:center;}
+.empty-state svg{width:52px;height:52px;opacity:.35;}
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-thumb{background:#ddd;border-radius:3px;}
+</style>
+</head>
+<body>
+<div class="shell">
+  <div class="topbar">
+    <!-- Avatar cliquable → settings -->
+    <div id="my-avatar-btn" onclick="location.href='settings.html'" title="Paramètres"></div>
+    <h2 id="topbar-name">Amis</h2>
+    <button class="icon-btn" onclick="location.href='requests.html'" style="position:relative;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      <span id="req-badge" style="display:none;position:absolute;top:4px;right:4px;width:9px;height:9px;background:#e74c3c;border-radius:50%;"></span>
+    </button>
+    <button class="icon-btn" onclick="location.href='search.html'">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+    </button>
+    <button class="icon-btn" onclick="doLogout()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+    </button>
+  </div>
+  <div class="search-bar"><input type="text" placeholder="Rechercher un ami..." oninput="filterFriends(this.value)"/></div>
+  <div class="list-area" id="friends-list"></div>
+</div>
+
+<script>
+const API    = "https://didactic-disco-q795wwrqxg45c697p-8000.app.github.dev";
+const WS_URL = "wss://didactic-disco-q795wwrqxg45c697p-8000.app.github.dev/ws";
+
+let me = JSON.parse(localStorage.getItem('me'));
+if (!me) window.location.href = 'index.html';
+
+// Afficher le nom
+document.getElementById('topbar-name').textContent = `${me.prenom} ${me.nom}`;
+
+// Afficher l'avatar dans la topbar
+const avatarBtn = document.getElementById('my-avatar-btn');
+if (me.photo) {
+  avatarBtn.className = 'my-avatar';
+  avatarBtn.innerHTML = `<img src="${me.photo}"/>`;
+} else {
+  avatarBtn.className = 'my-avatar-init';
+  avatarBtn.textContent = ((me.prenom||'?')[0]+(me.nom||'?')[0]).toUpperCase();
+}
+
+let friends = [], ws = null;
+
+const COLORS = ['#1e90ff','#e74c3c','#2ecc71','#9b59b6','#f39c12','#16a085','#e67e22','#c0392b'];
+
+function buildAvatar(f, size=48) {
+  if (f.photo) {
+    return `<img src="${f.photo}" style="width:${size}px;height:${size}px;border-radius:50%;object-fit:cover;flex-shrink:0;display:block;"/>`;
+  }
+  const color = COLORS[Math.abs(parseInt(f.id||0)) % COLORS.length];
+  const init  = ((f.prenom||'?')[0]+(f.nom||'?')[0]).toUpperCase();
+  return `<div style="width:${size}px;height:${size}px;border-radius:50%;background:${color};display:flex;align-items:center;justify-content:center;font-weight:700;font-size:${Math.floor(size*.35)}px;color:white;flex-shrink:0;">${init}</div>`;
+}
+
+async function api(method, path, body) {
+  const opts = { method, headers:{'Content-Type':'application/json'} };
+  if (body) opts.body = JSON.stringify(body);
+  try { return (await fetch(API+path, opts)).json(); }
+  catch(e) { return {}; }
+}
+
+async function loadData() {
+  const [friendsData, lastMsgs, requestsData] = await Promise.all([
+    api('GET', `/friends/${me.id}`),
+    api('GET', `/last-messages/${me.id}`),
+    api('GET', `/requests/${me.id}`)
+  ]);
+  friends = (Array.isArray(friendsData)?friendsData:[]).map(f=>({
+    ...f, id:String(f.id), lastTime:'', unread:false, hasMsg:false
+  }));
+  if (Array.isArray(lastMsgs)) {
+    lastMsgs.forEach(m => {
+      const otherId = String(m.from_user)===String(me.id)?String(m.to_user):String(m.from_user);
+      const f = friends.find(f=>f.id===otherId);
+      if (f) { f.lastTime=m.time; f.hasMsg=true; f.unread=m.unread_count>0; }
+    });
+  }
+  const reqCount = Array.isArray(requestsData)?requestsData.length:0;
+  document.getElementById('req-badge').style.display = reqCount>0?'block':'none';
+  renderFriends();
+}
+
+function connectWS() {
+  ws = new WebSocket(WS_URL);
+  ws.onopen = () => ws.send(JSON.stringify({ user_id: me.id }));
+  ws.onmessage = e => {
+    const data = JSON.parse(e.data);
+    if (data.action === 'new_message') {
+      const fromId = String(data.from);
+      const idx = friends.findIndex(f=>f.id===fromId);
+      if (idx !== -1) {
+        const f = friends.splice(idx,1)[0];
+        f.lastTime=data.time; f.hasMsg=true; f.unread=true;
+        friends.unshift(f);
+        renderFriends();
+      }
+    }
+    if (data.action === 'friend_request') {
+      document.getElementById('req-badge').style.display='block';
+    }
+    if (data.action === 'friend_removed') {
+      friends = friends.filter(f=>f.id!==String(data.from));
+      renderFriends();
+    }
+    if (data.action === 'friend_accepted') {
+      loadData();
+    }
+  };
+  ws.onclose = () => setTimeout(connectWS, 3000);
+}
+
+function renderFriends(filter='') {
+  const list  = document.getElementById('friends-list');
+  const items = friends.filter(f=>(f.prenom+' '+f.nom).toLowerCase().includes((filter||'').toLowerCase()));
+  if (!items.length) {
+    list.innerHTML=`<div class="empty-state">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+      <span>Aucun ami pour le moment</span></div>`;
+    return;
+  }
+  list.innerHTML = items.map(f=>`
+    <div class="friend-row">
+      <div class="friend-item" onclick="openChat('${f.id}')">
+        <div style="position:relative;flex-shrink:0;">
+          ${buildAvatar(f)}
+          ${f.unread?'<div style="position:absolute;top:0;right:0;width:13px;height:13px;background:#e74c3c;border-radius:50%;border:2px solid white;"></div>':''}
+        </div>
+        <div class="friend-info">
+          <div class="friend-name" style="${f.unread?'color:#000;font-weight:700;':''}">${f.prenom} ${f.nom}</div>
+          <div class="friend-sub ${f.unread?'new-msg':''}">
+            ${f.unread?'● Nouveau message':f.hasMsg?'Voir la discussion':'Aucun message'}
+          </div>
+        </div>
+        <div class="friend-meta">${f.unread&&f.lastTime?f.lastTime:''}</div>
+      </div>
+      <button class="remove-btn" onclick="removeFriend('${f.id}')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <line x1="17" y1="11" x2="23" y2="11"/>
+        </svg>
+      </button>
+    </div>
+  `).join('');
+}
+function filterFriends(v) { renderFriends(v); }
+
+function openChat(friendId) {
+  const f = friends.find(f=>f.id===friendId);
+  if (!f) return;
+  localStorage.setItem('currentFriend', JSON.stringify(f));
+  window.location.href = 'chat.html';
+}
+
+async function removeFriend(friendId) {
+  if (!confirm('Retirer cet ami ?')) return;
+  ws?.send(JSON.stringify({ action:'remove_friend', to:friendId }));
+  friends = friends.filter(f=>f.id!==friendId);
+  renderFriends();
+}
+
+function doLogout() {
+  ws?.close();
+  localStorage.clear();
+  window.location.href = 'index.html';
+}
+
+loadData();
+connectWS();
+</script>
+</body>
+</html>

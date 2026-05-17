@@ -163,10 +163,9 @@ else if (type === 'audio') {
   const audio = document.getElementById('viewer-audio');
 
   // Fix CORS mobile
-  audio.crossOrigin = "anonymous";
-  audio.preload     = "metadata";
-  audio.src         = url;
-  audio.load();
+  audio.preload = "auto";
+audio.src     = url;
+audio.load();
 
   const BARS   = 40;
   const waveEl = document.getElementById('waveform');

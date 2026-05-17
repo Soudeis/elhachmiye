@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <link rel="manifest" href="manifest.json"/>
-<meta name="theme-color" content="#1e90ff"/>
+<meta name="theme-color" content="#6a0572"/>
 <meta name="mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
@@ -13,11 +13,14 @@
 <title>Chat</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
-html,body{width:100%;height:100%;font-family:Arial,sans-serif;background:#f0f2f5;}
-body{display:flex;justify-content:center;}
-.shell{width:100%;max-width:480px;background:white;height:100vh;display:flex;flex-direction:column;}
+html{min-height:100%;background:linear-gradient(135deg,#1a1a2e,#6a0572,#c0392b);}
+body{width:100%;font-family:Arial,sans-serif;display:flex;justify-content:center;min-height:100vh;background:transparent;}
+.shell{width:100%;max-width:480px;background:white;height:100vh;display:flex;flex-direction:column;box-shadow:0 0 40px rgba(0,0,0,.3);}
 
-.topbar{background:#1e90ff;color:white;padding:14px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.topbar{
+  background:linear-gradient(135deg,#1a1a2e,#6a0572,#c0392b);
+  color:white;padding:14px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;
+}
 .back{cursor:pointer;font-size:22px;background:none;border:none;color:white;padding:4px 8px 4px 0;}
 .topbar-info{flex:1;min-width:0;}
 .topbar-info h2{margin:0;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
@@ -30,24 +33,24 @@ body{display:flex;justify-content:center;}
 .bubble-wrapper.them{align-items:flex-start;}
 
 .bubble{max-width:78%;padding:9px 13px;border-radius:18px;font-size:15px;line-height:1.5;word-break:break-word;cursor:pointer;user-select:none;}
-.bubble.me{background:#1e90ff;color:white;border-bottom-right-radius:4px;}
+.bubble.me{background:linear-gradient(135deg,#6a0572,#c0392b);color:white;border-bottom-right-radius:4px;}
 .bubble.them{background:white;color:#111;border-bottom-left-radius:4px;box-shadow:0 1px 2px rgba(0,0,0,.08);}
 .bubble-time{font-size:11px;margin-top:3px;opacity:.7;text-align:right;}
 .seen-label{text-align:right;font-size:11px;color:#999;margin-top:-2px;margin-bottom:4px;padding-right:4px;}
 
 .reply-preview{border-left:3px solid rgba(255,255,255,.6);padding:5px 8px;margin-bottom:6px;border-radius:6px;background:rgba(0,0,0,.08);font-size:12px;cursor:pointer;overflow:hidden;}
-.bubble.them .reply-preview{border-left-color:#1e90ff;background:#f0f4ff;color:#555;}
+.bubble.them .reply-preview{border-left-color:#6a0572;background:#f5f0ff;color:#555;}
 .reply-preview-name{font-weight:700;font-size:11px;margin-bottom:2px;}
 .reply-preview-text{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:.85;}
 
-.reply-bar{display:none;padding:8px 14px;background:#f8f9ff;border-top:1px solid #e8e8e8;flex-direction:row;align-items:center;gap:10px;flex-shrink:0;}
+.reply-bar{display:none;padding:8px 14px;background:#f8f0ff;border-top:1px solid #e8d0f0;flex-direction:row;align-items:center;gap:10px;flex-shrink:0;}
 .reply-bar.active{display:flex;}
 .reply-bar-content{flex:1;min-width:0;}
-.reply-bar-name{font-size:12px;font-weight:700;color:#1e90ff;}
+.reply-bar-name{font-size:12px;font-weight:700;color:#6a0572;}
 .reply-bar-text{font-size:12px;color:#666;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .reply-bar-cancel{background:none;border:none;color:#aaa;font-size:20px;cursor:pointer;flex-shrink:0;}
 
-@keyframes highlight{0%{background:rgba(30,144,255,.25);}100%{background:transparent;}}
+@keyframes highlight{0%{background:rgba(106,5,114,.2);}100%{background:transparent;}}
 .bubble.highlighted{animation:highlight 1.5s ease;}
 
 .typing-bubble{display:flex;gap:4px;align-items:center;padding:10px 14px;background:white;border-radius:18px;border-bottom-left-radius:4px;align-self:flex-start;box-shadow:0 1px 2px rgba(0,0,0,.08);}
@@ -58,16 +61,15 @@ body{display:flex;justify-content:center;}
 
 .input-row{padding:10px 12px;border-top:1px solid #eee;display:flex;align-items:center;gap:6px;background:white;flex-shrink:0;}
 .media-btn{background:none;border:none;color:#aaa;cursor:pointer;padding:6px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.15s;}
-.media-btn:hover{background:#f0f0f0;color:#1e90ff;}
+.media-btn:hover{background:#f0f0f0;color:#6a0572;}
 .media-btn svg{width:22px;height:22px;}
 .media-btn.recording{background:#e74c3c;color:white;animation:pulse 1s infinite;}
 @keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.15);}}
 .msg-input{flex:1;padding:10px 14px;border:1.5px solid #e8e8e8;border-radius:22px;font-size:15px;outline:none;background:#f8f8f8;min-width:0;}
-.msg-input:focus{border-color:#1e90ff;background:white;}
-.send-btn{background:#1e90ff;border:none;color:white;width:42px;height:42px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.msg-input:focus{border-color:#6a0572;background:white;}
+.send-btn{background:linear-gradient(135deg,#6a0572,#c0392b);border:none;color:white;width:42px;height:42px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .send-btn svg{width:18px;height:18px;}
-.send-btn:hover{background:#0077e6;}
-.send-btn:disabled{background:#aaa;cursor:not-allowed;}
+.send-btn:disabled{opacity:.5;cursor:not-allowed;}
 
 .recording-hint{display:none;text-align:center;font-size:12px;color:#e74c3c;padding:6px;background:white;flex-shrink:0;border-top:1px solid #f0f0f0;}
 .recording-hint.active{display:flex;align-items:center;justify-content:center;gap:8px;}
@@ -97,7 +99,7 @@ body{display:flex;justify-content:center;}
   <div class="messages-area" id="messages-area"></div>
 
   <div class="reply-bar" id="reply-bar">
-    <div style="color:#1e90ff;font-size:20px;">↩</div>
+    <div style="color:#6a0572;font-size:20px;">↩</div>
     <div class="reply-bar-content">
       <div class="reply-bar-name" id="reply-bar-name"></div>
       <div class="reply-bar-text" id="reply-bar-text"></div>
@@ -171,12 +173,12 @@ if (!me || !friend) window.location.href = 'friends.html';
 
 document.getElementById('chat-name').textContent = `${friend.prenom} ${friend.nom}`;
 
-// ── Avatar ami dans la topbar ──
+// Avatar ami dans la topbar
 const avatarTop = document.getElementById('friend-avatar-top');
 if (friend.photo) {
   avatarTop.innerHTML = `<img src="${friend.photo}" style="width:38px;height:38px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,.4);"/>`;
 } else {
-  const COLORS=['#1565c0','#b71c1c','#1b5e20','#4a148c','#e65100','#006064'];
+  const COLORS=['#4a0e6e','#8e1c1c','#1b5e20','#0d3b6e','#7d3c00','#004d40'];
   const color = COLORS[Math.abs(parseInt(friend.id||0)) % COLORS.length];
   const init  = ((friend.prenom||'?')[0]+(friend.nom||'?')[0]).toUpperCase();
   avatarTop.innerHTML = `<div style="width:38px;height:38px;border-radius:50%;background:${color};display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:white;border:2px solid rgba(255,255,255,.4);">${init}</div>`;
@@ -184,9 +186,6 @@ if (friend.photo) {
 
 let messages=[], ws=null, seen=false, typingTimer=null, isTypingSent=false, replyingTo=null;
 
-// ════════════════════════════════════════════
-// WEBSOCKET
-// ════════════════════════════════════════════
 function connectWS() {
   ws = new WebSocket(WS_URL);
   ws.onopen = () => {
@@ -196,7 +195,6 @@ function connectWS() {
   };
   ws.onmessage = e => {
     const data = JSON.parse(e.data);
-
     if (data.action === 'history') {
       messages = (data.messages||[]).map(m => ({
         from:          String(m.from!==undefined?m.from:m.from_user),
@@ -213,7 +211,6 @@ function connectWS() {
       }));
       renderMessages();
     }
-
     else if (data.action==='new_message' && String(data.from)===String(friend.id)) {
       messages.push({
         from:          String(data.from),
@@ -231,15 +228,8 @@ function connectWS() {
       renderMessages();
       ws.send(JSON.stringify({ action:'mark_read', to:friend.id }));
     }
-
-    else if (data.action==='typing' && String(data.from)===String(friend.id)) {
-      showTyping(data.is_typing);
-    }
-
-    else if (data.action==='seen') {
-      seen=true; renderMessages();
-    }
-
+    else if (data.action==='typing' && String(data.from)===String(friend.id)) { showTyping(data.is_typing); }
+    else if (data.action==='seen') { seen=true; renderMessages(); }
     else if (data.action==='message_deleted') {
       messages = messages.filter(m=>m.msg_id!==data.msg_id);
       renderMessages();
@@ -248,9 +238,6 @@ function connectWS() {
   ws.onclose = () => setTimeout(connectWS, 3000);
 }
 
-// ════════════════════════════════════════════
-// OUVRIR LE VIEWER
-// ════════════════════════════════════════════
 function openViewer(m) {
   const fromName = String(m.from)===String(me.id) ? 'Toi' : friend.prenom;
   localStorage.setItem('viewerMedia', JSON.stringify({
@@ -263,17 +250,12 @@ function openViewer(m) {
   window.location.href = 'viewer.html';
 }
 
-// ════════════════════════════════════════════
-// MEDIA CARD — juste le type, pas d'aperçu
-// ════════════════════════════════════════════
 function buildMediaCard(m, isMe) {
   const type    = m.media_type;
   const isVocal = m.is_vocal || false;
-  const color   = isMe ? 'rgba(255,255,255,.15)' : '#f0f4ff';
-  const txtColor= isMe ? 'white' : '#1e90ff';
-
-  // Sérialiser proprement pour l'onclick
-  const mJson = encodeURIComponent(JSON.stringify(m));
+  const color   = isMe ? 'rgba(255,255,255,.15)' : '#f5f0ff';
+  const txtColor= isMe ? 'white' : '#6a0572';
+  const mJson   = encodeURIComponent(JSON.stringify(m));
 
   if (type === 'image') {
     return `
@@ -287,7 +269,6 @@ function buildMediaCard(m, isMe) {
         <div style="font-size:18px;opacity:.5;color:${txtColor};">›</div>
       </div>`;
   }
-
   if (type === 'video') {
     return `
       <div style="display:flex;align-items:center;gap:10px;padding:6px 0;cursor:pointer;"
@@ -300,7 +281,6 @@ function buildMediaCard(m, isMe) {
         <div style="font-size:18px;opacity:.5;color:${txtColor};">›</div>
       </div>`;
   }
-
   if (type === 'audio') {
     const label = isVocal ? 'Message vocal' : 'Audio';
     const emoji = isVocal ? '🎤' : '🎵';
@@ -315,34 +295,24 @@ function buildMediaCard(m, isMe) {
         <div style="font-size:18px;opacity:.5;color:${txtColor};">›</div>
       </div>`;
   }
-
   return `<a href="${m.media_url}" target="_blank" style="color:${txtColor};">📎 Fichier</a>`;
 }
 
-// Passer par encodeURIComponent pour éviter les problèmes de guillemets
 function openViewerEncoded(encoded) {
-  const m = JSON.parse(decodeURIComponent(encoded));
-  openViewer(m);
+  openViewer(JSON.parse(decodeURIComponent(encoded)));
 }
 
-// ════════════════════════════════════════════
-// RENDER MESSAGES
-// ════════════════════════════════════════════
 function renderMessages() {
   const area = document.getElementById('messages-area');
   let lastMineIdx = -1;
   for (let i=messages.length-1; i>=0; i--) {
     if (String(messages[i].from)===String(me.id)) { lastMineIdx=i; break; }
   }
-
   area.innerHTML = messages.map((m, i) => {
     const isMe     = String(m.from)===String(me.id);
     const showSeen = isMe && i===lastMineIdx && seen;
     const replyHTML = m.reply_to_id ? buildReplyPreview(m) : '';
-    const content   = m.media_url
-      ? buildMediaCard(m, isMe)
-      : `<span>${m.text}</span>`;
-
+    const content   = m.media_url ? buildMediaCard(m, isMe) : `<span>${m.text}</span>`;
     return `
       <div class="bubble-wrapper ${isMe?'me':'them'}">
         <div class="bubble ${isMe?'me':'them'}"
@@ -357,7 +327,6 @@ function renderMessages() {
         ${showSeen?'<div class="seen-label">Seen</div>':''}
       </div>`;
   }).join('');
-
   area.scrollTop = area.scrollHeight;
 }
 
@@ -386,9 +355,6 @@ function scrollToMessage(msgId, event) {
   setTimeout(()=>el.classList.remove('highlighted'), 1500);
 }
 
-// ════════════════════════════════════════════
-// MENU CONTEXTUEL
-// ════════════════════════════════════════════
 let touchTimer = null;
 function touchStart(event, idx) { touchTimer=setTimeout(()=>openMenu(null,idx),500); }
 function touchEnd() { clearTimeout(touchTimer); }
@@ -456,9 +422,6 @@ function cancelReply() {
   document.getElementById('reply-bar').classList.remove('active');
 }
 
-// ════════════════════════════════════════════
-// ENVOYER UN MESSAGE TEXTE
-// ════════════════════════════════════════════
 function sendMessage() {
   const input = document.getElementById('msg-input');
   const text  = input.value.trim();
@@ -484,9 +447,6 @@ function sendMessage() {
   cancelReply(); clearTypingState();
 }
 
-// ════════════════════════════════════════════
-// UPLOAD ET ENVOI D'UN FICHIER
-// ════════════════════════════════════════════
 async function uploadAndSend(file, isVocal=false) {
   document.getElementById('upload-overlay').classList.add('active');
   document.getElementById('send-btn').disabled = true;
@@ -530,16 +490,19 @@ function handleFile(input) {
   if (input.files[0]) { uploadAndSend(input.files[0]); input.value=''; }
 }
 
-// ════════════════════════════════════════════
-// ENREGISTREMENT VOCAL
-// ════════════════════════════════════════════
 let mediaRecorder=null, audioChunks=[], recordingStream=null, recTimerInterval=null, recSeconds=0;
 
 async function startRecording(e) {
   if (e) e.preventDefault();
   try {
     recordingStream = await navigator.mediaDevices.getUserMedia({ audio:true });
-    mediaRecorder   = new MediaRecorder(recordingStream);
+    const mimeType = MediaRecorder.isTypeSupported('audio/mp4')
+      ? 'audio/mp4'
+      : MediaRecorder.isTypeSupported('audio/webm')
+      ? 'audio/webm' : '';
+    mediaRecorder = mimeType
+      ? new MediaRecorder(recordingStream, { mimeType })
+      : new MediaRecorder(recordingStream);
     audioChunks=[]; recSeconds=0;
     mediaRecorder.ondataavailable = e=>{ if(e.data.size>0) audioChunks.push(e.data); };
     mediaRecorder.onstop = async () => {
@@ -548,9 +511,11 @@ async function startRecording(e) {
       document.getElementById('vocal-btn').classList.remove('recording');
       document.getElementById('recording-hint').classList.remove('active');
       document.getElementById('rec-timer').textContent='0:00';
-      const blob = new Blob(audioChunks,{type:'audio/webm'});
+      const finalType = mediaRecorder.mimeType || 'audio/webm';
+      const finalExt  = finalType.includes('mp4') ? 'mp4' : 'webm';
+      const blob = new Blob(audioChunks,{type:finalType});
       if (blob.size<500) return;
-      const file = new File([blob],`vocal_${Date.now()}.webm`,{type:'audio/webm'});
+      const file = new File([blob],`vocal_${Date.now()}.${finalExt}`,{type:finalType});
       await uploadAndSend(file, true);
     };
     mediaRecorder.start();
@@ -568,9 +533,6 @@ function stopRecording() {
   if (mediaRecorder && mediaRecorder.state==='recording') mediaRecorder.stop();
 }
 
-// ════════════════════════════════════════════
-// TYPING
-// ════════════════════════════════════════════
 function onTyping(text) {
   if (!text) {
     ws?.send(JSON.stringify({action:'typing',to:friend.id,is_typing:false}));
@@ -601,7 +563,6 @@ function showTyping(isTyping) {
     area.appendChild(tb); area.scrollTop=area.scrollHeight;
   } else if (!isTyping&&tb) { tb.remove(); }
 }
-
 function onKey(e) { if(e.key==='Enter') sendMessage(); }
 
 connectWS();

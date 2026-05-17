@@ -13,13 +13,18 @@
 <title>Amis</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
-html,
+html{
+  background:linear-gradient(135deg,#1a1a2e,#6a0572,#c0392b);
+  min-height:100vh;
+}
 body{
   display:flex;
   align-items:flex-start;
   justify-content:center;
   min-height:100vh;
-  background:linear-gradient(135deg,#1a1a2e,#6a0572,#c0392b);
+  background:transparent;
+  width:100%;
+  font-family:Arial,sans-serif;
 }
 .shell{width:100%;max-width:480px;background:white;min-height:100vh;display:flex;flex-direction:column;}
 .topbar{background:#1e90ff;color:white;padding:14px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;}

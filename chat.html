@@ -28,14 +28,12 @@ body{display:flex;justify-content:center;background:#000;}
   pointer-events:none;z-index:0;
 }
 .shell::after{
-  content:'';position:absolute;
-  width:300px;height:300px;
+  content:'';position:absolute;width:300px;height:300px;
   background:radial-gradient(circle,rgba(220,80,120,.15) 0%,transparent 70%);
   top:30%;left:50%;transform:translateX(-50%);
   pointer-events:none;z-index:0;
 }
 
-/* ── Topbar ── */
 .topbar{
   position:relative;z-index:10;
   padding:14px 16px;display:flex;align-items:center;gap:10px;
@@ -47,7 +45,6 @@ body{display:flex;justify-content:center;background:#000;}
 .topbar-info h2{margin:0;font-size:15px;font-weight:600;color:white;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .topbar-sub{font-size:11px;color:rgba(255,255,255,.5);}
 
-/* ── Messages ── */
 .messages-area{
   flex:1;overflow-y:auto;padding:12px 14px;
   display:flex;flex-direction:column;gap:4px;
@@ -56,7 +53,6 @@ body{display:flex;justify-content:center;background:#000;}
 .messages-area::-webkit-scrollbar{width:2px;}
 .messages-area::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:2px;}
 
-/* ── Bulles ── */
 .bubble-wrapper{display:flex;flex-direction:column;}
 .bubble-wrapper.me{align-items:flex-end;}
 .bubble-wrapper.them{align-items:flex-start;}
@@ -66,42 +62,20 @@ body{display:flex;justify-content:center;background:#000;}
   border-radius:22px;font-size:15px;line-height:1.45;
   word-break:break-word;cursor:pointer;user-select:none;
 }
-.bubble.me{
-  background:linear-gradient(135deg,#e8547a,#c73b8a);
-  color:white;border-bottom-right-radius:6px;
-}
-.bubble.them{
-  background:rgba(255,255,255,.12);backdrop-filter:blur(10px);
-  color:white;border-bottom-left-radius:6px;
-  border:1px solid rgba(255,255,255,.08);
-}
+.bubble.me{background:linear-gradient(135deg,#e8547a,#c73b8a);color:white;border-bottom-right-radius:6px;}
+.bubble.them{background:rgba(255,255,255,.12);backdrop-filter:blur(10px);color:white;border-bottom-left-radius:6px;border:1px solid rgba(255,255,255,.08);}
 .bubble-time{font-size:10px;margin-top:4px;opacity:.5;text-align:right;color:white;}
 .seen-label{text-align:right;font-size:10px;color:rgba(255,255,255,.4);margin-top:2px;padding-right:4px;}
 
-/* ── Reply preview ── */
-.reply-preview{
-  border-left:2px solid rgba(255,255,255,.5);
-  padding:4px 8px;margin-bottom:6px;border-radius:4px;
-  background:rgba(0,0,0,.2);font-size:11px;cursor:pointer;overflow:hidden;
-}
+.reply-preview{border-left:2px solid rgba(255,255,255,.5);padding:4px 8px;margin-bottom:6px;border-radius:4px;background:rgba(0,0,0,.2);font-size:11px;cursor:pointer;overflow:hidden;}
 .reply-preview-name{font-weight:700;font-size:10px;margin-bottom:1px;opacity:.8;}
 .reply-preview-text{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:.7;}
 
-/* ── Vocal player dans bulle ── */
-.vocal-player{
-  display:flex;align-items:center;gap:10px;
-  min-width:180px;max-width:260px;padding:2px 0;
-}
-.vocal-play-btn{
-  width:36px;height:36px;border-radius:50%;border:none;
-  background:rgba(255,255,255,.25);color:white;
-  font-size:13px;cursor:pointer;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;transition:.15s;
-}
+/* ── Vocal player ── */
+.vocal-player{display:flex;align-items:center;gap:10px;min-width:200px;max-width:260px;padding:2px 0;}
+.vocal-play-btn{width:36px;height:36px;border-radius:50%;border:none;background:rgba(255,255,255,.25);color:white;font-size:13px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:.15s;}
 .vocal-play-btn:active{transform:scale(.92);}
-.vocal-waveform{
-  flex:1;height:32px;display:flex;align-items:center;gap:2px;cursor:pointer;
-}
+.vocal-waveform{flex:1;height:32px;display:flex;align-items:center;gap:2px;cursor:pointer;}
 .vocal-bar{flex:1;border-radius:2px;background:rgba(255,255,255,.3);min-height:3px;transition:background .1s;}
 .vocal-bar.played{background:rgba(255,255,255,.9);}
 .vocal-bar.active{background:white;}
@@ -130,12 +104,9 @@ body{display:flex;justify-content:center;background:#000;}
 .reply-bar-text{font-size:11px;color:rgba(255,255,255,.5);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .reply-bar-cancel{background:none;border:none;color:rgba(255,255,255,.4);font-size:20px;cursor:pointer;}
 
-/* ══════════════════════════════
-   VOCAL RECORDING BAR — style Instagram
-══════════════════════════════ */
+/* ── Barre d'enregistrement ── */
 .vocal-recording-bar{
-  display:none;
-  padding:12px 16px;
+  display:none;padding:12px 16px;
   background:linear-gradient(135deg,#e8547a,#c73b8a);
   flex-direction:row;align-items:center;gap:12px;
   flex-shrink:0;position:relative;z-index:10;
@@ -143,70 +114,46 @@ body{display:flex;justify-content:center;background:#000;}
 }
 .vocal-recording-bar.active{display:flex;}
 
-.rec-stop-btn{
+.rec-pause-btn{
   width:38px;height:38px;border-radius:50%;
   background:white;border:none;cursor:pointer;
   display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;
-}
-.rec-stop-icon{
-  width:14px;height:14px;background:#e8547a;border-radius:3px;
+  flex-shrink:0;font-size:16px;color:#e8547a;font-weight:700;
 }
 
-.rec-waveform{
-  flex:1;height:36px;display:flex;align-items:center;gap:2px;overflow:hidden;
-}
-.rec-bar{
-  width:3px;border-radius:2px;background:rgba(255,255,255,.6);
-  min-height:4px;transition:height .1s;flex-shrink:0;
-}
-
+/* Waveform d'enregistrement */
+.rec-waveform{flex:1;height:36px;display:flex;align-items:center;gap:2px;overflow:hidden;cursor:pointer;}
+.rec-bar{width:3px;border-radius:2px;background:rgba(255,255,255,.6);min-height:4px;transition:height .1s;flex-shrink:0;}
 .rec-timer-text{font-size:14px;font-weight:700;color:white;flex-shrink:0;min-width:36px;text-align:right;}
 
-/* Boutons en dessous de la barre d'enregistrement */
+/* Actions sous la barre */
 .vocal-recording-actions{
-  display:none;
-  padding:0 16px 12px;
+  display:none;padding:0 16px 12px;
   flex-direction:row;align-items:center;justify-content:space-between;
   flex-shrink:0;position:relative;z-index:10;
 }
 .vocal-recording-actions.active{display:flex;}
-
-.rec-delete-btn{
-  width:44px;height:44px;border-radius:50%;background:none;border:none;
-  color:rgba(255,255,255,.6);cursor:pointer;
-  display:flex;align-items:center;justify-content:center;font-size:20px;
-}
-.rec-send-btn{
-  width:52px;height:52px;border-radius:50%;
-  background:linear-gradient(135deg,#e8547a,#c73b8a);
-  border:none;cursor:pointer;color:white;
-  display:flex;align-items:center;justify-content:center;
-  box-shadow:0 4px 16px rgba(232,84,122,.4);
-}
+.rec-delete-btn{width:44px;height:44px;border-radius:50%;background:none;border:none;color:rgba(255,255,255,.6);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:22px;}
+.rec-send-btn{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#e8547a,#c73b8a);border:none;cursor:pointer;color:white;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(232,84,122,.4);}
 .rec-send-btn svg{width:22px;height:22px;}
 
 /* ── Input row ── */
-.input-row{
-  padding:10px 12px;display:flex;align-items:center;gap:8px;
-  background:rgba(0,0,0,.5);backdrop-filter:blur(20px);
-  border-top:1px solid rgba(255,255,255,.06);
-  flex-shrink:0;position:relative;z-index:10;
-}
+.input-row{padding:10px 12px;display:flex;align-items:center;gap:8px;background:rgba(0,0,0,.5);backdrop-filter:blur(20px);border-top:1px solid rgba(255,255,255,.06);flex-shrink:0;position:relative;z-index:10;}
 .media-btn{background:none;border:none;color:rgba(255,255,255,.5);cursor:pointer;padding:6px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .media-btn:active{background:rgba(255,255,255,.1);}
 .media-btn svg{width:22px;height:22px;}
 .media-btn.recording{color:#e8547a;}
-
 .input-wrap{flex:1;display:flex;align-items:center;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:22px;padding:0 14px;min-width:0;}
 .msg-input{flex:1;background:none;border:none;outline:none;font-size:15px;color:white;padding:10px 0;}
 .msg-input::placeholder{color:rgba(255,255,255,.35);}
-
 .send-btn{background:none;border:none;color:#e8547a;cursor:pointer;padding:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
 .send-btn:disabled{opacity:.3;cursor:not-allowed;}
 .send-btn svg{width:24px;height:24px;}
 
-@keyframes highlight{0%{opacity:.5;}100%{opacity:1;}}
+@keyframes highlight{
+  0%{outline:3px solid rgba(232,84,122,.8);background:rgba(232,84,122,.15);}
+  100%{outline:none;background:transparent;}
+}
 .bubble.highlighted{animation:highlight 1.5s ease;}
 
 .upload-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:100;align-items:center;justify-content:center;flex-direction:column;gap:12px;color:white;font-size:15px;}
@@ -238,19 +185,17 @@ body{display:flex;justify-content:center;background:#000;}
     <button class="reply-bar-cancel" onclick="cancelReply()">×</button>
   </div>
 
-  <!-- Barre d'enregistrement style Instagram -->
+  <!-- Barre enregistrement -->
   <div class="vocal-recording-bar" id="vocal-recording-bar">
-    <button class="rec-stop-btn" onclick="stopRecording()">
-      <div class="rec-stop-icon"></div>
-    </button>
-    <div class="rec-waveform" id="rec-waveform"></div>
+    <button class="rec-pause-btn" id="rec-pause-btn" onclick="togglePausePlay()">⏸</button>
+    <div class="rec-waveform" id="rec-waveform" onclick="seekPreview(event)"></div>
     <span class="rec-timer-text" id="rec-timer">0:00</span>
   </div>
 
-  <!-- Boutons sous la barre -->
+  <!-- Actions -->
   <div class="vocal-recording-actions" id="vocal-recording-actions">
     <button class="rec-delete-btn" onclick="cancelRecording()">🗑️</button>
-    <div style="font-size:12px;color:rgba(255,255,255,.4);">Relâche pour envoyer</div>
+    <div style="font-size:11px;color:rgba(255,255,255,.4);text-align:center;">⏸ écouter · ➤ envoyer</div>
     <button class="rec-send-btn" onclick="sendRecording()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
         <line x1="22" y1="2" x2="11" y2="13"/>
@@ -259,7 +204,7 @@ body{display:flex;justify-content:center;background:#000;}
     </button>
   </div>
 
-  <div class="input-row">
+  <div class="input-row" id="input-row">
     <button class="media-btn" onclick="pickMedia()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <rect x="3" y="3" width="18" height="18" rx="2"/>
@@ -269,9 +214,9 @@ body{display:flex;justify-content:center;background:#000;}
     </button>
     <button class="media-btn" id="vocal-btn"
       onmousedown="startRecording()"
-      onmouseup="stopRecording()"
+      onmouseup="onMicRelease()"
       ontouchstart="startRecording(event)"
-      ontouchend="stopRecording()">
+      ontouchend="onMicRelease()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
         <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
@@ -314,7 +259,7 @@ document.getElementById('chat-name').textContent = `${friend.prenom} ${friend.no
 
 const avatarTop = document.getElementById('friend-avatar-top');
 if (friend.photo) {
-  avatarTop.innerHTML = `<img src="${friend.photo}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:1.5px solid rgba(255,255,255,.3);"/>`;
+  avatarTop.innerHTML=`<img src="${friend.photo}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:1.5px solid rgba(255,255,255,.3);"/>`;
 } else {
   const COLORS=['#e8547a','#9b59b6','#3498db','#e67e22','#2ecc71'];
   const color=COLORS[Math.abs(parseInt(friend.id||0))%COLORS.length];
@@ -327,41 +272,40 @@ let messages=[], ws=null, seen=false, typingTimer=null, isTypingSent=false, repl
 // ════════════════════════════════════════════
 // WEBSOCKET
 // ════════════════════════════════════════════
-function connectWS() {
-  ws = new WebSocket(WS_URL);
-  ws.onopen = () => {
-    ws.send(JSON.stringify({ user_id:me.id }));
-    ws.send(JSON.stringify({ action:'get_history', to:friend.id }));
-    ws.send(JSON.stringify({ action:'mark_read',   to:friend.id }));
+function connectWS(){
+  ws=new WebSocket(WS_URL);
+  ws.onopen=()=>{
+    ws.send(JSON.stringify({user_id:me.id}));
+    ws.send(JSON.stringify({action:'get_history',to:friend.id}));
+    ws.send(JSON.stringify({action:'mark_read',to:friend.id}));
   };
-  ws.onmessage = e => {
-    const data = JSON.parse(e.data);
-    if (data.action==='history') {
+  ws.onmessage=e=>{
+    const data=JSON.parse(e.data);
+    if(data.action==='history'){
       messages=(data.messages||[]).map(m=>({
         from:String(m.from!==undefined?m.from:m.from_user),
-        text:m.text||'', media_url:m.media_url||null, media_type:m.media_type||null,
-        is_vocal:m.is_vocal||false, time:m.time, msg_id:m.msg_id,
-        reply_to_id:m.reply_to_id||null, reply_to_text:m.reply_to_text||null,
-        reply_to_type:m.reply_to_type||null, reply_to_from:m.reply_to_from||null,
+        text:m.text||'',media_url:m.media_url||null,media_type:m.media_type||null,
+        is_vocal:m.is_vocal||false,time:m.time,msg_id:m.msg_id,
+        reply_to_id:m.reply_to_id||null,reply_to_text:m.reply_to_text||null,
+        reply_to_type:m.reply_to_type||null,reply_to_from:m.reply_to_from||null,
       }));
       renderMessages();
     }
-    else if (data.action==='new_message' && String(data.from)===String(friend.id)) {
+    else if(data.action==='new_message'&&String(data.from)===String(friend.id)){
       messages.push({
-        from:String(data.from), text:data.text||'',
-        media_url:data.media_url||null, media_type:data.media_type||null,
-        is_vocal:data.is_vocal||false, time:data.time, msg_id:data.msg_id,
-        reply_to_id:data.reply_to_id||null, reply_to_text:data.reply_to_text||null,
-        reply_to_type:data.reply_to_type||null, reply_to_from:data.reply_to_from||null,
+        from:String(data.from),text:data.text||'',
+        media_url:data.media_url||null,media_type:data.media_type||null,
+        is_vocal:data.is_vocal||false,time:data.time,msg_id:data.msg_id,
+        reply_to_id:data.reply_to_id||null,reply_to_text:data.reply_to_text||null,
+        reply_to_type:data.reply_to_type||null,reply_to_from:data.reply_to_from||null,
       });
       renderMessages();
-      ws.send(JSON.stringify({ action:'mark_read', to:friend.id }));
+      ws.send(JSON.stringify({action:'mark_read',to:friend.id}));
     }
-    else if (data.action==='typing' && String(data.from)===String(friend.id)) { showTyping(data.is_typing); }
-    else if (data.action==='seen') { seen=true; renderMessages(); }
-    else if (data.action==='message_deleted') {
-      messages=messages.filter(m=>m.msg_id!==data.msg_id);
-      renderMessages();
+    else if(data.action==='typing'&&String(data.from)===String(friend.id)){showTyping(data.is_typing);}
+    else if(data.action==='seen'){seen=true;renderMessages();}
+    else if(data.action==='message_deleted'){
+      messages=messages.filter(m=>m.msg_id!==data.msg_id);renderMessages();
     }
   };
   ws.onclose=()=>setTimeout(connectWS,3000);
@@ -370,7 +314,7 @@ function connectWS() {
 // ════════════════════════════════════════════
 // RENDER
 // ════════════════════════════════════════════
-function renderMessages() {
+function renderMessages(){
   const area=document.getElementById('messages-area');
   let lastMineIdx=-1;
   for(let i=messages.length-1;i>=0;i--){
@@ -395,7 +339,7 @@ function renderMessages() {
   }).join('');
   area.scrollTop=area.scrollHeight;
 
-  // Events waveform
+  // Waveform click seek
   document.querySelectorAll('.vocal-waveform').forEach(el=>{
     el.addEventListener('click',e=>{
       const uid=el.dataset.uid;
@@ -407,9 +351,8 @@ function renderMessages() {
   });
 }
 
-// ── Contenu bulle ──
-function buildContent(m,isMe) {
-  if (m.media_type==='audio') {
+function buildContent(m,isMe){
+  if(m.media_type==='audio'){
     const uid=m.msg_id||Date.now();
     const uidStr=uid.toString();
     const bars=Array.from({length:28},(_,i)=>{
@@ -426,14 +369,14 @@ function buildContent(m,isMe) {
         <span class="vocal-duration" id="dur_${uid}">0:00</span>
       </div>`;
   }
-  if (m.media_type==='image') {
+  if(m.media_type==='image'){
     const mJson=encodeURIComponent(JSON.stringify(m));
     return `<div class="media-card" onclick="openViewerEncoded('${mJson}')">
       <div class="media-icon">🖼️</div>
       <div class="media-info"><div class="media-title">Photo</div><div class="media-sub">Appuie pour voir</div></div>
       <div class="media-arrow">›</div></div>`;
   }
-  if (m.media_type==='video') {
+  if(m.media_type==='video'){
     const mJson=encodeURIComponent(JSON.stringify(m));
     return `<div class="media-card" onclick="openViewerEncoded('${mJson}')">
       <div class="media-icon">🎥</div>
@@ -443,19 +386,21 @@ function buildContent(m,isMe) {
   return `<span>${m.text}</span>`;
 }
 
-// ── Contrôles audio ──
-function toggleVocal(uid) {
+// ── Audio playback dans bulle ──
+function toggleVocal(uid){
   const audio=document.getElementById('audio_'+uid);
   const btn=audio?.previousElementSibling;
   if(!audio)return;
   if(audio.paused){
-    document.querySelectorAll('audio').forEach(a=>{if(a!==audio){a.pause();resetVocalBtn(a.id.replace('audio_',''));}});
+    document.querySelectorAll('audio').forEach(a=>{
+      if(a!==audio){a.pause();resetVocalBtn(a.id.replace('audio_',''));}
+    });
     audio.play().then(()=>{if(btn)btn.textContent='⏸';}).catch(()=>{});
   } else {
     audio.pause();if(btn)btn.textContent='▶';
   }
 }
-function updateVocalBar(uid) {
+function updateVocalBar(uid){
   const audio=document.getElementById('audio_'+uid);
   if(!audio||!audio.duration)return;
   const pct=audio.currentTime/audio.duration;
@@ -467,19 +412,16 @@ function updateVocalBar(uid) {
   const dur=document.getElementById('dur_'+uid);
   if(dur){const s=Math.floor(audio.currentTime);dur.textContent=`${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;}
 }
-function resetVocal(uid) {
+function resetVocal(uid){
   resetVocalBtn(uid);
-  const audio=document.getElementById('audio_'+uid);
-  if(audio)audio.currentTime=0;
+  const audio=document.getElementById('audio_'+uid);if(audio)audio.currentTime=0;
   const waveEl=document.querySelector(`.vocal-waveform[data-uid="${uid}"]`);
   if(waveEl)waveEl.querySelectorAll('.vocal-bar').forEach(b=>b.className='vocal-bar');
-  const dur=document.getElementById('dur_'+uid);
-  if(dur)dur.textContent='0:00';
+  const dur=document.getElementById('dur_'+uid);if(dur)dur.textContent='0:00';
 }
 function resetVocalBtn(uid){
   const audio=document.getElementById('audio_'+uid);
-  const btn=audio?.previousElementSibling;
-  if(btn)btn.textContent='▶';
+  const btn=audio?.previousElementSibling;if(btn)btn.textContent='▶';
 }
 
 // ── Viewer ──
@@ -493,21 +435,37 @@ function openViewer(m){
 }
 function openViewerEncoded(encoded){openViewer(JSON.parse(decodeURIComponent(encoded)));}
 
-// ── Reply ──
+// ── Reply preview ──
 function buildReplyPreview(m){
   const fromName=m.reply_to_from===String(me.id)?'Toi':friend.prenom;
   let txt=m.reply_to_text||'';
-  if(!txt){if(m.reply_to_type==='image')txt='📷 Photo';else if(m.reply_to_type==='video')txt='🎥 Vidéo';else if(m.reply_to_type==='audio')txt='🎵 Vocal';}
+  if(!txt){
+    if(m.reply_to_type==='image')txt='📷 Photo';
+    else if(m.reply_to_type==='video')txt='🎥 Vidéo';
+    else if(m.reply_to_type==='audio')txt='🎵 Vocal';
+  }
   return `<div class="reply-preview" onclick="scrollToMessage('${m.reply_to_id}',event)">
     <div class="reply-preview-name">${fromName}</div>
     <div class="reply-preview-text">${txt}</div></div>`;
 }
-function scrollToMessage(msgId,event){
+
+// ── Scroll vers le message original — CORRIGÉ ──
+function scrollToMessage(msgId, event){
   event.stopPropagation();
-  const el=document.getElementById('msg_'+msgId);if(!el)return;
-  el.scrollIntoView({behavior:'smooth',block:'center'});
-  el.classList.add('highlighted');setTimeout(()=>el.classList.remove('highlighted'),1500);
+  // Chercher l'élément dans le DOM
+  const el=document.getElementById('msg_'+msgId);
+  if(!el){return;}
+  // Scroll dans la zone des messages
+  const area=document.getElementById('messages-area');
+  const elTop=el.offsetTop;
+  area.scrollTo({top:elTop-area.clientHeight/2+el.clientHeight/2, behavior:'smooth'});
+  // Highlight
+  el.classList.remove('highlighted');
+  void el.offsetWidth; // force reflow
+  el.classList.add('highlighted');
+  setTimeout(()=>el.classList.remove('highlighted'),1500);
 }
+
 function cancelReply(){replyingTo=null;document.getElementById('reply-bar').classList.remove('active');}
 
 // ── Menu contextuel ──
@@ -609,28 +567,26 @@ function pickMedia(){document.getElementById('file-media').click();}
 function handleFile(input){if(input.files[0]){uploadAndSend(input.files[0]);input.value='';}}
 
 // ════════════════════════════════════════════
-// ENREGISTREMENT VOCAL — style Instagram
+// ENREGISTREMENT VOCAL
 // ════════════════════════════════════════════
 let mediaRecorder=null, audioChunks=[], recordingStream=null;
-let recTimerInterval=null, recSeconds=0;
-let recWaveInterval=null, pendingBlob=null;
+let recTimerInterval=null, recSeconds=0, recWaveInterval=null;
+let pendingBlob=null, pendingBlobUrl=null;
+let recState='idle'; // idle | recording | paused | previewing
 
-// Générer les barres du waveform d'enregistrement
 function initRecWaveform(){
   const waveEl=document.getElementById('rec-waveform');
   waveEl.innerHTML='';
   for(let i=0;i<40;i++){
     const bar=document.createElement('div');
-    bar.className='rec-bar';
-    bar.style.height='8px';
+    bar.className='rec-bar';bar.style.height='8px';
     waveEl.appendChild(bar);
   }
 }
 
-// Animer le waveform pendant l'enregistrement
 function animateRecWaveform(){
-  const bars=document.querySelectorAll('.rec-bar');
-  bars.forEach(bar=>{
+  if(recState!=='recording')return;
+  document.querySelectorAll('.rec-bar').forEach(bar=>{
     const h=4+Math.random()*28;
     bar.style.height=h+'px';
     bar.style.background=Math.random()>.5?'rgba(255,255,255,.9)':'rgba(255,255,255,.4)';
@@ -639,12 +595,13 @@ function animateRecWaveform(){
 
 async function startRecording(e){
   if(e)e.preventDefault();
+  if(recState!=='idle')return;
   try{
     recordingStream=await navigator.mediaDevices.getUserMedia({audio:true});
     const mimeType=MediaRecorder.isTypeSupported('audio/mp4')?'audio/mp4':
                    MediaRecorder.isTypeSupported('audio/webm')?'audio/webm':'';
     mediaRecorder=mimeType?new MediaRecorder(recordingStream,{mimeType}):new MediaRecorder(recordingStream);
-    audioChunks=[];recSeconds=0;pendingBlob=null;
+    audioChunks=[];recSeconds=0;pendingBlob=null;pendingBlobUrl=null;
 
     mediaRecorder.ondataavailable=e=>{if(e.data.size>0)audioChunks.push(e.data);};
     mediaRecorder.onstop=()=>{
@@ -654,57 +611,184 @@ async function startRecording(e){
       pendingBlob=new Blob(audioChunks,{type:finalType});
       pendingBlob._ext=finalExt;
       pendingBlob._type=finalType;
+      // Créer URL pour écoute locale
+      if(pendingBlobUrl)URL.revokeObjectURL(pendingBlobUrl);
+      pendingBlobUrl=URL.createObjectURL(pendingBlob);
     };
 
-    mediaRecorder.start();
+    mediaRecorder.start(100);
+    recState='recording';
 
-    // Afficher la barre
     initRecWaveform();
     document.getElementById('vocal-recording-bar').classList.add('active');
     document.getElementById('vocal-recording-actions').classList.add('active');
-    document.getElementById('input-row')?.style.setProperty('display','none');
-    document.querySelector('.input-row').style.display='none';
+    document.getElementById('input-row').style.display='none';
+    document.getElementById('rec-pause-btn').textContent='⏸';
 
-    // Timer
     recTimerInterval=setInterval(()=>{
-      recSeconds++;
-      const m=Math.floor(recSeconds/60),s=recSeconds%60;
-      document.getElementById('rec-timer').textContent=`${m}:${String(s).padStart(2,'0')}`;
+      if(recState==='recording'){
+        recSeconds++;
+        const m=Math.floor(recSeconds/60),s=recSeconds%60;
+        document.getElementById('rec-timer').textContent=`${m}:${String(s).padStart(2,'0')}`;
+      }
     },1000);
-
-    // Waveform animé
     recWaveInterval=setInterval(animateRecWaveform,100);
-
     document.getElementById('vocal-btn').classList.add('recording');
 
   }catch(e){alert('Accès au microphone refusé.');}
 }
 
-function stopRecording(){
-  if(mediaRecorder&&mediaRecorder.state==='recording'){
-    mediaRecorder.stop();
+// Relâcher le bouton micro — ne fait rien, on garde la barre
+function onMicRelease(){}
+
+// ── Bouton ⏸/▶ — pause écoute / reprend enregistrement ──
+function togglePausePlay(){
+  const btn=document.getElementById('rec-pause-btn');
+
+  if(recState==='recording'){
+    // Mettre en pause l'enregistrement → passer en mode écoute
+    mediaRecorder.stop(); // finalise le blob
+    recState='paused';
+    btn.textContent='🔴';
+    // Figer les barres
+    document.querySelectorAll('.rec-bar').forEach(bar=>{
+      bar.style.height='8px';
+      bar.style.background='rgba(255,255,255,.3)';
+    });
+    // Après onstop, on peut jouer
+    setTimeout(()=>{
+      if(pendingBlobUrl){
+        playPreview();
+      }
+    },200);
   }
-  clearInterval(recTimerInterval);
-  clearInterval(recWaveInterval);
-  document.getElementById('vocal-btn').classList.remove('recording');
+  else if(recState==='paused'||recState==='previewing'){
+    // Stopper la preview et reprendre l'enregistrement
+    stopPreview();
+    resumeRecording();
+  }
+}
+
+// ── Jouer le preview de l'enregistrement ──
+let previewAudio=null;
+function playPreview(){
+  if(!pendingBlobUrl)return;
+  recState='previewing';
+  const btn=document.getElementById('rec-pause-btn');
+  btn.textContent='⏹';
+
+  if(previewAudio){previewAudio.pause();previewAudio=null;}
+  previewAudio=new Audio(pendingBlobUrl);
+  previewAudio.play().then(()=>{
+    // Animer les barres selon la progression
+    const updatePreviewBars=setInterval(()=>{
+      if(!previewAudio||previewAudio.paused){clearInterval(updatePreviewBars);return;}
+      const pct=previewAudio.currentTime/(previewAudio.duration||1);
+      const played=Math.floor(pct*40);
+      document.querySelectorAll('.rec-bar').forEach((bar,i)=>{
+        bar.style.height=i<played?'20px':'8px';
+        bar.style.background=i<played?'rgba(255,255,255,.9)':'rgba(255,255,255,.3)';
+      });
+      const s=Math.floor(previewAudio.currentTime);
+      document.getElementById('rec-timer').textContent=`${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
+    },100);
+    previewAudio.onended=()=>{
+      clearInterval(updatePreviewBars);
+      recState='paused';
+      btn.textContent='🔴';
+    };
+  }).catch(()=>{recState='paused';btn.textContent='🔴';});
+}
+
+function stopPreview(){
+  if(previewAudio){previewAudio.pause();previewAudio.onended=null;previewAudio=null;}
+}
+
+// ── Reprendre l'enregistrement après pause ──
+async function resumeRecording(){
+  try{
+    recordingStream=await navigator.mediaDevices.getUserMedia({audio:true});
+    const mimeType=MediaRecorder.isTypeSupported('audio/mp4')?'audio/mp4':
+                   MediaRecorder.isTypeSupported('audio/webm')?'audio/webm':'';
+    const newRecorder=mimeType?new MediaRecorder(recordingStream,{mimeType}):new MediaRecorder(recordingStream);
+    const newChunks=[];
+
+    newRecorder.ondataavailable=e=>{if(e.data.size>0)newChunks.push(e.data);};
+    newRecorder.onstop=()=>{
+      recordingStream.getTracks().forEach(t=>t.stop());
+      // Fusionner ancien blob + nouveaux chunks
+      const finalType=newRecorder.mimeType||'audio/webm';
+      const finalExt=finalType.includes('mp4')?'mp4':'webm';
+      const newBlob=new Blob(newChunks,{type:finalType});
+      // Combiner les deux blobs
+      const combined=new Blob([pendingBlob,newBlob],{type:finalType});
+      combined._ext=finalExt;
+      combined._type=finalType;
+      pendingBlob=combined;
+      if(pendingBlobUrl)URL.revokeObjectURL(pendingBlobUrl);
+      pendingBlobUrl=URL.createObjectURL(pendingBlob);
+    };
+
+    newRecorder.start(100);
+    mediaRecorder=newRecorder;
+    recState='recording';
+    document.getElementById('rec-pause-btn').textContent='⏸';
+    // Reprendre l'animation
+  }catch(e){console.error(e);}
+}
+
+// ── Seek dans le preview ──
+function seekPreview(e){
+  if(recState!=='previewing'||!previewAudio||!previewAudio.duration)return;
+  const rect=e.currentTarget.getBoundingClientRect();
+  previewAudio.currentTime=((e.clientX-rect.left)/rect.width)*previewAudio.duration;
 }
 
 function hideRecordingBar(){
+  stopPreview();
   document.getElementById('vocal-recording-bar').classList.remove('active');
   document.getElementById('vocal-recording-actions').classList.remove('active');
-  document.querySelector('.input-row').style.display='flex';
+  document.getElementById('input-row').style.display='flex';
   document.getElementById('rec-timer').textContent='0:00';
+  document.getElementById('rec-pause-btn').textContent='⏸';
+  clearInterval(recTimerInterval);
+  clearInterval(recWaveInterval);
+  document.getElementById('vocal-btn').classList.remove('recording');
+  recState='idle';
+  if(pendingBlobUrl){URL.revokeObjectURL(pendingBlobUrl);pendingBlobUrl=null;}
 }
 
+// ── Envoyer — indépendant de l'état ──
 async function sendRecording(){
+  // Arrêter si en cours
+  stopPreview();
+  if(mediaRecorder&&mediaRecorder.state!=='inactive'){
+    await new Promise(resolve=>{
+      const orig=mediaRecorder.onstop;
+      mediaRecorder.onstop=(...args)=>{orig?.(...args);resolve();};
+      mediaRecorder.stop();
+      recordingStream?.getTracks().forEach(t=>t.stop());
+    });
+  }
+  // Attendre un peu pour que onstop soit appelé
+  await new Promise(r=>setTimeout(r,150));
+
   hideRecordingBar();
   if(!pendingBlob||pendingBlob.size<500)return;
-  const file=new File([pendingBlob],`vocal_${Date.now()}.${pendingBlob._ext}`,{type:pendingBlob._type});
+  const blob=pendingBlob;
   pendingBlob=null;
+  const file=new File([blob],`vocal_${Date.now()}.${blob._ext}`,{type:blob._type});
   await uploadAndSend(file,true);
 }
 
+// ── Annuler ──
 function cancelRecording(){
+  stopPreview();
+  if(mediaRecorder&&mediaRecorder.state!=='inactive'){
+    mediaRecorder.onstop=()=>{};
+    mediaRecorder.stop();
+    recordingStream?.getTracks().forEach(t=>t.stop());
+  }
   pendingBlob=null;
   hideRecordingBar();
 }

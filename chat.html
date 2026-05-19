@@ -71,7 +71,6 @@ body{display:flex;justify-content:center;background:#000;}
 .reply-preview-name{font-weight:700;font-size:10px;margin-bottom:1px;opacity:.8;}
 .reply-preview-text{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:.7;}
 
-/* ── Vocal player ── */
 .vocal-player{display:flex;align-items:center;gap:10px;min-width:200px;max-width:260px;padding:2px 0;}
 .vocal-play-btn{width:36px;height:36px;border-radius:50%;border:none;background:rgba(255,255,255,.25);color:white;font-size:13px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:.15s;}
 .vocal-play-btn:active{transform:scale(.92);}
@@ -81,7 +80,6 @@ body{display:flex;justify-content:center;background:#000;}
 .vocal-bar.active{background:white;}
 .vocal-duration{font-size:11px;opacity:.7;flex-shrink:0;min-width:32px;text-align:right;}
 
-/* ── Media card ── */
 .media-card{display:flex;align-items:center;gap:10px;padding:4px 0;cursor:pointer;min-width:160px;}
 .media-icon{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
 .media-info{flex:1;}
@@ -89,14 +87,12 @@ body{display:flex;justify-content:center;background:#000;}
 .media-sub{font-size:11px;color:rgba(255,255,255,.55);}
 .media-arrow{font-size:16px;color:rgba(255,255,255,.4);}
 
-/* ── Typing ── */
 .typing-bubble{display:flex;gap:4px;align-items:center;padding:10px 14px;background:rgba(255,255,255,.12);border-radius:22px;border-bottom-left-radius:6px;align-self:flex-start;}
 .dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.6);animation:bonce .9s infinite;}
 .dot:nth-child(2){animation-delay:.2s;}
 .dot:nth-child(3){animation-delay:.4s;}
 @keyframes bonce{0%,60%,100%{transform:translateY(0);}30%{transform:translateY(-5px);}}
 
-/* ── Reply bar ── */
 .reply-bar{display:none;padding:8px 14px;background:rgba(255,255,255,.06);border-top:1px solid rgba(255,255,255,.08);flex-direction:row;align-items:center;gap:10px;flex-shrink:0;position:relative;z-index:10;}
 .reply-bar.active{display:flex;}
 .reply-bar-content{flex:1;min-width:0;}
@@ -104,7 +100,6 @@ body{display:flex;justify-content:center;background:#000;}
 .reply-bar-text{font-size:11px;color:rgba(255,255,255,.5);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .reply-bar-cancel{background:none;border:none;color:rgba(255,255,255,.4);font-size:20px;cursor:pointer;}
 
-/* ── Barre d'enregistrement ── */
 .vocal-recording-bar{
   display:none;padding:12px 16px;
   background:linear-gradient(135deg,#e8547a,#c73b8a);
@@ -113,20 +108,16 @@ body{display:flex;justify-content:center;background:#000;}
   border-radius:40px;margin:8px 12px;
 }
 .vocal-recording-bar.active{display:flex;}
-
 .rec-pause-btn{
   width:38px;height:38px;border-radius:50%;
   background:white;border:none;cursor:pointer;
   display:flex;align-items:center;justify-content:center;
   flex-shrink:0;font-size:16px;color:#e8547a;font-weight:700;
 }
-
-/* Waveform d'enregistrement */
 .rec-waveform{flex:1;height:36px;display:flex;align-items:center;gap:2px;overflow:hidden;cursor:pointer;}
 .rec-bar{width:3px;border-radius:2px;background:rgba(255,255,255,.6);min-height:4px;transition:height .1s;flex-shrink:0;}
 .rec-timer-text{font-size:14px;font-weight:700;color:white;flex-shrink:0;min-width:36px;text-align:right;}
 
-/* Actions sous la barre */
 .vocal-recording-actions{
   display:none;padding:0 16px 12px;
   flex-direction:row;align-items:center;justify-content:space-between;
@@ -137,7 +128,6 @@ body{display:flex;justify-content:center;background:#000;}
 .rec-send-btn{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#e8547a,#c73b8a);border:none;cursor:pointer;color:white;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(232,84,122,.4);}
 .rec-send-btn svg{width:22px;height:22px;}
 
-/* ── Input row ── */
 .input-row{padding:10px 12px;display:flex;align-items:center;gap:8px;background:rgba(0,0,0,.5);backdrop-filter:blur(20px);border-top:1px solid rgba(255,255,255,.06);flex-shrink:0;position:relative;z-index:10;}
 .media-btn{background:none;border:none;color:rgba(255,255,255,.5);cursor:pointer;padding:6px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .media-btn:active{background:rgba(255,255,255,.1);}
@@ -146,7 +136,7 @@ body{display:flex;justify-content:center;background:#000;}
 .input-wrap{flex:1;display:flex;align-items:center;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:22px;padding:0 14px;min-width:0;}
 .msg-input{flex:1;background:none;border:none;outline:none;font-size:15px;color:white;padding:10px 0;}
 .msg-input::placeholder{color:rgba(255,255,255,.35);}
-.send-btn{background:none;border:none;color:#e8547a;cursor:pointer;padding:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.send-btn{background:none;border:none;color:#e8547a;cursor:pointer;padding:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:.2s;}
 .send-btn:disabled{opacity:.3;cursor:not-allowed;}
 .send-btn svg{width:24px;height:24px;}
 
@@ -177,22 +167,20 @@ body{display:flex;justify-content:center;background:#000;}
   <div class="messages-area" id="messages-area"></div>
 
   <div class="reply-bar" id="reply-bar">
-    <div style="color:#e8547a;font-size:18px;">↩</div>
+    <div id="reply-bar-icon" style="color:#e8547a;font-size:18px;">↩</div>
     <div class="reply-bar-content">
       <div class="reply-bar-name" id="reply-bar-name"></div>
       <div class="reply-bar-text" id="reply-bar-text"></div>
     </div>
-    <button class="reply-bar-cancel" onclick="cancelReply()">×</button>
+    <button class="reply-bar-cancel" id="reply-bar-cancel-btn" onclick="cancelReply()">×</button>
   </div>
 
-  <!-- Barre enregistrement -->
   <div class="vocal-recording-bar" id="vocal-recording-bar">
     <button class="rec-pause-btn" id="rec-pause-btn" onclick="togglePausePlay()">⏸</button>
     <div class="rec-waveform" id="rec-waveform" onclick="seekPreview(event)"></div>
     <span class="rec-timer-text" id="rec-timer">0:00</span>
   </div>
 
-  <!-- Actions -->
   <div class="vocal-recording-actions" id="vocal-recording-actions">
     <button class="rec-delete-btn" onclick="cancelRecording()">🗑️</button>
     <div style="font-size:11px;color:rgba(255,255,255,.4);text-align:center;">⏸ écouter · ➤ envoyer</div>
@@ -268,6 +256,7 @@ if (friend.photo) {
 }
 
 let messages=[], ws=null, seen=false, typingTimer=null, isTypingSent=false, replyingTo=null;
+let editingMsgId=null;
 
 // ════════════════════════════════════════════
 // WEBSOCKET
@@ -286,6 +275,7 @@ function connectWS(){
         from:String(m.from!==undefined?m.from:m.from_user),
         text:m.text||'',media_url:m.media_url||null,media_type:m.media_type||null,
         is_vocal:m.is_vocal||false,time:m.time,msg_id:m.msg_id,
+        edited:m.edited||false,
         reply_to_id:m.reply_to_id||null,reply_to_text:m.reply_to_text||null,
         reply_to_type:m.reply_to_type||null,reply_to_from:m.reply_to_from||null,
       }));
@@ -296,6 +286,7 @@ function connectWS(){
         from:String(data.from),text:data.text||'',
         media_url:data.media_url||null,media_type:data.media_type||null,
         is_vocal:data.is_vocal||false,time:data.time,msg_id:data.msg_id,
+        edited:false,
         reply_to_id:data.reply_to_id||null,reply_to_text:data.reply_to_text||null,
         reply_to_type:data.reply_to_type||null,reply_to_from:data.reply_to_from||null,
       });
@@ -306,6 +297,10 @@ function connectWS(){
     else if(data.action==='seen'){seen=true;renderMessages();}
     else if(data.action==='message_deleted'){
       messages=messages.filter(m=>m.msg_id!==data.msg_id);renderMessages();
+    }
+    else if(data.action==='message_edited'){
+      const m=messages.find(m=>m.msg_id===data.msg_id);
+      if(m){m.text=data.text;m.edited=true;renderMessages();}
     }
   };
   ws.onclose=()=>setTimeout(connectWS,3000);
@@ -332,14 +327,13 @@ function renderMessages(){
           ontouchstart="touchStart(event,${i})"
           ontouchend="touchEnd()">
           ${replyHTML}${content}
-          <div class="bubble-time">${m.time||''}</div>
+          <div class="bubble-time">${m.time||''}${m.edited?'&nbsp;·&nbsp;<span style="opacity:.6;font-size:9px;">modifié</span>':''}</div>
         </div>
         ${showSeen?'<div class="seen-label">Vu</div>':''}
       </div>`;
   }).join('');
   area.scrollTop=area.scrollHeight;
 
-  // Waveform click seek
   document.querySelectorAll('.vocal-waveform').forEach(el=>{
     el.addEventListener('click',e=>{
       const uid=el.dataset.uid;
@@ -386,19 +380,15 @@ function buildContent(m,isMe){
   return `<span>${m.text}</span>`;
 }
 
-// ── Audio playback dans bulle ──
+// ── Audio ──
 function toggleVocal(uid){
   const audio=document.getElementById('audio_'+uid);
   const btn=audio?.previousElementSibling;
   if(!audio)return;
   if(audio.paused){
-    document.querySelectorAll('audio').forEach(a=>{
-      if(a!==audio){a.pause();resetVocalBtn(a.id.replace('audio_',''));}
-    });
+    document.querySelectorAll('audio').forEach(a=>{if(a!==audio){a.pause();resetVocalBtn(a.id.replace('audio_',''));}});
     audio.play().then(()=>{if(btn)btn.textContent='⏸';}).catch(()=>{});
-  } else {
-    audio.pause();if(btn)btn.textContent='▶';
-  }
+  } else {audio.pause();if(btn)btn.textContent='▶';}
 }
 function updateVocalBar(uid){
   const audio=document.getElementById('audio_'+uid);
@@ -435,7 +425,7 @@ function openViewer(m){
 }
 function openViewerEncoded(encoded){openViewer(JSON.parse(decodeURIComponent(encoded)));}
 
-// ── Reply preview ──
+// ── Reply ──
 function buildReplyPreview(m){
   const fromName=m.reply_to_from===String(me.id)?'Toi':friend.prenom;
   let txt=m.reply_to_text||'';
@@ -449,24 +439,74 @@ function buildReplyPreview(m){
     <div class="reply-preview-text">${txt}</div></div>`;
 }
 
-// ── Scroll vers le message original — CORRIGÉ ──
-function scrollToMessage(msgId, event){
+function scrollToMessage(msgId,event){
   event.stopPropagation();
-  // Chercher l'élément dans le DOM
   const el=document.getElementById('msg_'+msgId);
-  if(!el){return;}
-  // Scroll dans la zone des messages
+  if(!el)return;
   const area=document.getElementById('messages-area');
-  const elTop=el.offsetTop;
-  area.scrollTo({top:elTop-area.clientHeight/2+el.clientHeight/2, behavior:'smooth'});
-  // Highlight
+  area.scrollTo({top:el.offsetTop-area.clientHeight/2+el.clientHeight/2,behavior:'smooth'});
   el.classList.remove('highlighted');
-  void el.offsetWidth; // force reflow
+  void el.offsetWidth;
   el.classList.add('highlighted');
   setTimeout(()=>el.classList.remove('highlighted'),1500);
 }
 
-function cancelReply(){replyingTo=null;document.getElementById('reply-bar').classList.remove('active');}
+function cancelReply(){
+  replyingTo=null;
+  document.getElementById('reply-bar').classList.remove('active');
+  document.getElementById('reply-bar-icon').textContent='↩';
+  document.getElementById('reply-bar-cancel-btn').onclick=cancelReply;
+}
+
+// ════════════════════════════════════════════
+// MODIFIER UN MESSAGE
+// ════════════════════════════════════════════
+function startEdit(msgId, currentText){
+  editingMsgId=msgId;
+  const input=document.getElementById('msg-input');
+  input.value=currentText;
+  input.focus();
+
+  // Barre du haut → mode édition
+  document.getElementById('reply-bar-icon').textContent='✏️';
+  document.getElementById('reply-bar-name').textContent='Modifier le message';
+  document.getElementById('reply-bar-text').textContent=currentText;
+  document.getElementById('reply-bar').classList.add('active');
+  document.getElementById('reply-bar-cancel-btn').onclick=cancelEdit;
+
+  // Bouton envoyer → orange = mode édition
+  const sendBtn=document.getElementById('send-btn');
+  sendBtn.style.color='#f39c12';
+}
+
+function confirmEdit(){
+  const input=document.getElementById('msg-input');
+  const newText=input.value.trim();
+  if(!newText||!editingMsgId)return;
+
+  const m=messages.find(m=>m.msg_id===editingMsgId);
+  if(m){m.text=newText;m.edited=true;}
+  renderMessages();
+
+  ws?.send(JSON.stringify({
+    action:'edit_message',
+    to:friend.id,
+    msg_id:editingMsgId,
+    text:newText
+  }));
+
+  cancelEdit();
+}
+
+function cancelEdit(){
+  editingMsgId=null;
+  document.getElementById('msg-input').value='';
+  document.getElementById('reply-bar').classList.remove('active');
+  document.getElementById('reply-bar-icon').textContent='↩';
+  document.getElementById('reply-bar-cancel-btn').onclick=cancelReply;
+  const sendBtn=document.getElementById('send-btn');
+  sendBtn.style.color='#e8547a';
+}
 
 // ── Menu contextuel ──
 let touchTimer=null;
@@ -483,6 +523,8 @@ function openMenu(event,idx){
   menu.style.cssText=`position:fixed;bottom:90px;left:50%;transform:translateX(-50%);
     background:#1a1a2e;border:1px solid rgba(255,255,255,.1);border-radius:16px;
     box-shadow:0 8px 32px rgba(0,0,0,.5);display:flex;flex-direction:column;overflow:hidden;z-index:200;min-width:200px;`;
+
+  // ── Répondre ──
   const replyBtn=document.createElement('button');
   replyBtn.innerHTML='↩&nbsp;&nbsp;Répondre';
   replyBtn.style.cssText='padding:14px 20px;border:none;background:none;font-size:15px;cursor:pointer;text-align:left;color:white;border-bottom:1px solid rgba(255,255,255,.08);';
@@ -492,19 +534,33 @@ function openMenu(event,idx){
     const fromName=m.from===String(me.id)?'Toi':friend.prenom;
     let txt=m.text||'';
     if(!txt){if(m.media_type==='image')txt='📷 Photo';else if(m.media_type==='video')txt='🎥 Vidéo';else if(m.media_type==='audio')txt='🎵 Vocal';}
+    document.getElementById('reply-bar-icon').textContent='↩';
     document.getElementById('reply-bar-name').textContent=fromName;
     document.getElementById('reply-bar-text').textContent=txt;
     document.getElementById('reply-bar').classList.add('active');
+    document.getElementById('reply-bar-cancel-btn').onclick=cancelReply;
     document.getElementById('msg-input').focus();
   };
   menu.appendChild(replyBtn);
+
   if(isMe){
+    // ── Modifier (seulement messages texte) ──
+    if(!m.media_url){
+      const editBtn=document.createElement('button');
+      editBtn.innerHTML='✏️&nbsp;&nbsp;Modifier';
+      editBtn.style.cssText='padding:14px 20px;border:none;background:none;font-size:15px;cursor:pointer;text-align:left;color:#f39c12;border-bottom:1px solid rgba(255,255,255,.08);';
+      editBtn.onclick=()=>{menu.remove();startEdit(m.msg_id,m.text);};
+      menu.appendChild(editBtn);
+    }
+
+    // ── Supprimer ──
     const deleteBtn=document.createElement('button');
     deleteBtn.innerHTML='🗑&nbsp;&nbsp;Supprimer';
     deleteBtn.style.cssText='padding:14px 20px;border:none;background:none;font-size:15px;cursor:pointer;text-align:left;color:#e74c3c;border-bottom:1px solid rgba(255,255,255,.08);';
     deleteBtn.onclick=()=>{menu.remove();deleteMessage(m.msg_id);};
     menu.appendChild(deleteBtn);
   }
+
   const cancelBtn=document.createElement('button');
   cancelBtn.textContent='Annuler';
   cancelBtn.style.cssText='padding:14px 20px;border:none;background:none;font-size:15px;cursor:pointer;color:rgba(255,255,255,.4);';
@@ -519,13 +575,19 @@ function deleteMessage(msgId){
   messages=messages.filter(m=>m.msg_id!==msgId);renderMessages();
 }
 
-// ── Envoyer texte ──
+// ════════════════════════════════════════════
+// ENVOYER TEXTE — gère aussi la confirmation d'édition
+// ════════════════════════════════════════════
 function sendMessage(){
+  // Si on est en mode édition → confirmer l'édition
+  if(editingMsgId){confirmEdit();return;}
+
   const input=document.getElementById('msg-input');
   const text=input.value.trim();if(!text)return;
   const now=new Date(),time=now.getHours()+':'+String(now.getMinutes()).padStart(2,'0');
   const msgId=`${me.id}_${Date.now()}`;
-  messages.push({from:String(me.id),text,media_url:null,media_type:null,is_vocal:false,time,msg_id:msgId,
+  messages.push({from:String(me.id),text,media_url:null,media_type:null,is_vocal:false,
+    edited:false,time,msg_id:msgId,
     reply_to_id:replyingTo?.msg_id||null,reply_to_text:replyingTo?.text||null,
     reply_to_type:replyingTo?.media_type||null,reply_to_from:replyingTo?.from||null});
   seen=false;renderMessages();input.value='';
@@ -535,7 +597,9 @@ function sendMessage(){
   cancelReply();clearTypingState();
 }
 
-// ── Upload ──
+// ════════════════════════════════════════════
+// UPLOAD
+// ════════════════════════════════════════════
 async function uploadAndSend(file,isVocal=false){
   document.getElementById('upload-overlay').classList.add('active');
   document.getElementById('send-btn').disabled=true;
@@ -547,7 +611,7 @@ async function uploadAndSend(file,isVocal=false){
     const now=new Date(),time=now.getHours()+':'+String(now.getMinutes()).padStart(2,'0');
     const msgId=`${me.id}_${Date.now()}`;
     messages.push({from:String(me.id),text:'',media_url:data.url,media_type:data.media_type,
-      is_vocal:isVocal,time,msg_id:msgId,
+      is_vocal:isVocal,edited:false,time,msg_id:msgId,
       reply_to_id:replyingTo?.msg_id||null,reply_to_text:replyingTo?.text||null,
       reply_to_type:replyingTo?.media_type||null,reply_to_from:replyingTo?.from||null});
     seen=false;renderMessages();
@@ -569,14 +633,10 @@ function handleFile(input){if(input.files[0]){uploadAndSend(input.files[0]);inpu
 // ════════════════════════════════════════════
 // ENREGISTREMENT VOCAL
 // ════════════════════════════════════════════
-// ════════════════════════════════════════════
-// ENREGISTREMENT VOCAL
-// ════════════════════════════════════════════
-let mediaRecorder=null, audioChunks=[], recordingStream=null;
-let recTimerInterval=null, recSeconds=0, recWaveInterval=null;
-let pendingBlob=null, pendingBlobUrl=null;
-let previewAudio=null;
-let recState='idle'; // idle | recording | preview_playing | preview_paused
+let mediaRecorder=null,audioChunks=[],recordingStream=null;
+let recTimerInterval=null,recSeconds=0,recWaveInterval=null;
+let pendingBlob=null,pendingBlobUrl=null,previewAudio=null;
+let recState='idle';
 
 function initRecWaveform(){
   const waveEl=document.getElementById('rec-waveform');
@@ -617,13 +677,11 @@ async function startRecording(e){
       pendingBlob._type=finalType;
       if(pendingBlobUrl)URL.revokeObjectURL(pendingBlobUrl);
       pendingBlobUrl=URL.createObjectURL(pendingBlob);
-      // Lancer la lecture automatiquement après arrêt
       startPreview();
     };
 
     mediaRecorder.start(100);
     recState='recording';
-
     initRecWaveform();
     document.getElementById('vocal-recording-bar').classList.add('active');
     document.getElementById('vocal-recording-actions').classList.add('active');
@@ -639,39 +697,30 @@ async function startRecording(e){
     },1000);
     recWaveInterval=setInterval(animateRecWaveform,100);
     document.getElementById('vocal-btn').classList.add('recording');
-
   }catch(e){alert('Accès au microphone refusé.');}
 }
 
 function onMicRelease(){}
 
-// ── Bouton pause/play — seulement pour écouter ──
 function togglePausePlay(){
   const btn=document.getElementById('rec-pause-btn');
-
   if(recState==='recording'){
-    // Arrêter l'enregistrement → lancer la lecture
     clearInterval(recTimerInterval);
     clearInterval(recWaveInterval);
     document.getElementById('vocal-btn').classList.remove('recording');
-    mediaRecorder.stop(); // déclenche onstop → startPreview()
+    mediaRecorder.stop();
     btn.textContent='⏳';
-
   } else if(recState==='preview_playing'){
-    // Pauser la lecture
     previewAudio?.pause();
     recState='preview_paused';
     btn.textContent='▶';
-
   } else if(recState==='preview_paused'){
-    // Reprendre la lecture
     previewAudio?.play();
     recState='preview_playing';
     btn.textContent='⏸';
   }
 }
 
-// ── Lancer la lecture du preview ──
 function startPreview(){
   if(!pendingBlobUrl)return;
   const btn=document.getElementById('rec-pause-btn');
@@ -681,11 +730,12 @@ function startPreview(){
   if(previewAudio){previewAudio.pause();previewAudio=null;}
   previewAudio=new Audio(pendingBlobUrl);
 
-  let updateInterval=null;
+  // Fix barres waveform — interval global
+  if(window._previewInterval)clearInterval(window._previewInterval);
 
   previewAudio.play().then(()=>{
-    updateInterval=setInterval(()=>{
-      if(!previewAudio)return;
+    window._previewInterval=setInterval(()=>{
+      if(!previewAudio||previewAudio.paused){return;}
       const dur=previewAudio.duration||1;
       const pct=previewAudio.currentTime/dur;
       const played=Math.floor(pct*40);
@@ -698,26 +748,23 @@ function startPreview(){
     },100);
 
     previewAudio.onended=()=>{
-      clearInterval(updateInterval);
+      clearInterval(window._previewInterval);
       recState='preview_paused';
       btn.textContent='▶';
-      // Reset les barres
       document.querySelectorAll('.rec-bar').forEach(bar=>{
         bar.style.height='8px';
         bar.style.background='rgba(255,255,255,.3)';
       });
-      // Reset timer
       const s=Math.floor(previewAudio?.duration||0);
       document.getElementById('rec-timer').textContent=`${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
     };
   }).catch(()=>{
-    clearInterval(updateInterval);
+    clearInterval(window._previewInterval);
     recState='preview_paused';
     btn.textContent='▶';
   });
 }
 
-// ── Seek dans le preview ──
 function seekPreview(e){
   if(!previewAudio||!previewAudio.duration)return;
   if(recState!=='preview_playing'&&recState!=='preview_paused')return;
@@ -726,6 +773,7 @@ function seekPreview(e){
 }
 
 function hideRecordingBar(){
+  clearInterval(window._previewInterval);
   if(previewAudio){previewAudio.pause();previewAudio.onended=null;previewAudio=null;}
   clearInterval(recTimerInterval);
   clearInterval(recWaveInterval);
@@ -739,11 +787,9 @@ function hideRecordingBar(){
   if(pendingBlobUrl){URL.revokeObjectURL(pendingBlobUrl);pendingBlobUrl=null;}
 }
 
-// ── Envoyer — indépendant de l'état ──
 async function sendRecording(){
+  clearInterval(window._previewInterval);
   if(previewAudio){previewAudio.pause();previewAudio.onended=null;previewAudio=null;}
-
-  // Si encore en enregistrement → arrêter proprement
   if(recState==='recording'&&mediaRecorder&&mediaRecorder.state!=='inactive'){
     clearInterval(recTimerInterval);
     clearInterval(recWaveInterval);
@@ -755,7 +801,6 @@ async function sendRecording(){
     });
     await new Promise(r=>setTimeout(r,150));
   }
-
   hideRecordingBar();
   if(!pendingBlob||pendingBlob.size<500)return;
   const blob=pendingBlob;pendingBlob=null;
@@ -763,8 +808,8 @@ async function sendRecording(){
   await uploadAndSend(file,true);
 }
 
-// ── Annuler ──
 function cancelRecording(){
+  clearInterval(window._previewInterval);
   if(mediaRecorder&&mediaRecorder.state!=='inactive'){
     mediaRecorder.onstop=()=>{};
     mediaRecorder.stop();
@@ -773,8 +818,10 @@ function cancelRecording(){
   pendingBlob=null;
   hideRecordingBar();
 }
+
 // ── Typing ──
 function onTyping(text){
+  if(editingMsgId)return; // pas de typing indicator en mode édition
   if(!text){ws?.send(JSON.stringify({action:'typing',to:friend.id,is_typing:false}));isTypingSent=false;clearTimeout(typingTimer);return;}
   if(!isTypingSent){ws?.send(JSON.stringify({action:'typing',to:friend.id,is_typing:true}));isTypingSent=true;}
   clearTimeout(typingTimer);

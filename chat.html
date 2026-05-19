@@ -569,10 +569,14 @@ function handleFile(input){if(input.files[0]){uploadAndSend(input.files[0]);inpu
 // ════════════════════════════════════════════
 // ENREGISTREMENT VOCAL
 // ════════════════════════════════════════════
+// ════════════════════════════════════════════
+// ENREGISTREMENT VOCAL
+// ════════════════════════════════════════════
 let mediaRecorder=null, audioChunks=[], recordingStream=null;
 let recTimerInterval=null, recSeconds=0, recWaveInterval=null;
 let pendingBlob=null, pendingBlobUrl=null;
-let recState='idle'; // idle | recording | paused | previewing
+let previewAudio=null;
+let recState='idle'; // idle | recording | preview_playing | preview_paused
 
 function initRecWaveform(){
   const waveEl=document.getElementById('rec-waveform');
@@ -611,9 +615,10 @@ async function startRecording(e){
       pendingBlob=new Blob(audioChunks,{type:finalType});
       pendingBlob._ext=finalExt;
       pendingBlob._type=finalType;
-      // Créer URL pour écoute locale
       if(pendingBlobUrl)URL.revokeObjectURL(pendingBlobUrl);
       pendingBlobUrl=URL.createObjectURL(pendingBlob);
+      // Lancer la lecture automatiquement après arrêt
+      startPreview();
     };
 
     mediaRecorder.start(100);
@@ -638,52 +643,51 @@ async function startRecording(e){
   }catch(e){alert('Accès au microphone refusé.');}
 }
 
-// Relâcher le bouton micro — ne fait rien, on garde la barre
 function onMicRelease(){}
 
-// ── Bouton ⏸/▶ — pause écoute / reprend enregistrement ──
+// ── Bouton pause/play — seulement pour écouter ──
 function togglePausePlay(){
   const btn=document.getElementById('rec-pause-btn');
 
   if(recState==='recording'){
-    // Mettre en pause l'enregistrement → passer en mode écoute
-    mediaRecorder.stop(); // finalise le blob
-    recState='paused';
-    btn.textContent='🔴';
-    // Figer les barres
-    document.querySelectorAll('.rec-bar').forEach(bar=>{
-      bar.style.height='8px';
-      bar.style.background='rgba(255,255,255,.3)';
-    });
-    // Après onstop, on peut jouer
-    setTimeout(()=>{
-      if(pendingBlobUrl){
-        playPreview();
-      }
-    },200);
-  }
-  else if(recState==='paused'||recState==='previewing'){
-    // Stopper la preview et reprendre l'enregistrement
-    stopPreview();
-    resumeRecording();
+    // Arrêter l'enregistrement → lancer la lecture
+    clearInterval(recTimerInterval);
+    clearInterval(recWaveInterval);
+    document.getElementById('vocal-btn').classList.remove('recording');
+    mediaRecorder.stop(); // déclenche onstop → startPreview()
+    btn.textContent='⏳';
+
+  } else if(recState==='preview_playing'){
+    // Pauser la lecture
+    previewAudio?.pause();
+    recState='preview_paused';
+    btn.textContent='▶';
+
+  } else if(recState==='preview_paused'){
+    // Reprendre la lecture
+    previewAudio?.play();
+    recState='preview_playing';
+    btn.textContent='⏸';
   }
 }
 
-// ── Jouer le preview de l'enregistrement ──
-let previewAudio=null;
-function playPreview(){
+// ── Lancer la lecture du preview ──
+function startPreview(){
   if(!pendingBlobUrl)return;
-  recState='previewing';
   const btn=document.getElementById('rec-pause-btn');
-  btn.textContent='⏹';
+  recState='preview_playing';
+  btn.textContent='⏸';
 
   if(previewAudio){previewAudio.pause();previewAudio=null;}
   previewAudio=new Audio(pendingBlobUrl);
+
+  let updateInterval=null;
+
   previewAudio.play().then(()=>{
-    // Animer les barres selon la progression
-    const updatePreviewBars=setInterval(()=>{
-      if(!previewAudio||previewAudio.paused){clearInterval(updatePreviewBars);return;}
-      const pct=previewAudio.currentTime/(previewAudio.duration||1);
+    updateInterval=setInterval(()=>{
+      if(!previewAudio)return;
+      const dur=previewAudio.duration||1;
+      const pct=previewAudio.currentTime/dur;
       const played=Math.floor(pct*40);
       document.querySelectorAll('.rec-bar').forEach((bar,i)=>{
         bar.style.height=i<played?'20px':'8px';
@@ -692,67 +696,44 @@ function playPreview(){
       const s=Math.floor(previewAudio.currentTime);
       document.getElementById('rec-timer').textContent=`${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
     },100);
+
     previewAudio.onended=()=>{
-      clearInterval(updatePreviewBars);
-      recState='paused';
-      btn.textContent='🔴';
+      clearInterval(updateInterval);
+      recState='preview_paused';
+      btn.textContent='▶';
+      // Reset les barres
+      document.querySelectorAll('.rec-bar').forEach(bar=>{
+        bar.style.height='8px';
+        bar.style.background='rgba(255,255,255,.3)';
+      });
+      // Reset timer
+      const s=Math.floor(previewAudio?.duration||0);
+      document.getElementById('rec-timer').textContent=`${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
     };
-  }).catch(()=>{recState='paused';btn.textContent='🔴';});
-}
-
-function stopPreview(){
-  if(previewAudio){previewAudio.pause();previewAudio.onended=null;previewAudio=null;}
-}
-
-// ── Reprendre l'enregistrement après pause ──
-async function resumeRecording(){
-  try{
-    recordingStream=await navigator.mediaDevices.getUserMedia({audio:true});
-    const mimeType=MediaRecorder.isTypeSupported('audio/mp4')?'audio/mp4':
-                   MediaRecorder.isTypeSupported('audio/webm')?'audio/webm':'';
-    const newRecorder=mimeType?new MediaRecorder(recordingStream,{mimeType}):new MediaRecorder(recordingStream);
-    const newChunks=[];
-
-    newRecorder.ondataavailable=e=>{if(e.data.size>0)newChunks.push(e.data);};
-    newRecorder.onstop=()=>{
-      recordingStream.getTracks().forEach(t=>t.stop());
-      // Fusionner ancien blob + nouveaux chunks
-      const finalType=newRecorder.mimeType||'audio/webm';
-      const finalExt=finalType.includes('mp4')?'mp4':'webm';
-      const newBlob=new Blob(newChunks,{type:finalType});
-      // Combiner les deux blobs
-      const combined=new Blob([pendingBlob,newBlob],{type:finalType});
-      combined._ext=finalExt;
-      combined._type=finalType;
-      pendingBlob=combined;
-      if(pendingBlobUrl)URL.revokeObjectURL(pendingBlobUrl);
-      pendingBlobUrl=URL.createObjectURL(pendingBlob);
-    };
-
-    newRecorder.start(100);
-    mediaRecorder=newRecorder;
-    recState='recording';
-    document.getElementById('rec-pause-btn').textContent='⏸';
-    // Reprendre l'animation
-  }catch(e){console.error(e);}
+  }).catch(()=>{
+    clearInterval(updateInterval);
+    recState='preview_paused';
+    btn.textContent='▶';
+  });
 }
 
 // ── Seek dans le preview ──
 function seekPreview(e){
-  if(recState!=='previewing'||!previewAudio||!previewAudio.duration)return;
+  if(!previewAudio||!previewAudio.duration)return;
+  if(recState!=='preview_playing'&&recState!=='preview_paused')return;
   const rect=e.currentTarget.getBoundingClientRect();
   previewAudio.currentTime=((e.clientX-rect.left)/rect.width)*previewAudio.duration;
 }
 
 function hideRecordingBar(){
-  stopPreview();
+  if(previewAudio){previewAudio.pause();previewAudio.onended=null;previewAudio=null;}
+  clearInterval(recTimerInterval);
+  clearInterval(recWaveInterval);
   document.getElementById('vocal-recording-bar').classList.remove('active');
   document.getElementById('vocal-recording-actions').classList.remove('active');
   document.getElementById('input-row').style.display='flex';
   document.getElementById('rec-timer').textContent='0:00';
   document.getElementById('rec-pause-btn').textContent='⏸';
-  clearInterval(recTimerInterval);
-  clearInterval(recWaveInterval);
   document.getElementById('vocal-btn').classList.remove('recording');
   recState='idle';
   if(pendingBlobUrl){URL.revokeObjectURL(pendingBlobUrl);pendingBlobUrl=null;}
@@ -760,30 +741,30 @@ function hideRecordingBar(){
 
 // ── Envoyer — indépendant de l'état ──
 async function sendRecording(){
-  // Arrêter si en cours
-  stopPreview();
-  if(mediaRecorder&&mediaRecorder.state!=='inactive'){
+  if(previewAudio){previewAudio.pause();previewAudio.onended=null;previewAudio=null;}
+
+  // Si encore en enregistrement → arrêter proprement
+  if(recState==='recording'&&mediaRecorder&&mediaRecorder.state!=='inactive'){
+    clearInterval(recTimerInterval);
+    clearInterval(recWaveInterval);
     await new Promise(resolve=>{
       const orig=mediaRecorder.onstop;
       mediaRecorder.onstop=(...args)=>{orig?.(...args);resolve();};
       mediaRecorder.stop();
       recordingStream?.getTracks().forEach(t=>t.stop());
     });
+    await new Promise(r=>setTimeout(r,150));
   }
-  // Attendre un peu pour que onstop soit appelé
-  await new Promise(r=>setTimeout(r,150));
 
   hideRecordingBar();
   if(!pendingBlob||pendingBlob.size<500)return;
-  const blob=pendingBlob;
-  pendingBlob=null;
+  const blob=pendingBlob;pendingBlob=null;
   const file=new File([blob],`vocal_${Date.now()}.${blob._ext}`,{type:blob._type});
   await uploadAndSend(file,true);
 }
 
 // ── Annuler ──
 function cancelRecording(){
-  stopPreview();
   if(mediaRecorder&&mediaRecorder.state!=='inactive'){
     mediaRecorder.onstop=()=>{};
     mediaRecorder.stop();
@@ -792,7 +773,6 @@ function cancelRecording(){
   pendingBlob=null;
   hideRecordingBar();
 }
-
 // ── Typing ──
 function onTyping(text){
   if(!text){ws?.send(JSON.stringify({action:'typing',to:friend.id,is_typing:false}));isTypingSent=false;clearTimeout(typingTimer);return;}

@@ -64,6 +64,7 @@ body{display:flex;justify-content:center;background:#000;}
 }
 .bubble.me{background:linear-gradient(135deg,#e8547a,#c73b8a);color:white;border-bottom-right-radius:6px;}
 .bubble.them{background:rgba(255,255,255,.12);backdrop-filter:blur(10px);color:white;border-bottom-left-radius:6px;border:1px solid rgba(255,255,255,.08);}
+.bubble.sticker-bubble{background:transparent !important;border:none !important;backdrop-filter:none !important;padding:4px !important;box-shadow:none !important;}
 .bubble-time{font-size:10px;margin-top:4px;opacity:.5;text-align:right;color:white;}
 .seen-label{text-align:right;font-size:10px;color:rgba(255,255,255,.4);margin-top:2px;padding-right:4px;}
 
@@ -108,12 +109,7 @@ body{display:flex;justify-content:center;background:#000;}
   border-radius:40px;margin:8px 12px;
 }
 .vocal-recording-bar.active{display:flex;}
-.rec-pause-btn{
-  width:38px;height:38px;border-radius:50%;
-  background:white;border:none;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;font-size:16px;color:#e8547a;font-weight:700;
-}
+.rec-pause-btn{width:38px;height:38px;border-radius:50%;background:white;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;color:#e8547a;font-weight:700;}
 .rec-waveform{flex:1;height:36px;display:flex;align-items:center;gap:2px;overflow:hidden;cursor:pointer;}
 .rec-bar{width:3px;border-radius:2px;background:rgba(255,255,255,.6);min-height:4px;transition:height .1s;flex-shrink:0;}
 .rec-timer-text{font-size:14px;font-weight:700;color:white;flex-shrink:0;min-width:36px;text-align:right;}
@@ -128,11 +124,50 @@ body{display:flex;justify-content:center;background:#000;}
 .rec-send-btn{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#e8547a,#c73b8a);border:none;cursor:pointer;color:white;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(232,84,122,.4);}
 .rec-send-btn svg{width:22px;height:22px;}
 
+/* ── Panel stickers ── */
+.sticker-panel{
+  display:none;flex-direction:column;
+  background:rgba(10,0,20,.97);
+  backdrop-filter:blur(20px);
+  border-top:1px solid rgba(255,255,255,.08);
+  flex-shrink:0;position:relative;z-index:10;
+  height:220px;
+}
+.sticker-panel.active{display:flex;}
+.sticker-header{
+  padding:10px 14px 6px;
+  font-size:12px;font-weight:600;
+  color:rgba(255,255,255,.5);
+  letter-spacing:.5px;
+  flex-shrink:0;
+}
+.sticker-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:8px;padding:8px 12px 12px;
+  overflow-y:auto;flex:1;
+}
+.sticker-grid::-webkit-scrollbar{width:2px;}
+.sticker-grid::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);}
+.sticker-item{
+  aspect-ratio:1;border-radius:12px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.05);
+  transition:.15s;padding:6px;
+}
+.sticker-item:active{transform:scale(.92);background:rgba(255,255,255,.15);}
+.sticker-item img{width:100%;height:100%;object-fit:contain;}
+.sticker-loading{
+  flex:1;display:flex;align-items:center;justify-content:center;
+  color:rgba(255,255,255,.3);font-size:13px;
+}
+
 .input-row{padding:10px 12px;display:flex;align-items:center;gap:8px;background:rgba(0,0,0,.5);backdrop-filter:blur(20px);border-top:1px solid rgba(255,255,255,.06);flex-shrink:0;position:relative;z-index:10;}
 .media-btn{background:none;border:none;color:rgba(255,255,255,.5);cursor:pointer;padding:6px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .media-btn:active{background:rgba(255,255,255,.1);}
 .media-btn svg{width:22px;height:22px;}
 .media-btn.recording{color:#e8547a;}
+.media-btn.active-sticker{color:#e8547a;}
 .input-wrap{flex:1;display:flex;align-items:center;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:22px;padding:0 14px;min-width:0;}
 .msg-input{flex:1;background:none;border:none;outline:none;font-size:15px;color:white;padding:10px 0;}
 .msg-input::placeholder{color:rgba(255,255,255,.35);}
@@ -192,7 +227,25 @@ body{display:flex;justify-content:center;background:#000;}
     </button>
   </div>
 
+  <!-- Panel stickers -->
+  <div class="sticker-panel" id="sticker-panel">
+    <div class="sticker-header">STICKERS</div>
+    <div class="sticker-grid" id="sticker-grid">
+      <div class="sticker-loading">Chargement...</div>
+    </div>
+  </div>
+
   <div class="input-row" id="input-row">
+    <!-- Sticker -->
+    <button class="media-btn" id="sticker-btn" onclick="toggleStickerPanel()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M8 13s1.5 2 4 2 4-2 4-2"/>
+        <line x1="9" y1="9" x2="9.01" y2="9" stroke-width="3"/>
+        <line x1="15" y1="9" x2="15.01" y2="9" stroke-width="3"/>
+      </svg>
+    </button>
+    <!-- Image/Vidéo -->
     <button class="media-btn" onclick="pickMedia()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <rect x="3" y="3" width="18" height="18" rx="2"/>
@@ -200,6 +253,7 @@ body{display:flex;justify-content:center;background:#000;}
         <polyline points="21 15 16 10 5 21"/>
       </svg>
     </button>
+    <!-- Vocal -->
     <button class="media-btn" id="vocal-btn"
       onmousedown="startRecording()"
       onmouseup="onMicRelease()"
@@ -274,8 +328,7 @@ function connectWS(){
       messages=(data.messages||[]).map(m=>({
         from:String(m.from!==undefined?m.from:m.from_user),
         text:m.text||'',media_url:m.media_url||null,media_type:m.media_type||null,
-        is_vocal:m.is_vocal||false,time:m.time,msg_id:m.msg_id,
-        edited:m.edited||false,
+        is_vocal:m.is_vocal||false,time:m.time,msg_id:m.msg_id,edited:m.edited||false,
         reply_to_id:m.reply_to_id||null,reply_to_text:m.reply_to_text||null,
         reply_to_type:m.reply_to_type||null,reply_to_from:m.reply_to_from||null,
       }));
@@ -285,8 +338,7 @@ function connectWS(){
       messages.push({
         from:String(data.from),text:data.text||'',
         media_url:data.media_url||null,media_type:data.media_type||null,
-        is_vocal:data.is_vocal||false,time:data.time,msg_id:data.msg_id,
-        edited:false,
+        is_vocal:data.is_vocal||false,time:data.time,msg_id:data.msg_id,edited:false,
         reply_to_id:data.reply_to_id||null,reply_to_text:data.reply_to_text||null,
         reply_to_type:data.reply_to_type||null,reply_to_from:data.reply_to_from||null,
       });
@@ -318,17 +370,19 @@ function renderMessages(){
   area.innerHTML=messages.map((m,i)=>{
     const isMe=String(m.from)===String(me.id);
     const showSeen=isMe&&i===lastMineIdx&&seen;
+    const isSticker=m.media_type==='sticker';
     const replyHTML=m.reply_to_id?buildReplyPreview(m):'';
     const content=buildContent(m,isMe);
     return `
       <div class="bubble-wrapper ${isMe?'me':'them'}">
-        <div class="bubble ${isMe?'me':'them'}" id="msg_${m.msg_id}"
+        <div class="bubble ${isMe?'me':'them'}${isSticker?' sticker-bubble':''}" id="msg_${m.msg_id}"
           oncontextmenu="openMenu(event,${i})"
           ontouchstart="touchStart(event,${i})"
           ontouchend="touchEnd()">
           ${replyHTML}${content}
-          <div class="bubble-time">${m.time||''}${m.edited?'&nbsp;·&nbsp;<span style="opacity:.6;font-size:9px;">modifié</span>':''}</div>
+          ${!isSticker?`<div class="bubble-time">${m.time||''}${m.edited?'&nbsp;·&nbsp;<span style="opacity:.6;font-size:9px;">modifié</span>':''}</div>`:''}
         </div>
+        ${isSticker?`<div style="font-size:10px;color:rgba(255,255,255,.3);margin-top:2px;${isMe?'text-align:right;':'text-align:left;'}">${m.time||''}</div>`:''}
         ${showSeen?'<div class="seen-label">Vu</div>':''}
       </div>`;
   }).join('');
@@ -346,6 +400,13 @@ function renderMessages(){
 }
 
 function buildContent(m,isMe){
+  // ── Sticker ──
+  if(m.media_type==='sticker'){
+    return `<img src="${m.media_url}" alt="sticker"
+      style="width:120px;height:120px;object-fit:contain;display:block;"
+      loading="lazy"/>`;
+  }
+  // ── Audio ──
   if(m.media_type==='audio'){
     const uid=m.msg_id||Date.now();
     const uidStr=uid.toString();
@@ -363,6 +424,7 @@ function buildContent(m,isMe){
         <span class="vocal-duration" id="dur_${uid}">0:00</span>
       </div>`;
   }
+  // ── Image ──
   if(m.media_type==='image'){
     const mJson=encodeURIComponent(JSON.stringify(m));
     return `<div class="media-card" onclick="openViewerEncoded('${mJson}')">
@@ -370,6 +432,7 @@ function buildContent(m,isMe){
       <div class="media-info"><div class="media-title">Photo</div><div class="media-sub">Appuie pour voir</div></div>
       <div class="media-arrow">›</div></div>`;
   }
+  // ── Vidéo ──
   if(m.media_type==='video'){
     const mJson=encodeURIComponent(JSON.stringify(m));
     return `<div class="media-card" onclick="openViewerEncoded('${mJson}')">
@@ -377,10 +440,11 @@ function buildContent(m,isMe){
       <div class="media-info"><div class="media-title">Vidéo</div><div class="media-sub">Appuie pour regarder</div></div>
       <div class="media-arrow">›</div></div>`;
   }
+  // ── Texte ──
   return `<span>${m.text}</span>`;
 }
 
-// ── Audio ──
+// ── Audio controls ──
 function toggleVocal(uid){
   const audio=document.getElementById('audio_'+uid);
   const btn=audio?.previousElementSibling;
@@ -433,6 +497,7 @@ function buildReplyPreview(m){
     if(m.reply_to_type==='image')txt='📷 Photo';
     else if(m.reply_to_type==='video')txt='🎥 Vidéo';
     else if(m.reply_to_type==='audio')txt='🎵 Vocal';
+    else if(m.reply_to_type==='sticker')txt='🎭 Sticker';
   }
   return `<div class="reply-preview" onclick="scrollToMessage('${m.reply_to_id}',event)">
     <div class="reply-preview-name">${fromName}</div>
@@ -459,42 +524,95 @@ function cancelReply(){
 }
 
 // ════════════════════════════════════════════
+// STICKERS — chargés depuis le backend
+// ════════════════════════════════════════════
+async function loadStickers(){
+  try{
+    const res=await fetch(`${API}/stickers`);
+    const data=await res.json();
+    const grid=document.getElementById('sticker-grid');
+    if(!data.stickers||!data.stickers.length){
+      grid.innerHTML='<div class="sticker-loading">Aucun sticker</div>';
+      return;
+    }
+    grid.innerHTML=data.stickers.map(url=>`
+      <div class="sticker-item" onclick="sendSticker('${url}')">
+        <img src="${url}" alt="sticker" loading="lazy"/>
+      </div>
+    `).join('');
+  }catch(e){
+    document.getElementById('sticker-grid').innerHTML='<div class="sticker-loading">Erreur de chargement</div>';
+  }
+}
+
+function toggleStickerPanel(){
+  const panel=document.getElementById('sticker-panel');
+  const btn=document.getElementById('sticker-btn');
+  const isOpen=panel.classList.toggle('active');
+  btn.classList.toggle('active-sticker',isOpen);
+  if(isOpen){
+    document.getElementById('msg-input').blur();
+  }
+}
+
+// Fermer panel si on tape
+document.getElementById('msg-input').addEventListener('focus',()=>{
+  document.getElementById('sticker-panel').classList.remove('active');
+  document.getElementById('sticker-btn').classList.remove('active-sticker');
+});
+
+function sendSticker(url){
+  document.getElementById('sticker-panel').classList.remove('active');
+  document.getElementById('sticker-btn').classList.remove('active-sticker');
+
+  const now=new Date(),time=now.getHours()+':'+String(now.getMinutes()).padStart(2,'0');
+  const msgId=`${me.id}_${Date.now()}`;
+
+  messages.push({
+    from:String(me.id),text:'',
+    media_url:url,media_type:'sticker',
+    is_vocal:false,edited:false,time,msg_id:msgId,
+    reply_to_id:replyingTo?.msg_id||null,
+    reply_to_text:replyingTo?.text||null,
+    reply_to_type:replyingTo?.media_type||null,
+    reply_to_from:replyingTo?.from||null,
+  });
+  seen=false;renderMessages();
+
+  ws?.send(JSON.stringify({
+    action:'send_message',to:friend.id,
+    text:'',media_url:url,media_type:'sticker',
+    reply_to_id:replyingTo?.msg_id||null,
+    reply_to_text:replyingTo?.text||null,
+    reply_to_type:replyingTo?.media_type||null,
+    reply_to_from:replyingTo?.from||null,
+  }));
+  cancelReply();
+}
+
+// ════════════════════════════════════════════
 // MODIFIER UN MESSAGE
 // ════════════════════════════════════════════
-function startEdit(msgId, currentText){
+function startEdit(msgId,currentText){
   editingMsgId=msgId;
   const input=document.getElementById('msg-input');
-  input.value=currentText;
-  input.focus();
-
-  // Barre du haut → mode édition
+  input.value=currentText;input.focus();
   document.getElementById('reply-bar-icon').textContent='✏️';
   document.getElementById('reply-bar-name').textContent='Modifier le message';
   document.getElementById('reply-bar-text').textContent=currentText;
   document.getElementById('reply-bar').classList.add('active');
   document.getElementById('reply-bar-cancel-btn').onclick=cancelEdit;
-
-  // Bouton envoyer → orange = mode édition
-  const sendBtn=document.getElementById('send-btn');
-  sendBtn.style.color='#f39c12';
+  document.getElementById('send-btn').style.color='#f39c12';
 }
 
 function confirmEdit(){
   const input=document.getElementById('msg-input');
   const newText=input.value.trim();
   if(!newText||!editingMsgId)return;
-
   const m=messages.find(m=>m.msg_id===editingMsgId);
   if(m){m.text=newText;m.edited=true;}
   renderMessages();
-
-  ws?.send(JSON.stringify({
-    action:'edit_message',
-    to:friend.id,
-    msg_id:editingMsgId,
-    text:newText
-  }));
-
+  ws?.send(JSON.stringify({action:'edit_message',to:friend.id,msg_id:editingMsgId,text:newText}));
   cancelEdit();
 }
 
@@ -504,8 +622,7 @@ function cancelEdit(){
   document.getElementById('reply-bar').classList.remove('active');
   document.getElementById('reply-bar-icon').textContent='↩';
   document.getElementById('reply-bar-cancel-btn').onclick=cancelReply;
-  const sendBtn=document.getElementById('send-btn');
-  sendBtn.style.color='#e8547a';
+  document.getElementById('send-btn').style.color='#e8547a';
 }
 
 // ── Menu contextuel ──
@@ -524,7 +641,6 @@ function openMenu(event,idx){
     background:#1a1a2e;border:1px solid rgba(255,255,255,.1);border-radius:16px;
     box-shadow:0 8px 32px rgba(0,0,0,.5);display:flex;flex-direction:column;overflow:hidden;z-index:200;min-width:200px;`;
 
-  // ── Répondre ──
   const replyBtn=document.createElement('button');
   replyBtn.innerHTML='↩&nbsp;&nbsp;Répondre';
   replyBtn.style.cssText='padding:14px 20px;border:none;background:none;font-size:15px;cursor:pointer;text-align:left;color:white;border-bottom:1px solid rgba(255,255,255,.08);';
@@ -533,7 +649,12 @@ function openMenu(event,idx){
     replyingTo={msg_id:m.msg_id,from:m.from,text:m.text,media_type:m.media_type};
     const fromName=m.from===String(me.id)?'Toi':friend.prenom;
     let txt=m.text||'';
-    if(!txt){if(m.media_type==='image')txt='📷 Photo';else if(m.media_type==='video')txt='🎥 Vidéo';else if(m.media_type==='audio')txt='🎵 Vocal';}
+    if(!txt){
+      if(m.media_type==='image')txt='📷 Photo';
+      else if(m.media_type==='video')txt='🎥 Vidéo';
+      else if(m.media_type==='audio')txt='🎵 Vocal';
+      else if(m.media_type==='sticker')txt='🎭 Sticker';
+    }
     document.getElementById('reply-bar-icon').textContent='↩';
     document.getElementById('reply-bar-name').textContent=fromName;
     document.getElementById('reply-bar-text').textContent=txt;
@@ -544,7 +665,6 @@ function openMenu(event,idx){
   menu.appendChild(replyBtn);
 
   if(isMe){
-    // ── Modifier (seulement messages texte) ──
     if(!m.media_url){
       const editBtn=document.createElement('button');
       editBtn.innerHTML='✏️&nbsp;&nbsp;Modifier';
@@ -552,8 +672,6 @@ function openMenu(event,idx){
       editBtn.onclick=()=>{menu.remove();startEdit(m.msg_id,m.text);};
       menu.appendChild(editBtn);
     }
-
-    // ── Supprimer ──
     const deleteBtn=document.createElement('button');
     deleteBtn.innerHTML='🗑&nbsp;&nbsp;Supprimer';
     deleteBtn.style.cssText='padding:14px 20px;border:none;background:none;font-size:15px;cursor:pointer;text-align:left;color:#e74c3c;border-bottom:1px solid rgba(255,255,255,.08);';
@@ -576,18 +694,16 @@ function deleteMessage(msgId){
 }
 
 // ════════════════════════════════════════════
-// ENVOYER TEXTE — gère aussi la confirmation d'édition
+// ENVOYER TEXTE
 // ════════════════════════════════════════════
 function sendMessage(){
-  // Si on est en mode édition → confirmer l'édition
   if(editingMsgId){confirmEdit();return;}
-
   const input=document.getElementById('msg-input');
   const text=input.value.trim();if(!text)return;
   const now=new Date(),time=now.getHours()+':'+String(now.getMinutes()).padStart(2,'0');
   const msgId=`${me.id}_${Date.now()}`;
-  messages.push({from:String(me.id),text,media_url:null,media_type:null,is_vocal:false,
-    edited:false,time,msg_id:msgId,
+  messages.push({from:String(me.id),text,media_url:null,media_type:null,
+    is_vocal:false,edited:false,time,msg_id:msgId,
     reply_to_id:replyingTo?.msg_id||null,reply_to_text:replyingTo?.text||null,
     reply_to_type:replyingTo?.media_type||null,reply_to_from:replyingTo?.from||null});
   seen=false;renderMessages();input.value='';
@@ -705,37 +821,26 @@ function onMicRelease(){}
 function togglePausePlay(){
   const btn=document.getElementById('rec-pause-btn');
   if(recState==='recording'){
-    clearInterval(recTimerInterval);
-    clearInterval(recWaveInterval);
+    clearInterval(recTimerInterval);clearInterval(recWaveInterval);
     document.getElementById('vocal-btn').classList.remove('recording');
-    mediaRecorder.stop();
-    btn.textContent='⏳';
+    mediaRecorder.stop();btn.textContent='⏳';
   } else if(recState==='preview_playing'){
-    previewAudio?.pause();
-    recState='preview_paused';
-    btn.textContent='▶';
+    previewAudio?.pause();recState='preview_paused';btn.textContent='▶';
   } else if(recState==='preview_paused'){
-    previewAudio?.play();
-    recState='preview_playing';
-    btn.textContent='⏸';
+    previewAudio?.play();recState='preview_playing';btn.textContent='⏸';
   }
 }
 
 function startPreview(){
   if(!pendingBlobUrl)return;
   const btn=document.getElementById('rec-pause-btn');
-  recState='preview_playing';
-  btn.textContent='⏸';
-
+  recState='preview_playing';btn.textContent='⏸';
   if(previewAudio){previewAudio.pause();previewAudio=null;}
   previewAudio=new Audio(pendingBlobUrl);
-
-  // Fix barres waveform — interval global
   if(window._previewInterval)clearInterval(window._previewInterval);
-
   previewAudio.play().then(()=>{
     window._previewInterval=setInterval(()=>{
-      if(!previewAudio||previewAudio.paused){return;}
+      if(!previewAudio||previewAudio.paused)return;
       const dur=previewAudio.duration||1;
       const pct=previewAudio.currentTime/dur;
       const played=Math.floor(pct*40);
@@ -746,23 +851,14 @@ function startPreview(){
       const s=Math.floor(previewAudio.currentTime);
       document.getElementById('rec-timer').textContent=`${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
     },100);
-
     previewAudio.onended=()=>{
       clearInterval(window._previewInterval);
-      recState='preview_paused';
-      btn.textContent='▶';
-      document.querySelectorAll('.rec-bar').forEach(bar=>{
-        bar.style.height='8px';
-        bar.style.background='rgba(255,255,255,.3)';
-      });
+      recState='preview_paused';btn.textContent='▶';
+      document.querySelectorAll('.rec-bar').forEach(bar=>{bar.style.height='8px';bar.style.background='rgba(255,255,255,.3)';});
       const s=Math.floor(previewAudio?.duration||0);
       document.getElementById('rec-timer').textContent=`${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
     };
-  }).catch(()=>{
-    clearInterval(window._previewInterval);
-    recState='preview_paused';
-    btn.textContent='▶';
-  });
+  }).catch(()=>{clearInterval(window._previewInterval);recState='preview_paused';btn.textContent='▶';});
 }
 
 function seekPreview(e){
@@ -775,8 +871,7 @@ function seekPreview(e){
 function hideRecordingBar(){
   clearInterval(window._previewInterval);
   if(previewAudio){previewAudio.pause();previewAudio.onended=null;previewAudio=null;}
-  clearInterval(recTimerInterval);
-  clearInterval(recWaveInterval);
+  clearInterval(recTimerInterval);clearInterval(recWaveInterval);
   document.getElementById('vocal-recording-bar').classList.remove('active');
   document.getElementById('vocal-recording-actions').classList.remove('active');
   document.getElementById('input-row').style.display='flex';
@@ -791,13 +886,11 @@ async function sendRecording(){
   clearInterval(window._previewInterval);
   if(previewAudio){previewAudio.pause();previewAudio.onended=null;previewAudio=null;}
   if(recState==='recording'&&mediaRecorder&&mediaRecorder.state!=='inactive'){
-    clearInterval(recTimerInterval);
-    clearInterval(recWaveInterval);
+    clearInterval(recTimerInterval);clearInterval(recWaveInterval);
     await new Promise(resolve=>{
       const orig=mediaRecorder.onstop;
       mediaRecorder.onstop=(...args)=>{orig?.(...args);resolve();};
-      mediaRecorder.stop();
-      recordingStream?.getTracks().forEach(t=>t.stop());
+      mediaRecorder.stop();recordingStream?.getTracks().forEach(t=>t.stop());
     });
     await new Promise(r=>setTimeout(r,150));
   }
@@ -812,16 +905,14 @@ function cancelRecording(){
   clearInterval(window._previewInterval);
   if(mediaRecorder&&mediaRecorder.state!=='inactive'){
     mediaRecorder.onstop=()=>{};
-    mediaRecorder.stop();
-    recordingStream?.getTracks().forEach(t=>t.stop());
+    mediaRecorder.stop();recordingStream?.getTracks().forEach(t=>t.stop());
   }
-  pendingBlob=null;
-  hideRecordingBar();
+  pendingBlob=null;hideRecordingBar();
 }
 
 // ── Typing ──
 function onTyping(text){
-  if(editingMsgId)return; // pas de typing indicator en mode édition
+  if(editingMsgId)return;
   if(!text){ws?.send(JSON.stringify({action:'typing',to:friend.id,is_typing:false}));isTypingSent=false;clearTimeout(typingTimer);return;}
   if(!isTypingSent){ws?.send(JSON.stringify({action:'typing',to:friend.id,is_typing:true}));isTypingSent=true;}
   clearTimeout(typingTimer);
@@ -837,7 +928,9 @@ function showTyping(isTyping){
 }
 function onKey(e){if(e.key==='Enter')sendMessage();}
 
+// ── Démarrage ──
 connectWS();
+loadStickers();
 </script>
 </body>
 </html>

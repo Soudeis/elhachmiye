@@ -22,34 +22,16 @@ body{display:flex;justify-content:center;background:#000;}
   background:linear-gradient(180deg,#1a0a0f 0%,#0d0010 40%,#1a0005 70%,#0a0015 100%);
   position:relative;overflow:hidden;
 }
-.shell::before{
-  content:'';position:absolute;inset:0;
-  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(180,50,80,.03) 2px,rgba(180,50,80,.03) 4px);
-  pointer-events:none;z-index:0;
-}
-.shell::after{
-  content:'';position:absolute;width:300px;height:300px;
-  background:radial-gradient(circle,rgba(220,80,120,.15) 0%,transparent 70%);
-  top:30%;left:50%;transform:translateX(-50%);
-  pointer-events:none;z-index:0;
-}
+.shell::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(180,50,80,.03) 2px,rgba(180,50,80,.03) 4px);pointer-events:none;z-index:0;}
+.shell::after{content:'';position:absolute;width:300px;height:300px;background:radial-gradient(circle,rgba(220,80,120,.15) 0%,transparent 70%);top:30%;left:50%;transform:translateX(-50%);pointer-events:none;z-index:0;}
 
-.topbar{
-  position:relative;z-index:10;
-  padding:14px 16px;display:flex;align-items:center;gap:10px;
-  background:rgba(0,0,0,.4);backdrop-filter:blur(20px);
-  border-bottom:1px solid rgba(255,255,255,.08);flex-shrink:0;
-}
+.topbar{position:relative;z-index:10;padding:14px 16px;display:flex;align-items:center;gap:10px;background:rgba(0,0,0,.4);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.08);flex-shrink:0;}
 .back{cursor:pointer;font-size:20px;background:none;border:none;color:white;padding:4px 8px 4px 0;}
 .topbar-info{flex:1;min-width:0;}
 .topbar-info h2{margin:0;font-size:15px;font-weight:600;color:white;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .topbar-sub{font-size:11px;color:rgba(255,255,255,.5);}
 
-.messages-area{
-  flex:1;overflow-y:auto;padding:12px 14px;
-  display:flex;flex-direction:column;gap:4px;
-  background:transparent;position:relative;z-index:1;
-}
+.messages-area{flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:4px;background:transparent;position:relative;z-index:1;}
 .messages-area::-webkit-scrollbar{width:2px;}
 .messages-area::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:2px;}
 
@@ -57,11 +39,7 @@ body{display:flex;justify-content:center;background:#000;}
 .bubble-wrapper.me{align-items:flex-end;}
 .bubble-wrapper.them{align-items:flex-start;}
 
-.bubble{
-  max-width:78%;padding:10px 14px;
-  border-radius:22px;font-size:15px;line-height:1.45;
-  word-break:break-word;cursor:pointer;user-select:none;
-}
+.bubble{max-width:78%;padding:10px 14px;border-radius:22px;font-size:15px;line-height:1.45;word-break:break-word;cursor:pointer;user-select:none;}
 .bubble.me{background:linear-gradient(135deg,#e8547a,#c73b8a);color:white;border-bottom-right-radius:6px;}
 .bubble.them{background:rgba(255,255,255,.12);backdrop-filter:blur(10px);color:white;border-bottom-left-radius:6px;border:1px solid rgba(255,255,255,.08);}
 .bubble.sticker-bubble{background:transparent !important;border:none !important;backdrop-filter:none !important;padding:4px !important;box-shadow:none !important;}
@@ -72,6 +50,7 @@ body{display:flex;justify-content:center;background:#000;}
 .reply-preview-name{font-weight:700;font-size:10px;margin-bottom:1px;opacity:.8;}
 .reply-preview-text{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:.7;}
 
+/* ── Vocal player ── */
 .vocal-player{display:flex;align-items:center;gap:10px;min-width:200px;max-width:260px;padding:2px 0;}
 .vocal-play-btn{width:36px;height:36px;border-radius:50%;border:none;background:rgba(255,255,255,.25);color:white;font-size:13px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:.15s;}
 .vocal-play-btn:active{transform:scale(.92);}
@@ -81,19 +60,32 @@ body{display:flex;justify-content:center;background:#000;}
 .vocal-bar.active{background:white;}
 .vocal-duration{font-size:11px;opacity:.7;flex-shrink:0;min-width:32px;text-align:right;}
 
-.media-card{display:flex;align-items:center;gap:10px;padding:4px 0;cursor:pointer;min-width:160px;}
-.media-icon{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
-.media-info{flex:1;}
-.media-title{font-size:13px;font-weight:600;color:white;}
-.media-sub{font-size:11px;color:rgba(255,255,255,.55);}
-.media-arrow{font-size:16px;color:rgba(255,255,255,.4);}
+/* ── Media card — style bouton rose comme l'image ── */
+.media-card-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:10px 18px;border-radius:50px;cursor:pointer;
+  transition:.15s;user-select:none;
+}
+.media-card-btn.me{background:rgba(255,255,255,.25);}
+.media-card-btn.them{background:rgba(255,255,255,.2);}
+.media-card-btn:active{transform:scale(.96);}
+.media-card-play{
+  width:28px;height:28px;border-radius:50%;
+  background:rgba(0,0,0,.25);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.media-card-play svg{width:12px;height:12px;fill:white;margin-left:2px;}
+.media-card-label{font-size:16px;font-weight:700;color:rgba(0,0,0,.6);}
 
+/* ── Typing ── */
 .typing-bubble{display:flex;gap:4px;align-items:center;padding:10px 14px;background:rgba(255,255,255,.12);border-radius:22px;border-bottom-left-radius:6px;align-self:flex-start;}
 .dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.6);animation:bonce .9s infinite;}
 .dot:nth-child(2){animation-delay:.2s;}
 .dot:nth-child(3){animation-delay:.4s;}
 @keyframes bonce{0%,60%,100%{transform:translateY(0);}30%{transform:translateY(-5px);}}
 
+/* ── Reply bar ── */
 .reply-bar{display:none;padding:8px 14px;background:rgba(255,255,255,.06);border-top:1px solid rgba(255,255,255,.08);flex-direction:row;align-items:center;gap:10px;flex-shrink:0;position:relative;z-index:10;}
 .reply-bar.active{display:flex;}
 .reply-bar-content{flex:1;min-width:0;}
@@ -101,67 +93,57 @@ body{display:flex;justify-content:center;background:#000;}
 .reply-bar-text{font-size:11px;color:rgba(255,255,255,.5);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .reply-bar-cancel{background:none;border:none;color:rgba(255,255,255,.4);font-size:20px;cursor:pointer;}
 
-.vocal-recording-bar{
-  display:none;padding:12px 16px;
-  background:linear-gradient(135deg,#e8547a,#c73b8a);
-  flex-direction:row;align-items:center;gap:12px;
-  flex-shrink:0;position:relative;z-index:10;
-  border-radius:40px;margin:8px 12px;
-}
+/* ── Barre enregistrement ── */
+.vocal-recording-bar{display:none;padding:12px 16px;background:linear-gradient(135deg,#e8547a,#c73b8a);flex-direction:row;align-items:center;gap:12px;flex-shrink:0;position:relative;z-index:10;border-radius:40px;margin:8px 12px;}
 .vocal-recording-bar.active{display:flex;}
 .rec-pause-btn{width:38px;height:38px;border-radius:50%;background:white;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;color:#e8547a;font-weight:700;}
 .rec-waveform{flex:1;height:36px;display:flex;align-items:center;gap:2px;overflow:hidden;cursor:pointer;}
 .rec-bar{width:3px;border-radius:2px;background:rgba(255,255,255,.6);min-height:4px;transition:height .1s;flex-shrink:0;}
 .rec-timer-text{font-size:14px;font-weight:700;color:white;flex-shrink:0;min-width:36px;text-align:right;}
 
-.vocal-recording-actions{
-  display:none;padding:0 16px 12px;
-  flex-direction:row;align-items:center;justify-content:space-between;
-  flex-shrink:0;position:relative;z-index:10;
-}
+.vocal-recording-actions{display:none;padding:0 16px 12px;flex-direction:row;align-items:center;justify-content:space-between;flex-shrink:0;position:relative;z-index:10;}
 .vocal-recording-actions.active{display:flex;}
 .rec-delete-btn{width:44px;height:44px;border-radius:50%;background:none;border:none;color:rgba(255,255,255,.6);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:22px;}
 .rec-send-btn{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#e8547a,#c73b8a);border:none;cursor:pointer;color:white;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(232,84,122,.4);}
 .rec-send-btn svg{width:22px;height:22px;}
 
 /* ── Panel stickers ── */
-.sticker-panel{
-  display:none;flex-direction:column;
-  background:rgba(10,0,20,.97);
-  backdrop-filter:blur(20px);
-  border-top:1px solid rgba(255,255,255,.08);
-  flex-shrink:0;position:relative;z-index:10;
-  height:220px;
-}
+.sticker-panel{display:none;flex-direction:column;background:#1a1a1a;border-radius:20px 20px 0 0;border-top:1px solid rgba(255,255,255,.08);flex-shrink:0;position:relative;z-index:10;height:360px;}
 .sticker-panel.active{display:flex;}
-.sticker-header{
-  padding:10px 14px 6px;
-  font-size:12px;font-weight:600;
-  color:rgba(255,255,255,.5);
-  letter-spacing:.5px;
-  flex-shrink:0;
+.sticker-handle{width:36px;height:4px;background:rgba(255,255,255,.2);border-radius:2px;margin:10px auto 0;flex-shrink:0;}
+
+/* Barre recherche */
+.sticker-search-bar{margin:10px 14px 6px;background:rgba(255,255,255,.08);border-radius:12px;display:flex;align-items:center;gap:8px;padding:8px 12px;flex-shrink:0;}
+.sticker-search-bar svg{width:16px;height:16px;color:rgba(255,255,255,.4);flex-shrink:0;}
+.sticker-search-input{background:none;border:none;outline:none;font-size:14px;color:white;flex:1;}
+.sticker-search-input::placeholder{color:rgba(255,255,255,.35);}
+
+/* Catégories horizontales */
+.sticker-categories{display:flex;gap:8px;padding:4px 14px 8px;overflow-x:auto;flex-shrink:0;}
+.sticker-categories::-webkit-scrollbar{display:none;}
+.sticker-cat-btn{
+  display:flex;align-items:center;gap:5px;
+  padding:6px 12px;border-radius:20px;border:none;cursor:pointer;
+  background:rgba(255,255,255,.08);color:rgba(255,255,255,.6);
+  font-size:12px;font-weight:600;white-space:nowrap;flex-shrink:0;
+  transition:.15s;
 }
-.sticker-grid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:8px;padding:8px 12px 12px;
-  overflow-y:auto;flex:1;
-}
+.sticker-cat-btn.active{background:linear-gradient(135deg,#e8547a,#c73b8a);color:white;}
+.sticker-cat-btn:active{transform:scale(.95);}
+
+/* Titre catégorie */
+.sticker-section-title{font-size:11px;font-weight:700;color:rgba(255,255,255,.4);padding:0 14px 6px;letter-spacing:.5px;flex-shrink:0;}
+
+/* Grille */
+.sticker-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:0 12px 12px;overflow-y:auto;flex:1;}
 .sticker-grid::-webkit-scrollbar{width:2px;}
 .sticker-grid::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);}
-.sticker-item{
-  aspect-ratio:1;border-radius:12px;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  background:rgba(255,255,255,.05);
-  transition:.15s;padding:6px;
-}
-.sticker-item:active{transform:scale(.92);background:rgba(255,255,255,.15);}
+.sticker-item{aspect-ratio:1;border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.04);transition:.15s;overflow:hidden;}
+.sticker-item:active{transform:scale(.9);background:rgba(255,255,255,.12);}
 .sticker-item img{width:100%;height:100%;object-fit:contain;}
-.sticker-loading{
-  flex:1;display:flex;align-items:center;justify-content:center;
-  color:rgba(255,255,255,.3);font-size:13px;
-}
+.sticker-loading{grid-column:1/-1;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.3);font-size:13px;padding:20px;}
 
+/* ── Input row ── */
 .input-row{padding:10px 12px;display:flex;align-items:center;gap:8px;background:rgba(0,0,0,.5);backdrop-filter:blur(20px);border-top:1px solid rgba(255,255,255,.06);flex-shrink:0;position:relative;z-index:10;}
 .media-btn{background:none;border:none;color:rgba(255,255,255,.5);cursor:pointer;padding:6px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .media-btn:active{background:rgba(255,255,255,.1);}
@@ -175,10 +157,7 @@ body{display:flex;justify-content:center;background:#000;}
 .send-btn:disabled{opacity:.3;cursor:not-allowed;}
 .send-btn svg{width:24px;height:24px;}
 
-@keyframes highlight{
-  0%{outline:3px solid rgba(232,84,122,.8);background:rgba(232,84,122,.15);}
-  100%{outline:none;background:transparent;}
-}
+@keyframes highlight{0%{outline:3px solid rgba(232,84,122,.8);background:rgba(232,84,122,.15);}100%{outline:none;background:transparent;}}
 .bubble.highlighted{animation:highlight 1.5s ease;}
 
 .upload-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:100;align-items:center;justify-content:center;flex-direction:column;gap:12px;color:white;font-size:15px;}
@@ -227,9 +206,19 @@ body{display:flex;justify-content:center;background:#000;}
     </button>
   </div>
 
-  <!-- Panel stickers -->
+  <!-- Panel stickers GIPHY -->
   <div class="sticker-panel" id="sticker-panel">
-    <div class="sticker-header">STICKERS</div>
+    <div class="sticker-handle"></div>
+    <div class="sticker-search-bar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+      <input class="sticker-search-input" id="sticker-search"
+        placeholder="Rechercher des stickers..."
+        oninput="onStickerSearch(this.value)"/>
+    </div>
+    <div class="sticker-categories" id="sticker-categories"></div>
+    <div class="sticker-section-title" id="sticker-section-title">TENDANCE</div>
     <div class="sticker-grid" id="sticker-grid">
       <div class="sticker-loading">Chargement...</div>
     </div>
@@ -290,8 +279,9 @@ body{display:flex;justify-content:center;background:#000;}
 </div>
 
 <script>
-const API    = "https://didactic-disco-q795wwrqxg45c697p-8000.app.github.dev";
-const WS_URL = "wss://didactic-disco-q795wwrqxg45c697p-8000.app.github.dev/ws";
+const API      = "https://didactic-disco-q795wwrqxg45c697p-8000.app.github.dev";
+const WS_URL   = "wss://didactic-disco-q795wwrqxg45c697p-8000.app.github.dev/ws";
+const GIPHY_KEY = "rO0Vv1XhZjF8umABjU2poD88Ua0Q6C9r";
 
 const me     = JSON.parse(localStorage.getItem('me'));
 const friend = JSON.parse(localStorage.getItem('currentFriend'));
@@ -347,9 +337,7 @@ function connectWS(){
     }
     else if(data.action==='typing'&&String(data.from)===String(friend.id)){showTyping(data.is_typing);}
     else if(data.action==='seen'){seen=true;renderMessages();}
-    else if(data.action==='message_deleted'){
-      messages=messages.filter(m=>m.msg_id!==data.msg_id);renderMessages();
-    }
+    else if(data.action==='message_deleted'){messages=messages.filter(m=>m.msg_id!==data.msg_id);renderMessages();}
     else if(data.action==='message_edited'){
       const m=messages.find(m=>m.msg_id===data.msg_id);
       if(m){m.text=data.text;m.edited=true;renderMessages();}
@@ -400,12 +388,39 @@ function renderMessages(){
 }
 
 function buildContent(m,isMe){
-  // ── Sticker ──
+  // ── Sticker GIPHY ──
   if(m.media_type==='sticker'){
     return `<img src="${m.media_url}" alt="sticker"
-      style="width:120px;height:120px;object-fit:contain;display:block;"
+      style="width:140px;height:140px;object-fit:contain;display:block;"
       loading="lazy"/>`;
   }
+
+  // ── Image — bouton style rose ──
+  if(m.media_type==='image'){
+    const mJson=encodeURIComponent(JSON.stringify(m));
+    const side=isMe?'me':'them';
+    return `
+      <div class="media-card-btn ${side}" onclick="openViewerEncoded('${mJson}')">
+        <div class="media-card-play">
+          <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </div>
+        <span class="media-card-label">Photo</span>
+      </div>`;
+  }
+
+  // ── Vidéo — bouton style rose ──
+  if(m.media_type==='video'){
+    const mJson=encodeURIComponent(JSON.stringify(m));
+    const side=isMe?'me':'them';
+    return `
+      <div class="media-card-btn ${side}" onclick="openViewerEncoded('${mJson}')">
+        <div class="media-card-play">
+          <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </div>
+        <span class="media-card-label">Vidéo</span>
+      </div>`;
+  }
+
   // ── Audio ──
   if(m.media_type==='audio'){
     const uid=m.msg_id||Date.now();
@@ -424,27 +439,12 @@ function buildContent(m,isMe){
         <span class="vocal-duration" id="dur_${uid}">0:00</span>
       </div>`;
   }
-  // ── Image ──
-  if(m.media_type==='image'){
-    const mJson=encodeURIComponent(JSON.stringify(m));
-    return `<div class="media-card" onclick="openViewerEncoded('${mJson}')">
-      <div class="media-icon">🖼️</div>
-      <div class="media-info"><div class="media-title">Photo</div><div class="media-sub">Appuie pour voir</div></div>
-      <div class="media-arrow">›</div></div>`;
-  }
-  // ── Vidéo ──
-  if(m.media_type==='video'){
-    const mJson=encodeURIComponent(JSON.stringify(m));
-    return `<div class="media-card" onclick="openViewerEncoded('${mJson}')">
-      <div class="media-icon">🎥</div>
-      <div class="media-info"><div class="media-title">Vidéo</div><div class="media-sub">Appuie pour regarder</div></div>
-      <div class="media-arrow">›</div></div>`;
-  }
+
   // ── Texte ──
   return `<span>${m.text}</span>`;
 }
 
-// ── Audio controls ──
+// ── Audio ──
 function toggleVocal(uid){
   const audio=document.getElementById('audio_'+uid);
   const btn=audio?.previousElementSibling;
@@ -506,12 +506,10 @@ function buildReplyPreview(m){
 
 function scrollToMessage(msgId,event){
   event.stopPropagation();
-  const el=document.getElementById('msg_'+msgId);
-  if(!el)return;
+  const el=document.getElementById('msg_'+msgId);if(!el)return;
   const area=document.getElementById('messages-area');
   area.scrollTo({top:el.offsetTop-area.clientHeight/2+el.clientHeight/2,behavior:'smooth'});
-  el.classList.remove('highlighted');
-  void el.offsetWidth;
+  el.classList.remove('highlighted');void el.offsetWidth;
   el.classList.add('highlighted');
   setTimeout(()=>el.classList.remove('highlighted'),1500);
 }
@@ -524,25 +522,92 @@ function cancelReply(){
 }
 
 // ════════════════════════════════════════════
-// STICKERS — chargés depuis le backend
+// STICKERS GIPHY
 // ════════════════════════════════════════════
-async function loadStickers(){
+const GIPHY_CATEGORIES = [
+  {label:'⭐ Tendance', query:null,      trending:true},
+  {label:'😂 Fun',      query:'funny',   trending:false},
+  {label:'❤️ Love',     query:'love',    trending:false},
+  {label:'🐱 Animaux',  query:'animals', trending:false},
+  {label:'🎉 Fête',     query:'party',   trending:false},
+  {label:'😢 Triste',   query:'sad',     trending:false},
+  {label:'🔥 Viral',    query:'viral',   trending:false},
+];
+
+let currentCategory=0;
+let searchTimeout=null;
+
+function initStickerCategories(){
+  const container=document.getElementById('sticker-categories');
+  container.innerHTML=GIPHY_CATEGORIES.map((cat,i)=>`
+    <button class="sticker-cat-btn${i===0?' active':''}" onclick="selectCategory(${i})">
+      ${cat.label}
+    </button>
+  `).join('');
+}
+
+function selectCategory(idx){
+  currentCategory=idx;
+  document.querySelectorAll('.sticker-cat-btn').forEach((btn,i)=>{
+    btn.classList.toggle('active',i===idx);
+  });
+  document.getElementById('sticker-search').value='';
+  const cat=GIPHY_CATEGORIES[idx];
+  document.getElementById('sticker-section-title').textContent=cat.label.toUpperCase();
+  loadGiphyStickers(cat);
+}
+
+async function loadGiphyStickers(cat){
+  const grid=document.getElementById('sticker-grid');
+  grid.innerHTML='<div class="sticker-loading">Chargement...</div>';
   try{
-    const res=await fetch(`${API}/stickers`);
-    const data=await res.json();
-    const grid=document.getElementById('sticker-grid');
-    if(!data.stickers||!data.stickers.length){
-      grid.innerHTML='<div class="sticker-loading">Aucun sticker</div>';
-      return;
+    let url;
+    if(cat.trending){
+      url=`https://api.giphy.com/v1/stickers/trending?api_key=${GIPHY_KEY}&limit=24&rating=g`;
+    } else {
+      url=`https://api.giphy.com/v1/stickers/search?api_key=${GIPHY_KEY}&q=${encodeURIComponent(cat.query)}&limit=24&rating=g`;
     }
-    grid.innerHTML=data.stickers.map(url=>`
-      <div class="sticker-item" onclick="sendSticker('${url}')">
-        <img src="${url}" alt="sticker" loading="lazy"/>
-      </div>
-    `).join('');
+    const res=await fetch(url);
+    const data=await res.json();
+    renderGiphyGrid(data.data||[]);
   }catch(e){
-    document.getElementById('sticker-grid').innerHTML='<div class="sticker-loading">Erreur de chargement</div>';
+    grid.innerHTML='<div class="sticker-loading">Erreur de chargement</div>';
   }
+}
+
+async function searchGiphy(q){
+  const grid=document.getElementById('sticker-grid');
+  grid.innerHTML='<div class="sticker-loading">Recherche...</div>';
+  document.getElementById('sticker-section-title').textContent='RÉSULTATS';
+  try{
+    const url=`https://api.giphy.com/v1/stickers/search?api_key=${GIPHY_KEY}&q=${encodeURIComponent(q)}&limit=24&rating=g`;
+    const res=await fetch(url);
+    const data=await res.json();
+    renderGiphyGrid(data.data||[]);
+  }catch(e){
+    grid.innerHTML='<div class="sticker-loading">Erreur</div>';
+  }
+}
+
+function renderGiphyGrid(stickers){
+  const grid=document.getElementById('sticker-grid');
+  if(!stickers.length){
+    grid.innerHTML='<div class="sticker-loading">Aucun résultat</div>';return;
+  }
+  grid.innerHTML=stickers.map(s=>{
+    const url=s.images.fixed_height_small.url||s.images.original.url;
+    return `<div class="sticker-item" onclick="sendSticker('${url}')">
+      <img src="${url}" alt="sticker" loading="lazy"/>
+    </div>`;
+  }).join('');
+}
+
+function onStickerSearch(q){
+  clearTimeout(searchTimeout);
+  if(!q.trim()){
+    selectCategory(currentCategory);return;
+  }
+  searchTimeout=setTimeout(()=>searchGiphy(q),400);
 }
 
 function toggleStickerPanel(){
@@ -552,10 +617,13 @@ function toggleStickerPanel(){
   btn.classList.toggle('active-sticker',isOpen);
   if(isOpen){
     document.getElementById('msg-input').blur();
+    // Charger les tendances au premier ouverture
+    if(document.getElementById('sticker-grid').querySelector('.sticker-loading')){
+      loadGiphyStickers(GIPHY_CATEGORIES[0]);
+    }
   }
 }
 
-// Fermer panel si on tape
 document.getElementById('msg-input').addEventListener('focus',()=>{
   document.getElementById('sticker-panel').classList.remove('active');
   document.getElementById('sticker-btn').classList.remove('active-sticker');
@@ -564,28 +632,19 @@ document.getElementById('msg-input').addEventListener('focus',()=>{
 function sendSticker(url){
   document.getElementById('sticker-panel').classList.remove('active');
   document.getElementById('sticker-btn').classList.remove('active-sticker');
-
   const now=new Date(),time=now.getHours()+':'+String(now.getMinutes()).padStart(2,'0');
   const msgId=`${me.id}_${Date.now()}`;
-
   messages.push({
-    from:String(me.id),text:'',
-    media_url:url,media_type:'sticker',
+    from:String(me.id),text:'',media_url:url,media_type:'sticker',
     is_vocal:false,edited:false,time,msg_id:msgId,
-    reply_to_id:replyingTo?.msg_id||null,
-    reply_to_text:replyingTo?.text||null,
-    reply_to_type:replyingTo?.media_type||null,
-    reply_to_from:replyingTo?.from||null,
+    reply_to_id:replyingTo?.msg_id||null,reply_to_text:replyingTo?.text||null,
+    reply_to_type:replyingTo?.media_type||null,reply_to_from:replyingTo?.from||null,
   });
   seen=false;renderMessages();
-
   ws?.send(JSON.stringify({
-    action:'send_message',to:friend.id,
-    text:'',media_url:url,media_type:'sticker',
-    reply_to_id:replyingTo?.msg_id||null,
-    reply_to_text:replyingTo?.text||null,
-    reply_to_type:replyingTo?.media_type||null,
-    reply_to_from:replyingTo?.from||null,
+    action:'send_message',to:friend.id,text:'',media_url:url,media_type:'sticker',
+    reply_to_id:replyingTo?.msg_id||null,reply_to_text:replyingTo?.text||null,
+    reply_to_type:replyingTo?.media_type||null,reply_to_from:replyingTo?.from||null,
   }));
   cancelReply();
 }
@@ -640,7 +699,6 @@ function openMenu(event,idx){
   menu.style.cssText=`position:fixed;bottom:90px;left:50%;transform:translateX(-50%);
     background:#1a1a2e;border:1px solid rgba(255,255,255,.1);border-radius:16px;
     box-shadow:0 8px 32px rgba(0,0,0,.5);display:flex;flex-direction:column;overflow:hidden;z-index:200;min-width:200px;`;
-
   const replyBtn=document.createElement('button');
   replyBtn.innerHTML='↩&nbsp;&nbsp;Répondre';
   replyBtn.style.cssText='padding:14px 20px;border:none;background:none;font-size:15px;cursor:pointer;text-align:left;color:white;border-bottom:1px solid rgba(255,255,255,.08);';
@@ -663,7 +721,6 @@ function openMenu(event,idx){
     document.getElementById('msg-input').focus();
   };
   menu.appendChild(replyBtn);
-
   if(isMe){
     if(!m.media_url){
       const editBtn=document.createElement('button');
@@ -678,7 +735,6 @@ function openMenu(event,idx){
     deleteBtn.onclick=()=>{menu.remove();deleteMessage(m.msg_id);};
     menu.appendChild(deleteBtn);
   }
-
   const cancelBtn=document.createElement('button');
   cancelBtn.textContent='Annuler';
   cancelBtn.style.cssText='padding:14px 20px;border:none;background:none;font-size:15px;cursor:pointer;color:rgba(255,255,255,.4);';
@@ -782,20 +838,17 @@ async function startRecording(e){
                    MediaRecorder.isTypeSupported('audio/webm')?'audio/webm':'';
     mediaRecorder=mimeType?new MediaRecorder(recordingStream,{mimeType}):new MediaRecorder(recordingStream);
     audioChunks=[];recSeconds=0;pendingBlob=null;pendingBlobUrl=null;
-
     mediaRecorder.ondataavailable=e=>{if(e.data.size>0)audioChunks.push(e.data);};
     mediaRecorder.onstop=()=>{
       recordingStream.getTracks().forEach(t=>t.stop());
       const finalType=mediaRecorder.mimeType||'audio/webm';
       const finalExt=finalType.includes('mp4')?'mp4':'webm';
       pendingBlob=new Blob(audioChunks,{type:finalType});
-      pendingBlob._ext=finalExt;
-      pendingBlob._type=finalType;
+      pendingBlob._ext=finalExt;pendingBlob._type=finalType;
       if(pendingBlobUrl)URL.revokeObjectURL(pendingBlobUrl);
       pendingBlobUrl=URL.createObjectURL(pendingBlob);
       startPreview();
     };
-
     mediaRecorder.start(100);
     recState='recording';
     initRecWaveform();
@@ -803,7 +856,6 @@ async function startRecording(e){
     document.getElementById('vocal-recording-actions').classList.add('active');
     document.getElementById('input-row').style.display='none';
     document.getElementById('rec-pause-btn').textContent='⏸';
-
     recTimerInterval=setInterval(()=>{
       if(recState==='recording'){
         recSeconds++;
@@ -928,9 +980,9 @@ function showTyping(isTyping){
 }
 function onKey(e){if(e.key==='Enter')sendMessage();}
 
-// ── Démarrage ──
+// ── Init ──
+initStickerCategories();
 connectWS();
-loadStickers();
 </script>
 </body>
 </html>

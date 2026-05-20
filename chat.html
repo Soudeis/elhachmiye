@@ -43,24 +43,9 @@ body{display:flex;justify-content:center;background:#000;}
 .bubble.me{background:linear-gradient(135deg,#e8547a,#c73b8a);color:white;border-bottom-right-radius:6px;}
 .bubble.them{background:rgba(255,255,255,.12);backdrop-filter:blur(10px);color:white;border-bottom-left-radius:6px;border:1px solid rgba(255,255,255,.08);}
 .bubble.sticker-bubble{background:transparent !important;border:none !important;backdrop-filter:none !important;padding:4px !important;box-shadow:none !important;}
-.bubble-time{
-  font-size:10px;
-  margin-top:4px;
-  opacity:.5;
-  text-align:right;
-  color:white;
-  display:flex;
-  align-items:center;
-  justify-content:flex-end;
-  gap:4px;
-}
-.edited-tag{
-  font-size:9px;
-  opacity:.6;
-  font-style:italic;
-  color:rgba(255,255,255,.7);
-  margin-left:4px;
-}
+
+.bubble-time{font-size:10px;margin-top:4px;opacity:.5;text-align:right;color:white;display:flex;align-items:center;justify-content:flex-end;gap:4px;}
+.edited-tag{font-size:9px;font-style:italic;color:rgba(255,255,255,.6);}
 .seen-label{text-align:right;font-size:10px;color:rgba(255,255,255,.4);margin-top:2px;padding-right:4px;}
 
 .reply-preview{border-left:2px solid rgba(255,255,255,.5);padding:4px 8px;margin-bottom:6px;border-radius:4px;background:rgba(0,0,0,.2);font-size:11px;cursor:pointer;overflow:hidden;}
@@ -110,53 +95,100 @@ body{display:flex;justify-content:center;background:#000;}
 .rec-send-btn{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#e8547a,#c73b8a);border:none;cursor:pointer;color:white;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(232,84,122,.4);}
 .rec-send-btn svg{width:22px;height:22px;}
 
-/* ── Panel stickers ── */
-.sticker-panel{display:none;flex-direction:column;background:#1a1a1a;border-radius:20px 20px 0 0;border-top:1px solid rgba(255,255,255,.08);flex-shrink:0;position:relative;z-index:10;height:380px;}
+/* ══════════════════════════════════════
+   PANEL STICKERS — grille FIXE propre
+══════════════════════════════════════ */
+.sticker-panel{
+  display:none;
+  flex-direction:column;
+  background:#111;
+  border-radius:20px 20px 0 0;
+  border-top:1px solid rgba(255,255,255,.1);
+  flex-shrink:0;
+  position:relative;
+  z-index:10;
+  height:400px;
+}
 .sticker-panel.active{display:flex;}
 .sticker-handle{width:36px;height:4px;background:rgba(255,255,255,.2);border-radius:2px;margin:10px auto 0;flex-shrink:0;}
-.sticker-search-bar{margin:10px 14px 8px;background:rgba(255,255,255,.08);border-radius:12px;display:flex;align-items:center;gap:8px;padding:8px 12px;flex-shrink:0;}
+
+.sticker-search-bar{
+  margin:10px 14px 8px;
+  background:rgba(255,255,255,.08);
+  border-radius:12px;
+  display:flex;align-items:center;gap:8px;
+  padding:8px 12px;flex-shrink:0;
+}
 .sticker-search-bar svg{width:16px;height:16px;flex-shrink:0;opacity:.4;}
 .sticker-search-input{background:none;border:none;outline:none;font-size:14px;color:white;flex:1;}
-.sticker-search-input::placeholder{color:rgba(255,255,255,.35);}
-.sticker-categories{display:flex;gap:8px;padding:0 14px 8px;overflow-x:auto;flex-shrink:0;}
-.sticker-categories::-webkit-scrollbar{display:none;}
-.sticker-cat-btn{display:flex;align-items:center;gap:5px;padding:6px 14px;border-radius:20px;border:none;cursor:pointer;background:rgba(255,255,255,.08);color:rgba(255,255,255,.6);font-size:12px;font-weight:600;white-space:nowrap;flex-shrink:0;transition:.15s;}
-.sticker-cat-btn.active{background:linear-gradient(135deg,#e8547a,#c73b8a);color:white;}
-.sticker-cat-btn:active{transform:scale(.95);}
-.sticker-section-title{font-size:11px;font-weight:700;color:rgba(255,255,255,.4);padding:0 16px 8px;letter-spacing:.5px;flex-shrink:0;}
+.sticker-search-input::placeholder{color:rgba(255,255,255,.3);}
 
-/* ── Grille stickers — 3 colonnes bien séparées ── */
+.sticker-categories{
+  display:flex;gap:8px;
+  padding:0 14px 8px;
+  overflow-x:auto;flex-shrink:0;
+}
+.sticker-categories::-webkit-scrollbar{display:none;}
+.sticker-cat-btn{
+  display:flex;align-items:center;gap:4px;
+  padding:5px 12px;border-radius:20px;border:none;cursor:pointer;
+  background:rgba(255,255,255,.08);color:rgba(255,255,255,.55);
+  font-size:12px;font-weight:600;white-space:nowrap;flex-shrink:0;transition:.15s;
+}
+.sticker-cat-btn.active{background:linear-gradient(135deg,#e8547a,#c73b8a);color:white;}
+
+.sticker-section-title{
+  font-size:10px;font-weight:700;
+  color:rgba(255,255,255,.35);
+  padding:0 16px 6px;letter-spacing:.8px;flex-shrink:0;
+}
+
+/* ── Grille STRICTE 3 colonnes ── */
 .sticker-grid{
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:12px;
-  padding:4px 16px 16px;
+  grid-auto-rows:110px;   /* hauteur FIXE par cellule */
+  gap:10px;
+  padding:4px 14px 14px;
   overflow-y:auto;
   flex:1;
+  align-content:start;
 }
-.sticker-grid::-webkit-scrollbar{width:2px;}
-.sticker-grid::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);}
+.sticker-grid::-webkit-scrollbar{width:3px;}
+.sticker-grid::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:2px;}
+
 .sticker-item{
-  aspect-ratio:1;
-  border-radius:16px;
+  width:100%;
+  height:110px;          /* hauteur FIXE */
+  border-radius:14px;
   cursor:pointer;
   display:flex;
   align-items:center;
   justify-content:center;
-  background:rgba(255,255,255,.06);
-  transition:.15s;
-  padding:10px;
-  overflow:hidden;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.07);
+  overflow:hidden;       /* CLIP tout ce qui dépasse */
+  transition:transform .15s,background .15s;
+  flex-shrink:0;
 }
-.sticker-item:active{transform:scale(.9);background:rgba(255,255,255,.14);}
-.sticker-item img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  border-radius:12px;
-}
-.sticker-loading{grid-column:1/-1;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.3);font-size:13px;padding:30px;}
+.sticker-item:active{transform:scale(.92);background:rgba(255,255,255,.12);}
 
+/* Image dans la cellule — ne déborde JAMAIS */
+.sticker-item img{
+  display:block;
+  width:90px;
+  height:90px;
+  object-fit:contain;    /* contenu complet, pas cropé */
+  flex-shrink:0;
+}
+
+.sticker-loading{
+  grid-column:1/-1;
+  display:flex;align-items:center;justify-content:center;
+  color:rgba(255,255,255,.3);font-size:13px;padding:30px;
+}
+
+/* ── Input row ── */
 .input-row{padding:10px 12px;display:flex;align-items:center;gap:8px;background:rgba(0,0,0,.5);backdrop-filter:blur(20px);border-top:1px solid rgba(255,255,255,.06);flex-shrink:0;position:relative;z-index:10;}
 .media-btn{background:none;border:none;color:rgba(255,255,255,.5);cursor:pointer;padding:6px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .media-btn:active{background:rgba(255,255,255,.1);}
@@ -219,7 +251,7 @@ body{display:flex;justify-content:center;background:#000;}
     </button>
   </div>
 
-  <!-- Panel stickers GIPHY -->
+  <!-- Panel stickers -->
   <div class="sticker-panel" id="sticker-panel">
     <div class="sticker-handle"></div>
     <div class="sticker-search-bar">
@@ -227,7 +259,7 @@ body{display:flex;justify-content:center;background:#000;}
         <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
       </svg>
       <input class="sticker-search-input" id="sticker-search"
-        placeholder="Rechercher des stickers..."
+        placeholder="Rechercher..."
         oninput="onStickerSearch(this.value)"/>
     </div>
     <div class="sticker-categories" id="sticker-categories"></div>
@@ -292,7 +324,7 @@ body{display:flex;justify-content:center;background:#000;}
 const API       = "https://didactic-disco-q795wwrqxg45c697p-8000.app.github.dev";
 const WS_URL    = "wss://didactic-disco-q795wwrqxg45c697p-8000.app.github.dev/ws";
 const GIPHY_KEY = "rO0Vv1XhZjF8umABjU2poD88Ua0Q6C9r";
-const EDIT_LIMIT_MS = 7 * 60 * 1000; // 7 minutes
+const EDIT_LIMIT_MS = 7 * 60 * 1000;
 
 const me     = JSON.parse(localStorage.getItem('me'));
 const friend = JSON.parse(localStorage.getItem('currentFriend'));
@@ -328,12 +360,18 @@ function connectWS(){
     if(data.action==='history'){
       messages=(data.messages||[]).map(m=>({
         from:String(m.from!==undefined?m.from:m.from_user),
-        text:m.text||'',media_url:m.media_url||null,media_type:m.media_type||null,
-        is_vocal:m.is_vocal||false,time:m.time,msg_id:m.msg_id,
-        edited:m.edited==1||m.edited===true||false,
+        text:m.text||'',
+        media_url:m.media_url||null,
+        media_type:m.media_type||null,
+        is_vocal:m.is_vocal||false,
+        time:m.time,
+        msg_id:m.msg_id,
+        edited:m.edited===1||m.edited===true,
         created_at:m.created_at||null,
-        reply_to_id:m.reply_to_id||null,reply_to_text:m.reply_to_text||null,
-        reply_to_type:m.reply_to_type||null,reply_to_from:m.reply_to_from||null,
+        reply_to_id:m.reply_to_id||null,
+        reply_to_text:m.reply_to_text||null,
+        reply_to_type:m.reply_to_type||null,
+        reply_to_from:m.reply_to_from||null,
       }));
       renderMessages();
     }
@@ -354,10 +392,13 @@ function connectWS(){
     else if(data.action==='message_deleted'){
       messages=messages.filter(m=>m.msg_id!==data.msg_id);renderMessages();
     }
-    // Message modifié en temps réel chez l'autre
     else if(data.action==='message_edited'){
       const m=messages.find(m=>m.msg_id===data.msg_id);
       if(m){m.text=data.text;m.edited=true;renderMessages();}
+    }
+    else if(data.action==='edit_error'){
+      showToast(data.msg||'Modification impossible');
+      cancelEdit();
     }
   };
   ws.onclose=()=>setTimeout(connectWS,3000);
@@ -378,7 +419,7 @@ function renderMessages(){
     const isSticker=m.media_type==='sticker';
     const replyHTML=m.reply_to_id?buildReplyPreview(m):'';
     const content=buildContent(m,isMe);
-    const editedTag=m.edited?`<span class="edited-tag">modifié</span>`:'';
+    const editedTag=m.edited?`<span class="edited-tag">· modifié</span>`:'';
     return `
       <div class="bubble-wrapper ${isMe?'me':'them'}">
         <div class="bubble ${isMe?'me':'them'}${isSticker?' sticker-bubble':''}" id="msg_${m.msg_id}"
@@ -413,15 +454,13 @@ function buildContent(m,isMe){
   }
   if(m.media_type==='image'){
     const mJson=encodeURIComponent(JSON.stringify(m));
-    const side=isMe?'me':'them';
-    return `<div class="media-card-btn ${side}" onclick="openViewerEncoded('${mJson}')">
+    return `<div class="media-card-btn ${isMe?'me':'them'}" onclick="openViewerEncoded('${mJson}')">
       <div class="media-card-play"><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
       <span class="media-card-label">Photo</span></div>`;
   }
   if(m.media_type==='video'){
     const mJson=encodeURIComponent(JSON.stringify(m));
-    const side=isMe?'me':'them';
-    return `<div class="media-card-btn ${side}" onclick="openViewerEncoded('${mJson}')">
+    return `<div class="media-card-btn ${isMe?'me':'them'}" onclick="openViewerEncoded('${mJson}')">
       <div class="media-card-play"><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
       <span class="media-card-label">Vidéo</span></div>`;
   }
@@ -444,6 +483,7 @@ function buildContent(m,isMe){
   return `<span>${m.text}</span>`;
 }
 
+// ── Audio ──
 function toggleVocal(uid){
   const audio=document.getElementById('audio_'+uid);
   const btn=audio?.previousElementSibling;
@@ -477,6 +517,7 @@ function resetVocalBtn(uid){
   const btn=audio?.previousElementSibling;if(btn)btn.textContent='▶';
 }
 
+// ── Viewer ──
 function openViewer(m){
   localStorage.setItem('viewerMedia',JSON.stringify({
     url:m.media_url,type:m.media_type,
@@ -487,6 +528,7 @@ function openViewer(m){
 }
 function openViewerEncoded(encoded){openViewer(JSON.parse(decodeURIComponent(encoded)));}
 
+// ── Reply ──
 function buildReplyPreview(m){
   const fromName=m.reply_to_from===String(me.id)?'Toi':friend.prenom;
   let txt=m.reply_to_text||'';
@@ -519,27 +561,18 @@ function cancelReply(){
 }
 
 // ════════════════════════════════════════════
-// MODIFIER UN MESSAGE — limite 7 minutes
+// MODIFIER — limite 7 minutes
 // ════════════════════════════════════════════
 function canEdit(m){
-  // Vérifier si le message a moins de 7 minutes
-  if(!m.created_at)return true; // Si pas de date, on autorise
+  if(!m.created_at)return true;
   const msgTime=new Date(m.created_at).getTime();
-  const now=Date.now();
-  return (now - msgTime) < EDIT_LIMIT_MS;
+  return (Date.now()-msgTime)<EDIT_LIMIT_MS;
 }
 
 function startEdit(msgId,currentText){
   const m=messages.find(m=>m.msg_id===msgId);
   if(!m)return;
-
-  // Vérifier la limite de 7 minutes
-  if(!canEdit(m)){
-    // Petit toast d'erreur
-    showToast('Impossible de modifier un message de plus de 7 minutes');
-    return;
-  }
-
+  if(!canEdit(m)){showToast('Impossible de modifier un message de plus de 7 min');return;}
   editingMsgId=msgId;
   const input=document.getElementById('msg-input');
   input.value=currentText;input.focus();
@@ -555,23 +588,19 @@ function confirmEdit(){
   const input=document.getElementById('msg-input');
   const newText=input.value.trim();
   if(!newText||!editingMsgId)return;
-
-  // Revérifier la limite au moment de confirmer
   const m=messages.find(m=>m.msg_id===editingMsgId);
-  if(m&&!canEdit(m)){
-    showToast('Délai de modification dépassé (7 min)');
-    cancelEdit();return;
-  }
+  if(m&&!canEdit(m)){showToast('Délai de 7 min dépassé');cancelEdit();return;}
 
+  // Mise à jour locale immédiate
   if(m){m.text=newText;m.edited=true;}
   renderMessages();
 
-  // Envoyer en temps réel à l'autre personne
-  ws?.send(JSON.stringify({
-    action:'edit_message',
-    to:friend.id,
-    msg_id:editingMsgId,
-    text:newText
+  // Envoyer via WS
+  if(!ws||ws.readyState!==WebSocket.OPEN){
+    showToast('Connexion perdue, réessaye');cancelEdit();return;
+  }
+  ws.send(JSON.stringify({
+    action:'edit_message',to:friend.id,msg_id:editingMsgId,text:newText
   }));
   cancelEdit();
 }
@@ -585,22 +614,12 @@ function cancelEdit(){
   document.getElementById('send-btn').style.color='#e8547a';
 }
 
-// ── Toast notification ──
+// ── Toast ──
 function showToast(msg){
-  const existing=document.getElementById('toast');
-  if(existing)existing.remove();
-  const toast=document.createElement('div');
-  toast.id='toast';
-  toast.textContent=msg;
-  toast.style.cssText=`
-    position:fixed;bottom:100px;left:50%;transform:translateX(-50%);
-    background:rgba(0,0,0,.85);color:white;padding:10px 18px;
-    border-radius:20px;font-size:13px;z-index:300;
-    white-space:nowrap;backdrop-filter:blur(10px);
-    border:1px solid rgba(255,255,255,.1);
-  `;
-  document.body.appendChild(toast);
-  setTimeout(()=>toast.remove(),2500);
+  const ex=document.getElementById('toast');if(ex)ex.remove();
+  const t=document.createElement('div');t.id='toast';t.textContent=msg;
+  t.style.cssText='position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.88);color:white;padding:10px 18px;border-radius:20px;font-size:13px;z-index:300;white-space:nowrap;border:1px solid rgba(255,255,255,.1);';
+  document.body.appendChild(t);setTimeout(()=>t.remove(),2500);
 }
 
 // ── Menu contextuel ──
@@ -612,12 +631,10 @@ function openMenu(event,idx){
   if(event)event.preventDefault();
   const m=messages[idx];if(!m)return;
   const isMe=String(m.from)===String(me.id);
-  const existing=document.getElementById('ctx-menu');if(existing)existing.remove();
+  const ex=document.getElementById('ctx-menu');if(ex)ex.remove();
   const menu=document.createElement('div');
   menu.id='ctx-menu';
-  menu.style.cssText=`position:fixed;bottom:90px;left:50%;transform:translateX(-50%);
-    background:#1a1a2e;border:1px solid rgba(255,255,255,.1);border-radius:16px;
-    box-shadow:0 8px 32px rgba(0,0,0,.5);display:flex;flex-direction:column;overflow:hidden;z-index:200;min-width:200px;`;
+  menu.style.cssText='position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#1a1a2e;border:1px solid rgba(255,255,255,.1);border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,.5);display:flex;flex-direction:column;overflow:hidden;z-index:200;min-width:200px;';
 
   const replyBtn=document.createElement('button');
   replyBtn.innerHTML='↩&nbsp;&nbsp;Répondre';
@@ -643,7 +660,6 @@ function openMenu(event,idx){
   menu.appendChild(replyBtn);
 
   if(isMe){
-    // Modifier — seulement messages texte dans les 7 minutes
     if(!m.media_url&&canEdit(m)){
       const editBtn=document.createElement('button');
       editBtn.innerHTML='✏️&nbsp;&nbsp;Modifier';
@@ -657,7 +673,6 @@ function openMenu(event,idx){
     deleteBtn.onclick=()=>{menu.remove();deleteMessage(m.msg_id);};
     menu.appendChild(deleteBtn);
   }
-
   const cancelBtn=document.createElement('button');
   cancelBtn.textContent='Annuler';
   cancelBtn.style.cssText='padding:14px 20px;border:none;background:none;font-size:15px;cursor:pointer;color:rgba(255,255,255,.4);';
@@ -684,38 +699,30 @@ const GIPHY_CATEGORIES=[
   {label:'😢 Triste',  query:'sad',    trending:false},
   {label:'🔥 Viral',   query:'viral',  trending:false},
 ];
-let currentCategory=0, searchTimeout=null;
+let currentCategory=0,searchTimeout=null;
 
 function initStickerCategories(){
-  const container=document.getElementById('sticker-categories');
-  container.innerHTML=GIPHY_CATEGORIES.map((cat,i)=>`
-    <button class="sticker-cat-btn${i===0?' active':''}" onclick="selectCategory(${i})">
-      ${cat.label}
-    </button>
-  `).join('');
+  const c=document.getElementById('sticker-categories');
+  c.innerHTML=GIPHY_CATEGORIES.map((cat,i)=>
+    `<button class="sticker-cat-btn${i===0?' active':''}" onclick="selectCategory(${i})">${cat.label}</button>`
+  ).join('');
 }
 
 function selectCategory(idx){
   currentCategory=idx;
-  document.querySelectorAll('.sticker-cat-btn').forEach((btn,i)=>{
-    btn.classList.toggle('active',i===idx);
-  });
+  document.querySelectorAll('.sticker-cat-btn').forEach((b,i)=>b.classList.toggle('active',i===idx));
   document.getElementById('sticker-search').value='';
-  const cat=GIPHY_CATEGORIES[idx];
-  document.getElementById('sticker-section-title').textContent=cat.label.toUpperCase();
-  loadGiphyStickers(cat);
+  document.getElementById('sticker-section-title').textContent=GIPHY_CATEGORIES[idx].label.toUpperCase();
+  loadGiphyStickers(GIPHY_CATEGORIES[idx]);
 }
 
 async function loadGiphyStickers(cat){
   const grid=document.getElementById('sticker-grid');
   grid.innerHTML='<div class="sticker-loading">Chargement...</div>';
   try{
-    let url;
-    if(cat.trending){
-      url=`https://api.giphy.com/v1/stickers/trending?api_key=${GIPHY_KEY}&limit=21&rating=g`;
-    } else {
-      url=`https://api.giphy.com/v1/stickers/search?api_key=${GIPHY_KEY}&q=${encodeURIComponent(cat.query)}&limit=21&rating=g`;
-    }
+    const url=cat.trending
+      ?`https://api.giphy.com/v1/stickers/trending?api_key=${GIPHY_KEY}&limit=18&rating=g`
+      :`https://api.giphy.com/v1/stickers/search?api_key=${GIPHY_KEY}&q=${encodeURIComponent(cat.query)}&limit=18&rating=g`;
     const res=await fetch(url);
     const data=await res.json();
     renderGiphyGrid(data.data||[]);
@@ -729,7 +736,7 @@ async function searchGiphy(q){
   grid.innerHTML='<div class="sticker-loading">Recherche...</div>';
   document.getElementById('sticker-section-title').textContent='RÉSULTATS';
   try{
-    const url=`https://api.giphy.com/v1/stickers/search?api_key=${GIPHY_KEY}&q=${encodeURIComponent(q)}&limit=21&rating=g`;
+    const url=`https://api.giphy.com/v1/stickers/search?api_key=${GIPHY_KEY}&q=${encodeURIComponent(q)}&limit=18&rating=g`;
     const res=await fetch(url);
     const data=await res.json();
     renderGiphyGrid(data.data||[]);
@@ -740,15 +747,15 @@ async function searchGiphy(q){
 
 function renderGiphyGrid(stickers){
   const grid=document.getElementById('sticker-grid');
-  if(!stickers.length){
-    grid.innerHTML='<div class="sticker-loading">Aucun résultat</div>';return;
-  }
-  // Utiliser fixed_height_small pour des images légères et bien séparées
+  if(!stickers.length){grid.innerHTML='<div class="sticker-loading">Aucun résultat</div>';return;}
   grid.innerHTML=stickers.map(s=>{
-    const img=s.images.fixed_height_small||s.images.downsized||s.images.original;
-    const url=img.url;
+    // Utiliser fixed_height — URL stable avec dimensions fixes
+    const img=s.images.fixed_height;
+    const url=img?img.url:s.images.original.url;
     return `<div class="sticker-item" onclick="sendSticker('${url}')">
-      <img src="${url}" alt="sticker" loading="lazy"/>
+      <img src="${url}" alt="sticker" loading="lazy"
+        onload="this.style.opacity=1"
+        style="opacity:0;transition:opacity .2s;"/>
     </div>`;
   }).join('');
 }
@@ -1009,6 +1016,7 @@ function cancelRecording(){
   pendingBlob=null;hideRecordingBar();
 }
 
+// ── Typing ──
 function onTyping(text){
   if(editingMsgId)return;
   if(!text){ws?.send(JSON.stringify({action:'typing',to:friend.id,is_typing:false}));isTypingSent=false;clearTimeout(typingTimer);return;}

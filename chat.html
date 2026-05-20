@@ -43,8 +43,24 @@ body{display:flex;justify-content:center;background:#000;}
 .bubble.me{background:linear-gradient(135deg,#e8547a,#c73b8a);color:white;border-bottom-right-radius:6px;}
 .bubble.them{background:rgba(255,255,255,.12);backdrop-filter:blur(10px);color:white;border-bottom-left-radius:6px;border:1px solid rgba(255,255,255,.08);}
 .bubble.sticker-bubble{background:transparent !important;border:none !important;backdrop-filter:none !important;padding:4px !important;box-shadow:none !important;}
-.bubble-time{font-size:10px;margin-top:4px;opacity:.5;text-align:right;color:white;display:flex;align-items:center;justify-content:flex-end;gap:4px;}
-.edited-tag{font-size:9px;opacity:.6;font-style:italic;}
+.bubble-time{
+  font-size:10px;
+  margin-top:4px;
+  opacity:.5;
+  text-align:right;
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:4px;
+}
+.edited-tag{
+  font-size:9px;
+  opacity:.6;
+  font-style:italic;
+  color:rgba(255,255,255,.7);
+  margin-left:4px;
+}
 .seen-label{text-align:right;font-size:10px;color:rgba(255,255,255,.4);margin-top:2px;padding-right:4px;}
 
 .reply-preview{border-left:2px solid rgba(255,255,255,.5);padding:4px 8px;margin-bottom:6px;border-radius:4px;background:rgba(0,0,0,.2);font-size:11px;cursor:pointer;overflow:hidden;}
@@ -133,7 +149,12 @@ body{display:flex;justify-content:center;background:#000;}
   overflow:hidden;
 }
 .sticker-item:active{transform:scale(.9);background:rgba(255,255,255,.14);}
-.sticker-item img{width:100%;height:100%;object-fit:contain;}
+.sticker-item img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  border-radius:12px;
+}
 .sticker-loading{grid-column:1/-1;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.3);font-size:13px;padding:30px;}
 
 .input-row{padding:10px 12px;display:flex;align-items:center;gap:8px;background:rgba(0,0,0,.5);backdrop-filter:blur(20px);border-top:1px solid rgba(255,255,255,.06);flex-shrink:0;position:relative;z-index:10;}
@@ -309,7 +330,7 @@ function connectWS(){
         from:String(m.from!==undefined?m.from:m.from_user),
         text:m.text||'',media_url:m.media_url||null,media_type:m.media_type||null,
         is_vocal:m.is_vocal||false,time:m.time,msg_id:m.msg_id,
-        edited:m.edited||false,
+        edited:m.edited==1||m.edited===true||false,
         created_at:m.created_at||null,
         reply_to_id:m.reply_to_id||null,reply_to_text:m.reply_to_text||null,
         reply_to_type:m.reply_to_type||null,reply_to_from:m.reply_to_from||null,

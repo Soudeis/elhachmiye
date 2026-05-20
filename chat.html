@@ -43,14 +43,14 @@ body{display:flex;justify-content:center;background:#000;}
 .bubble.me{background:linear-gradient(135deg,#e8547a,#c73b8a);color:white;border-bottom-right-radius:6px;}
 .bubble.them{background:rgba(255,255,255,.12);backdrop-filter:blur(10px);color:white;border-bottom-left-radius:6px;border:1px solid rgba(255,255,255,.08);}
 .bubble.sticker-bubble{background:transparent !important;border:none !important;backdrop-filter:none !important;padding:4px !important;box-shadow:none !important;}
-.bubble-time{font-size:10px;margin-top:4px;opacity:.5;text-align:right;color:white;}
+.bubble-time{font-size:10px;margin-top:4px;opacity:.5;text-align:right;color:white;display:flex;align-items:center;justify-content:flex-end;gap:4px;}
+.edited-tag{font-size:9px;opacity:.6;font-style:italic;}
 .seen-label{text-align:right;font-size:10px;color:rgba(255,255,255,.4);margin-top:2px;padding-right:4px;}
 
 .reply-preview{border-left:2px solid rgba(255,255,255,.5);padding:4px 8px;margin-bottom:6px;border-radius:4px;background:rgba(0,0,0,.2);font-size:11px;cursor:pointer;overflow:hidden;}
 .reply-preview-name{font-weight:700;font-size:10px;margin-bottom:1px;opacity:.8;}
 .reply-preview-text{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:.7;}
 
-/* ── Vocal player ── */
 .vocal-player{display:flex;align-items:center;gap:10px;min-width:200px;max-width:260px;padding:2px 0;}
 .vocal-play-btn{width:36px;height:36px;border-radius:50%;border:none;background:rgba(255,255,255,.25);color:white;font-size:13px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:.15s;}
 .vocal-play-btn:active{transform:scale(.92);}
@@ -60,32 +60,20 @@ body{display:flex;justify-content:center;background:#000;}
 .vocal-bar.active{background:white;}
 .vocal-duration{font-size:11px;opacity:.7;flex-shrink:0;min-width:32px;text-align:right;}
 
-/* ── Media card — style bouton rose comme l'image ── */
-.media-card-btn{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:10px 18px;border-radius:50px;cursor:pointer;
-  transition:.15s;user-select:none;
-}
+.media-card-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:50px;cursor:pointer;transition:.15s;user-select:none;}
 .media-card-btn.me{background:rgba(255,255,255,.25);}
 .media-card-btn.them{background:rgba(255,255,255,.2);}
 .media-card-btn:active{transform:scale(.96);}
-.media-card-play{
-  width:28px;height:28px;border-radius:50%;
-  background:rgba(0,0,0,.25);
-  display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;
-}
+.media-card-play{width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .media-card-play svg{width:12px;height:12px;fill:white;margin-left:2px;}
 .media-card-label{font-size:16px;font-weight:700;color:rgba(0,0,0,.6);}
 
-/* ── Typing ── */
 .typing-bubble{display:flex;gap:4px;align-items:center;padding:10px 14px;background:rgba(255,255,255,.12);border-radius:22px;border-bottom-left-radius:6px;align-self:flex-start;}
 .dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.6);animation:bonce .9s infinite;}
 .dot:nth-child(2){animation-delay:.2s;}
 .dot:nth-child(3){animation-delay:.4s;}
 @keyframes bonce{0%,60%,100%{transform:translateY(0);}30%{transform:translateY(-5px);}}
 
-/* ── Reply bar ── */
 .reply-bar{display:none;padding:8px 14px;background:rgba(255,255,255,.06);border-top:1px solid rgba(255,255,255,.08);flex-direction:row;align-items:center;gap:10px;flex-shrink:0;position:relative;z-index:10;}
 .reply-bar.active{display:flex;}
 .reply-bar-content{flex:1;min-width:0;}
@@ -93,7 +81,6 @@ body{display:flex;justify-content:center;background:#000;}
 .reply-bar-text{font-size:11px;color:rgba(255,255,255,.5);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .reply-bar-cancel{background:none;border:none;color:rgba(255,255,255,.4);font-size:20px;cursor:pointer;}
 
-/* ── Barre enregistrement ── */
 .vocal-recording-bar{display:none;padding:12px 16px;background:linear-gradient(135deg,#e8547a,#c73b8a);flex-direction:row;align-items:center;gap:12px;flex-shrink:0;position:relative;z-index:10;border-radius:40px;margin:8px 12px;}
 .vocal-recording-bar.active{display:flex;}
 .rec-pause-btn{width:38px;height:38px;border-radius:50%;background:white;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;color:#e8547a;font-weight:700;}
@@ -108,42 +95,47 @@ body{display:flex;justify-content:center;background:#000;}
 .rec-send-btn svg{width:22px;height:22px;}
 
 /* ── Panel stickers ── */
-.sticker-panel{display:none;flex-direction:column;background:#1a1a1a;border-radius:20px 20px 0 0;border-top:1px solid rgba(255,255,255,.08);flex-shrink:0;position:relative;z-index:10;height:360px;}
+.sticker-panel{display:none;flex-direction:column;background:#1a1a1a;border-radius:20px 20px 0 0;border-top:1px solid rgba(255,255,255,.08);flex-shrink:0;position:relative;z-index:10;height:380px;}
 .sticker-panel.active{display:flex;}
 .sticker-handle{width:36px;height:4px;background:rgba(255,255,255,.2);border-radius:2px;margin:10px auto 0;flex-shrink:0;}
-
-/* Barre recherche */
-.sticker-search-bar{margin:10px 14px 6px;background:rgba(255,255,255,.08);border-radius:12px;display:flex;align-items:center;gap:8px;padding:8px 12px;flex-shrink:0;}
-.sticker-search-bar svg{width:16px;height:16px;color:rgba(255,255,255,.4);flex-shrink:0;}
+.sticker-search-bar{margin:10px 14px 8px;background:rgba(255,255,255,.08);border-radius:12px;display:flex;align-items:center;gap:8px;padding:8px 12px;flex-shrink:0;}
+.sticker-search-bar svg{width:16px;height:16px;flex-shrink:0;opacity:.4;}
 .sticker-search-input{background:none;border:none;outline:none;font-size:14px;color:white;flex:1;}
 .sticker-search-input::placeholder{color:rgba(255,255,255,.35);}
-
-/* Catégories horizontales */
-.sticker-categories{display:flex;gap:8px;padding:4px 14px 8px;overflow-x:auto;flex-shrink:0;}
+.sticker-categories{display:flex;gap:8px;padding:0 14px 8px;overflow-x:auto;flex-shrink:0;}
 .sticker-categories::-webkit-scrollbar{display:none;}
-.sticker-cat-btn{
-  display:flex;align-items:center;gap:5px;
-  padding:6px 12px;border-radius:20px;border:none;cursor:pointer;
-  background:rgba(255,255,255,.08);color:rgba(255,255,255,.6);
-  font-size:12px;font-weight:600;white-space:nowrap;flex-shrink:0;
-  transition:.15s;
-}
+.sticker-cat-btn{display:flex;align-items:center;gap:5px;padding:6px 14px;border-radius:20px;border:none;cursor:pointer;background:rgba(255,255,255,.08);color:rgba(255,255,255,.6);font-size:12px;font-weight:600;white-space:nowrap;flex-shrink:0;transition:.15s;}
 .sticker-cat-btn.active{background:linear-gradient(135deg,#e8547a,#c73b8a);color:white;}
 .sticker-cat-btn:active{transform:scale(.95);}
+.sticker-section-title{font-size:11px;font-weight:700;color:rgba(255,255,255,.4);padding:0 16px 8px;letter-spacing:.5px;flex-shrink:0;}
 
-/* Titre catégorie */
-.sticker-section-title{font-size:11px;font-weight:700;color:rgba(255,255,255,.4);padding:0 14px 6px;letter-spacing:.5px;flex-shrink:0;}
-
-/* Grille */
-.sticker-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:0 12px 12px;overflow-y:auto;flex:1;}
+/* ── Grille stickers — 3 colonnes bien séparées ── */
+.sticker-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+  padding:4px 16px 16px;
+  overflow-y:auto;
+  flex:1;
+}
 .sticker-grid::-webkit-scrollbar{width:2px;}
 .sticker-grid::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);}
-.sticker-item{aspect-ratio:1;border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.04);transition:.15s;overflow:hidden;}
-.sticker-item:active{transform:scale(.9);background:rgba(255,255,255,.12);}
+.sticker-item{
+  aspect-ratio:1;
+  border-radius:16px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(255,255,255,.06);
+  transition:.15s;
+  padding:10px;
+  overflow:hidden;
+}
+.sticker-item:active{transform:scale(.9);background:rgba(255,255,255,.14);}
 .sticker-item img{width:100%;height:100%;object-fit:contain;}
-.sticker-loading{grid-column:1/-1;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.3);font-size:13px;padding:20px;}
+.sticker-loading{grid-column:1/-1;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.3);font-size:13px;padding:30px;}
 
-/* ── Input row ── */
 .input-row{padding:10px 12px;display:flex;align-items:center;gap:8px;background:rgba(0,0,0,.5);backdrop-filter:blur(20px);border-top:1px solid rgba(255,255,255,.06);flex-shrink:0;position:relative;z-index:10;}
 .media-btn{background:none;border:none;color:rgba(255,255,255,.5);cursor:pointer;padding:6px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .media-btn:active{background:rgba(255,255,255,.1);}
@@ -225,7 +217,6 @@ body{display:flex;justify-content:center;background:#000;}
   </div>
 
   <div class="input-row" id="input-row">
-    <!-- Sticker -->
     <button class="media-btn" id="sticker-btn" onclick="toggleStickerPanel()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <circle cx="12" cy="12" r="10"/>
@@ -234,7 +225,6 @@ body{display:flex;justify-content:center;background:#000;}
         <line x1="15" y1="9" x2="15.01" y2="9" stroke-width="3"/>
       </svg>
     </button>
-    <!-- Image/Vidéo -->
     <button class="media-btn" onclick="pickMedia()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <rect x="3" y="3" width="18" height="18" rx="2"/>
@@ -242,7 +232,6 @@ body{display:flex;justify-content:center;background:#000;}
         <polyline points="21 15 16 10 5 21"/>
       </svg>
     </button>
-    <!-- Vocal -->
     <button class="media-btn" id="vocal-btn"
       onmousedown="startRecording()"
       onmouseup="onMicRelease()"
@@ -279,9 +268,10 @@ body{display:flex;justify-content:center;background:#000;}
 </div>
 
 <script>
-const API      = "https://didactic-disco-q795wwrqxg45c697p-8000.app.github.dev";
-const WS_URL   = "wss://didactic-disco-q795wwrqxg45c697p-8000.app.github.dev/ws";
+const API       = "https://didactic-disco-q795wwrqxg45c697p-8000.app.github.dev";
+const WS_URL    = "wss://didactic-disco-q795wwrqxg45c697p-8000.app.github.dev/ws";
 const GIPHY_KEY = "rO0Vv1XhZjF8umABjU2poD88Ua0Q6C9r";
+const EDIT_LIMIT_MS = 7 * 60 * 1000; // 7 minutes
 
 const me     = JSON.parse(localStorage.getItem('me'));
 const friend = JSON.parse(localStorage.getItem('currentFriend'));
@@ -318,7 +308,9 @@ function connectWS(){
       messages=(data.messages||[]).map(m=>({
         from:String(m.from!==undefined?m.from:m.from_user),
         text:m.text||'',media_url:m.media_url||null,media_type:m.media_type||null,
-        is_vocal:m.is_vocal||false,time:m.time,msg_id:m.msg_id,edited:m.edited||false,
+        is_vocal:m.is_vocal||false,time:m.time,msg_id:m.msg_id,
+        edited:m.edited||false,
+        created_at:m.created_at||null,
         reply_to_id:m.reply_to_id||null,reply_to_text:m.reply_to_text||null,
         reply_to_type:m.reply_to_type||null,reply_to_from:m.reply_to_from||null,
       }));
@@ -328,7 +320,8 @@ function connectWS(){
       messages.push({
         from:String(data.from),text:data.text||'',
         media_url:data.media_url||null,media_type:data.media_type||null,
-        is_vocal:data.is_vocal||false,time:data.time,msg_id:data.msg_id,edited:false,
+        is_vocal:data.is_vocal||false,time:data.time,msg_id:data.msg_id,
+        edited:false,created_at:data.created_at||null,
         reply_to_id:data.reply_to_id||null,reply_to_text:data.reply_to_text||null,
         reply_to_type:data.reply_to_type||null,reply_to_from:data.reply_to_from||null,
       });
@@ -337,7 +330,10 @@ function connectWS(){
     }
     else if(data.action==='typing'&&String(data.from)===String(friend.id)){showTyping(data.is_typing);}
     else if(data.action==='seen'){seen=true;renderMessages();}
-    else if(data.action==='message_deleted'){messages=messages.filter(m=>m.msg_id!==data.msg_id);renderMessages();}
+    else if(data.action==='message_deleted'){
+      messages=messages.filter(m=>m.msg_id!==data.msg_id);renderMessages();
+    }
+    // Message modifié en temps réel chez l'autre
     else if(data.action==='message_edited'){
       const m=messages.find(m=>m.msg_id===data.msg_id);
       if(m){m.text=data.text;m.edited=true;renderMessages();}
@@ -361,6 +357,7 @@ function renderMessages(){
     const isSticker=m.media_type==='sticker';
     const replyHTML=m.reply_to_id?buildReplyPreview(m):'';
     const content=buildContent(m,isMe);
+    const editedTag=m.edited?`<span class="edited-tag">modifié</span>`:'';
     return `
       <div class="bubble-wrapper ${isMe?'me':'them'}">
         <div class="bubble ${isMe?'me':'them'}${isSticker?' sticker-bubble':''}" id="msg_${m.msg_id}"
@@ -368,7 +365,7 @@ function renderMessages(){
           ontouchstart="touchStart(event,${i})"
           ontouchend="touchEnd()">
           ${replyHTML}${content}
-          ${!isSticker?`<div class="bubble-time">${m.time||''}${m.edited?'&nbsp;·&nbsp;<span style="opacity:.6;font-size:9px;">modifié</span>':''}</div>`:''}
+          ${!isSticker?`<div class="bubble-time">${m.time||''}${editedTag}</div>`:''}
         </div>
         ${isSticker?`<div style="font-size:10px;color:rgba(255,255,255,.3);margin-top:2px;${isMe?'text-align:right;':'text-align:left;'}">${m.time||''}</div>`:''}
         ${showSeen?'<div class="seen-label">Vu</div>':''}
@@ -388,40 +385,25 @@ function renderMessages(){
 }
 
 function buildContent(m,isMe){
-  // ── Sticker GIPHY ──
   if(m.media_type==='sticker'){
     return `<img src="${m.media_url}" alt="sticker"
       style="width:140px;height:140px;object-fit:contain;display:block;"
       loading="lazy"/>`;
   }
-
-  // ── Image — bouton style rose ──
   if(m.media_type==='image'){
     const mJson=encodeURIComponent(JSON.stringify(m));
     const side=isMe?'me':'them';
-    return `
-      <div class="media-card-btn ${side}" onclick="openViewerEncoded('${mJson}')">
-        <div class="media-card-play">
-          <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-        </div>
-        <span class="media-card-label">Photo</span>
-      </div>`;
+    return `<div class="media-card-btn ${side}" onclick="openViewerEncoded('${mJson}')">
+      <div class="media-card-play"><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+      <span class="media-card-label">Photo</span></div>`;
   }
-
-  // ── Vidéo — bouton style rose ──
   if(m.media_type==='video'){
     const mJson=encodeURIComponent(JSON.stringify(m));
     const side=isMe?'me':'them';
-    return `
-      <div class="media-card-btn ${side}" onclick="openViewerEncoded('${mJson}')">
-        <div class="media-card-play">
-          <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-        </div>
-        <span class="media-card-label">Vidéo</span>
-      </div>`;
+    return `<div class="media-card-btn ${side}" onclick="openViewerEncoded('${mJson}')">
+      <div class="media-card-play"><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+      <span class="media-card-label">Vidéo</span></div>`;
   }
-
-  // ── Audio ──
   if(m.media_type==='audio'){
     const uid=m.msg_id||Date.now();
     const uidStr=uid.toString();
@@ -429,22 +411,18 @@ function buildContent(m,isMe){
       const h=15+((uidStr.charCodeAt(i%uidStr.length)||50)*7+i*13)%65;
       return `<div class="vocal-bar" style="height:${h}%;"></div>`;
     }).join('');
-    return `
-      <div class="vocal-player">
-        <button class="vocal-play-btn" onclick="toggleVocal('${uid}')">▶</button>
-        <audio id="audio_${uid}" src="${m.media_url}" preload="auto"
-          ontimeupdate="updateVocalBar('${uid}')"
-          onended="resetVocal('${uid}')"></audio>
-        <div class="vocal-waveform" data-uid="${uid}">${bars}</div>
-        <span class="vocal-duration" id="dur_${uid}">0:00</span>
-      </div>`;
+    return `<div class="vocal-player">
+      <button class="vocal-play-btn" onclick="toggleVocal('${uid}')">▶</button>
+      <audio id="audio_${uid}" src="${m.media_url}" preload="auto"
+        ontimeupdate="updateVocalBar('${uid}')"
+        onended="resetVocal('${uid}')"></audio>
+      <div class="vocal-waveform" data-uid="${uid}">${bars}</div>
+      <span class="vocal-duration" id="dur_${uid}">0:00</span>
+    </div>`;
   }
-
-  // ── Texte ──
   return `<span>${m.text}</span>`;
 }
 
-// ── Audio ──
 function toggleVocal(uid){
   const audio=document.getElementById('audio_'+uid);
   const btn=audio?.previousElementSibling;
@@ -478,7 +456,6 @@ function resetVocalBtn(uid){
   const btn=audio?.previousElementSibling;if(btn)btn.textContent='▶';
 }
 
-// ── Viewer ──
 function openViewer(m){
   localStorage.setItem('viewerMedia',JSON.stringify({
     url:m.media_url,type:m.media_type,
@@ -489,7 +466,6 @@ function openViewer(m){
 }
 function openViewerEncoded(encoded){openViewer(JSON.parse(decodeURIComponent(encoded)));}
 
-// ── Reply ──
 function buildReplyPreview(m){
   const fromName=m.reply_to_from===String(me.id)?'Toi':friend.prenom;
   let txt=m.reply_to_text||'';
@@ -522,20 +498,172 @@ function cancelReply(){
 }
 
 // ════════════════════════════════════════════
+// MODIFIER UN MESSAGE — limite 7 minutes
+// ════════════════════════════════════════════
+function canEdit(m){
+  // Vérifier si le message a moins de 7 minutes
+  if(!m.created_at)return true; // Si pas de date, on autorise
+  const msgTime=new Date(m.created_at).getTime();
+  const now=Date.now();
+  return (now - msgTime) < EDIT_LIMIT_MS;
+}
+
+function startEdit(msgId,currentText){
+  const m=messages.find(m=>m.msg_id===msgId);
+  if(!m)return;
+
+  // Vérifier la limite de 7 minutes
+  if(!canEdit(m)){
+    // Petit toast d'erreur
+    showToast('Impossible de modifier un message de plus de 7 minutes');
+    return;
+  }
+
+  editingMsgId=msgId;
+  const input=document.getElementById('msg-input');
+  input.value=currentText;input.focus();
+  document.getElementById('reply-bar-icon').textContent='✏️';
+  document.getElementById('reply-bar-name').textContent='Modifier le message';
+  document.getElementById('reply-bar-text').textContent=currentText;
+  document.getElementById('reply-bar').classList.add('active');
+  document.getElementById('reply-bar-cancel-btn').onclick=cancelEdit;
+  document.getElementById('send-btn').style.color='#f39c12';
+}
+
+function confirmEdit(){
+  const input=document.getElementById('msg-input');
+  const newText=input.value.trim();
+  if(!newText||!editingMsgId)return;
+
+  // Revérifier la limite au moment de confirmer
+  const m=messages.find(m=>m.msg_id===editingMsgId);
+  if(m&&!canEdit(m)){
+    showToast('Délai de modification dépassé (7 min)');
+    cancelEdit();return;
+  }
+
+  if(m){m.text=newText;m.edited=true;}
+  renderMessages();
+
+  // Envoyer en temps réel à l'autre personne
+  ws?.send(JSON.stringify({
+    action:'edit_message',
+    to:friend.id,
+    msg_id:editingMsgId,
+    text:newText
+  }));
+  cancelEdit();
+}
+
+function cancelEdit(){
+  editingMsgId=null;
+  document.getElementById('msg-input').value='';
+  document.getElementById('reply-bar').classList.remove('active');
+  document.getElementById('reply-bar-icon').textContent='↩';
+  document.getElementById('reply-bar-cancel-btn').onclick=cancelReply;
+  document.getElementById('send-btn').style.color='#e8547a';
+}
+
+// ── Toast notification ──
+function showToast(msg){
+  const existing=document.getElementById('toast');
+  if(existing)existing.remove();
+  const toast=document.createElement('div');
+  toast.id='toast';
+  toast.textContent=msg;
+  toast.style.cssText=`
+    position:fixed;bottom:100px;left:50%;transform:translateX(-50%);
+    background:rgba(0,0,0,.85);color:white;padding:10px 18px;
+    border-radius:20px;font-size:13px;z-index:300;
+    white-space:nowrap;backdrop-filter:blur(10px);
+    border:1px solid rgba(255,255,255,.1);
+  `;
+  document.body.appendChild(toast);
+  setTimeout(()=>toast.remove(),2500);
+}
+
+// ── Menu contextuel ──
+let touchTimer=null;
+function touchStart(event,idx){touchTimer=setTimeout(()=>openMenu(null,idx),500);}
+function touchEnd(){clearTimeout(touchTimer);}
+
+function openMenu(event,idx){
+  if(event)event.preventDefault();
+  const m=messages[idx];if(!m)return;
+  const isMe=String(m.from)===String(me.id);
+  const existing=document.getElementById('ctx-menu');if(existing)existing.remove();
+  const menu=document.createElement('div');
+  menu.id='ctx-menu';
+  menu.style.cssText=`position:fixed;bottom:90px;left:50%;transform:translateX(-50%);
+    background:#1a1a2e;border:1px solid rgba(255,255,255,.1);border-radius:16px;
+    box-shadow:0 8px 32px rgba(0,0,0,.5);display:flex;flex-direction:column;overflow:hidden;z-index:200;min-width:200px;`;
+
+  const replyBtn=document.createElement('button');
+  replyBtn.innerHTML='↩&nbsp;&nbsp;Répondre';
+  replyBtn.style.cssText='padding:14px 20px;border:none;background:none;font-size:15px;cursor:pointer;text-align:left;color:white;border-bottom:1px solid rgba(255,255,255,.08);';
+  replyBtn.onclick=()=>{
+    menu.remove();
+    replyingTo={msg_id:m.msg_id,from:m.from,text:m.text,media_type:m.media_type};
+    const fromName=m.from===String(me.id)?'Toi':friend.prenom;
+    let txt=m.text||'';
+    if(!txt){
+      if(m.media_type==='image')txt='📷 Photo';
+      else if(m.media_type==='video')txt='🎥 Vidéo';
+      else if(m.media_type==='audio')txt='🎵 Vocal';
+      else if(m.media_type==='sticker')txt='🎭 Sticker';
+    }
+    document.getElementById('reply-bar-icon').textContent='↩';
+    document.getElementById('reply-bar-name').textContent=fromName;
+    document.getElementById('reply-bar-text').textContent=txt;
+    document.getElementById('reply-bar').classList.add('active');
+    document.getElementById('reply-bar-cancel-btn').onclick=cancelReply;
+    document.getElementById('msg-input').focus();
+  };
+  menu.appendChild(replyBtn);
+
+  if(isMe){
+    // Modifier — seulement messages texte dans les 7 minutes
+    if(!m.media_url&&canEdit(m)){
+      const editBtn=document.createElement('button');
+      editBtn.innerHTML='✏️&nbsp;&nbsp;Modifier';
+      editBtn.style.cssText='padding:14px 20px;border:none;background:none;font-size:15px;cursor:pointer;text-align:left;color:#f39c12;border-bottom:1px solid rgba(255,255,255,.08);';
+      editBtn.onclick=()=>{menu.remove();startEdit(m.msg_id,m.text);};
+      menu.appendChild(editBtn);
+    }
+    const deleteBtn=document.createElement('button');
+    deleteBtn.innerHTML='🗑&nbsp;&nbsp;Supprimer';
+    deleteBtn.style.cssText='padding:14px 20px;border:none;background:none;font-size:15px;cursor:pointer;text-align:left;color:#e74c3c;border-bottom:1px solid rgba(255,255,255,.08);';
+    deleteBtn.onclick=()=>{menu.remove();deleteMessage(m.msg_id);};
+    menu.appendChild(deleteBtn);
+  }
+
+  const cancelBtn=document.createElement('button');
+  cancelBtn.textContent='Annuler';
+  cancelBtn.style.cssText='padding:14px 20px;border:none;background:none;font-size:15px;cursor:pointer;color:rgba(255,255,255,.4);';
+  cancelBtn.onclick=()=>menu.remove();
+  menu.appendChild(cancelBtn);
+  document.body.appendChild(menu);
+  setTimeout(()=>{document.addEventListener('click',()=>menu.remove(),{once:true});},100);
+}
+
+function deleteMessage(msgId){
+  ws?.send(JSON.stringify({action:'delete_message',to:friend.id,msg_id:msgId}));
+  messages=messages.filter(m=>m.msg_id!==msgId);renderMessages();
+}
+
+// ════════════════════════════════════════════
 // STICKERS GIPHY
 // ════════════════════════════════════════════
-const GIPHY_CATEGORIES = [
-  {label:'⭐ Tendance', query:null,      trending:true},
-  {label:'😂 Fun',      query:'funny',   trending:false},
-  {label:'❤️ Love',     query:'love',    trending:false},
-  {label:'🐱 Animaux',  query:'animals', trending:false},
-  {label:'🎉 Fête',     query:'party',   trending:false},
-  {label:'😢 Triste',   query:'sad',     trending:false},
-  {label:'🔥 Viral',    query:'viral',   trending:false},
+const GIPHY_CATEGORIES=[
+  {label:'⭐ Tendance',query:null,     trending:true},
+  {label:'😂 Fun',     query:'funny',  trending:false},
+  {label:'❤️ Love',    query:'love',   trending:false},
+  {label:'🐱 Animaux', query:'animals',trending:false},
+  {label:'🎉 Fête',    query:'party',  trending:false},
+  {label:'😢 Triste',  query:'sad',    trending:false},
+  {label:'🔥 Viral',   query:'viral',  trending:false},
 ];
-
-let currentCategory=0;
-let searchTimeout=null;
+let currentCategory=0, searchTimeout=null;
 
 function initStickerCategories(){
   const container=document.getElementById('sticker-categories');
@@ -563,9 +691,9 @@ async function loadGiphyStickers(cat){
   try{
     let url;
     if(cat.trending){
-      url=`https://api.giphy.com/v1/stickers/trending?api_key=${GIPHY_KEY}&limit=24&rating=g`;
+      url=`https://api.giphy.com/v1/stickers/trending?api_key=${GIPHY_KEY}&limit=21&rating=g`;
     } else {
-      url=`https://api.giphy.com/v1/stickers/search?api_key=${GIPHY_KEY}&q=${encodeURIComponent(cat.query)}&limit=24&rating=g`;
+      url=`https://api.giphy.com/v1/stickers/search?api_key=${GIPHY_KEY}&q=${encodeURIComponent(cat.query)}&limit=21&rating=g`;
     }
     const res=await fetch(url);
     const data=await res.json();
@@ -580,7 +708,7 @@ async function searchGiphy(q){
   grid.innerHTML='<div class="sticker-loading">Recherche...</div>';
   document.getElementById('sticker-section-title').textContent='RÉSULTATS';
   try{
-    const url=`https://api.giphy.com/v1/stickers/search?api_key=${GIPHY_KEY}&q=${encodeURIComponent(q)}&limit=24&rating=g`;
+    const url=`https://api.giphy.com/v1/stickers/search?api_key=${GIPHY_KEY}&q=${encodeURIComponent(q)}&limit=21&rating=g`;
     const res=await fetch(url);
     const data=await res.json();
     renderGiphyGrid(data.data||[]);
@@ -594,8 +722,10 @@ function renderGiphyGrid(stickers){
   if(!stickers.length){
     grid.innerHTML='<div class="sticker-loading">Aucun résultat</div>';return;
   }
+  // Utiliser fixed_height_small pour des images légères et bien séparées
   grid.innerHTML=stickers.map(s=>{
-    const url=s.images.fixed_height_small.url||s.images.original.url;
+    const img=s.images.fixed_height_small||s.images.downsized||s.images.original;
+    const url=img.url;
     return `<div class="sticker-item" onclick="sendSticker('${url}')">
       <img src="${url}" alt="sticker" loading="lazy"/>
     </div>`;
@@ -604,9 +734,7 @@ function renderGiphyGrid(stickers){
 
 function onStickerSearch(q){
   clearTimeout(searchTimeout);
-  if(!q.trim()){
-    selectCategory(currentCategory);return;
-  }
+  if(!q.trim()){selectCategory(currentCategory);return;}
   searchTimeout=setTimeout(()=>searchGiphy(q),400);
 }
 
@@ -617,7 +745,6 @@ function toggleStickerPanel(){
   btn.classList.toggle('active-sticker',isOpen);
   if(isOpen){
     document.getElementById('msg-input').blur();
-    // Charger les tendances au premier ouverture
     if(document.getElementById('sticker-grid').querySelector('.sticker-loading')){
       loadGiphyStickers(GIPHY_CATEGORIES[0]);
     }
@@ -650,106 +777,6 @@ function sendSticker(url){
 }
 
 // ════════════════════════════════════════════
-// MODIFIER UN MESSAGE
-// ════════════════════════════════════════════
-function startEdit(msgId,currentText){
-  editingMsgId=msgId;
-  const input=document.getElementById('msg-input');
-  input.value=currentText;input.focus();
-  document.getElementById('reply-bar-icon').textContent='✏️';
-  document.getElementById('reply-bar-name').textContent='Modifier le message';
-  document.getElementById('reply-bar-text').textContent=currentText;
-  document.getElementById('reply-bar').classList.add('active');
-  document.getElementById('reply-bar-cancel-btn').onclick=cancelEdit;
-  document.getElementById('send-btn').style.color='#f39c12';
-}
-
-function confirmEdit(){
-  const input=document.getElementById('msg-input');
-  const newText=input.value.trim();
-  if(!newText||!editingMsgId)return;
-  const m=messages.find(m=>m.msg_id===editingMsgId);
-  if(m){m.text=newText;m.edited=true;}
-  renderMessages();
-  ws?.send(JSON.stringify({action:'edit_message',to:friend.id,msg_id:editingMsgId,text:newText}));
-  cancelEdit();
-}
-
-function cancelEdit(){
-  editingMsgId=null;
-  document.getElementById('msg-input').value='';
-  document.getElementById('reply-bar').classList.remove('active');
-  document.getElementById('reply-bar-icon').textContent='↩';
-  document.getElementById('reply-bar-cancel-btn').onclick=cancelReply;
-  document.getElementById('send-btn').style.color='#e8547a';
-}
-
-// ── Menu contextuel ──
-let touchTimer=null;
-function touchStart(event,idx){touchTimer=setTimeout(()=>openMenu(null,idx),500);}
-function touchEnd(){clearTimeout(touchTimer);}
-
-function openMenu(event,idx){
-  if(event)event.preventDefault();
-  const m=messages[idx];if(!m)return;
-  const isMe=String(m.from)===String(me.id);
-  const existing=document.getElementById('ctx-menu');if(existing)existing.remove();
-  const menu=document.createElement('div');
-  menu.id='ctx-menu';
-  menu.style.cssText=`position:fixed;bottom:90px;left:50%;transform:translateX(-50%);
-    background:#1a1a2e;border:1px solid rgba(255,255,255,.1);border-radius:16px;
-    box-shadow:0 8px 32px rgba(0,0,0,.5);display:flex;flex-direction:column;overflow:hidden;z-index:200;min-width:200px;`;
-  const replyBtn=document.createElement('button');
-  replyBtn.innerHTML='↩&nbsp;&nbsp;Répondre';
-  replyBtn.style.cssText='padding:14px 20px;border:none;background:none;font-size:15px;cursor:pointer;text-align:left;color:white;border-bottom:1px solid rgba(255,255,255,.08);';
-  replyBtn.onclick=()=>{
-    menu.remove();
-    replyingTo={msg_id:m.msg_id,from:m.from,text:m.text,media_type:m.media_type};
-    const fromName=m.from===String(me.id)?'Toi':friend.prenom;
-    let txt=m.text||'';
-    if(!txt){
-      if(m.media_type==='image')txt='📷 Photo';
-      else if(m.media_type==='video')txt='🎥 Vidéo';
-      else if(m.media_type==='audio')txt='🎵 Vocal';
-      else if(m.media_type==='sticker')txt='🎭 Sticker';
-    }
-    document.getElementById('reply-bar-icon').textContent='↩';
-    document.getElementById('reply-bar-name').textContent=fromName;
-    document.getElementById('reply-bar-text').textContent=txt;
-    document.getElementById('reply-bar').classList.add('active');
-    document.getElementById('reply-bar-cancel-btn').onclick=cancelReply;
-    document.getElementById('msg-input').focus();
-  };
-  menu.appendChild(replyBtn);
-  if(isMe){
-    if(!m.media_url){
-      const editBtn=document.createElement('button');
-      editBtn.innerHTML='✏️&nbsp;&nbsp;Modifier';
-      editBtn.style.cssText='padding:14px 20px;border:none;background:none;font-size:15px;cursor:pointer;text-align:left;color:#f39c12;border-bottom:1px solid rgba(255,255,255,.08);';
-      editBtn.onclick=()=>{menu.remove();startEdit(m.msg_id,m.text);};
-      menu.appendChild(editBtn);
-    }
-    const deleteBtn=document.createElement('button');
-    deleteBtn.innerHTML='🗑&nbsp;&nbsp;Supprimer';
-    deleteBtn.style.cssText='padding:14px 20px;border:none;background:none;font-size:15px;cursor:pointer;text-align:left;color:#e74c3c;border-bottom:1px solid rgba(255,255,255,.08);';
-    deleteBtn.onclick=()=>{menu.remove();deleteMessage(m.msg_id);};
-    menu.appendChild(deleteBtn);
-  }
-  const cancelBtn=document.createElement('button');
-  cancelBtn.textContent='Annuler';
-  cancelBtn.style.cssText='padding:14px 20px;border:none;background:none;font-size:15px;cursor:pointer;color:rgba(255,255,255,.4);';
-  cancelBtn.onclick=()=>menu.remove();
-  menu.appendChild(cancelBtn);
-  document.body.appendChild(menu);
-  setTimeout(()=>{document.addEventListener('click',()=>menu.remove(),{once:true});},100);
-}
-
-function deleteMessage(msgId){
-  ws?.send(JSON.stringify({action:'delete_message',to:friend.id,msg_id:msgId}));
-  messages=messages.filter(m=>m.msg_id!==msgId);renderMessages();
-}
-
-// ════════════════════════════════════════════
 // ENVOYER TEXTE
 // ════════════════════════════════════════════
 function sendMessage(){
@@ -759,7 +786,7 @@ function sendMessage(){
   const now=new Date(),time=now.getHours()+':'+String(now.getMinutes()).padStart(2,'0');
   const msgId=`${me.id}_${Date.now()}`;
   messages.push({from:String(me.id),text,media_url:null,media_type:null,
-    is_vocal:false,edited:false,time,msg_id:msgId,
+    is_vocal:false,edited:false,time,msg_id:msgId,created_at:new Date().toISOString(),
     reply_to_id:replyingTo?.msg_id||null,reply_to_text:replyingTo?.text||null,
     reply_to_type:replyingTo?.media_type||null,reply_to_from:replyingTo?.from||null});
   seen=false;renderMessages();input.value='';
@@ -783,7 +810,7 @@ async function uploadAndSend(file,isVocal=false){
     const now=new Date(),time=now.getHours()+':'+String(now.getMinutes()).padStart(2,'0');
     const msgId=`${me.id}_${Date.now()}`;
     messages.push({from:String(me.id),text:'',media_url:data.url,media_type:data.media_type,
-      is_vocal:isVocal,edited:false,time,msg_id:msgId,
+      is_vocal:isVocal,edited:false,time,msg_id:msgId,created_at:new Date().toISOString(),
       reply_to_id:replyingTo?.msg_id||null,reply_to_text:replyingTo?.text||null,
       reply_to_type:replyingTo?.media_type||null,reply_to_from:replyingTo?.from||null});
     seen=false;renderMessages();
@@ -819,7 +846,6 @@ function initRecWaveform(){
     waveEl.appendChild(bar);
   }
 }
-
 function animateRecWaveform(){
   if(recState!=='recording')return;
   document.querySelectorAll('.rec-bar').forEach(bar=>{
@@ -962,7 +988,6 @@ function cancelRecording(){
   pendingBlob=null;hideRecordingBar();
 }
 
-// ── Typing ──
 function onTyping(text){
   if(editingMsgId)return;
   if(!text){ws?.send(JSON.stringify({action:'typing',to:friend.id,is_typing:false}));isTypingSent=false;clearTimeout(typingTimer);return;}
@@ -980,7 +1005,6 @@ function showTyping(isTyping){
 }
 function onKey(e){if(e.key==='Enter')sendMessage();}
 
-// ── Init ──
 initStickerCategories();
 connectWS();
 </script>

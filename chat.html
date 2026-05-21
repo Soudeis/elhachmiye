@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <script src="audio-player.js"></script>
 <link rel="manifest" href="manifest.json"/>
 <meta name="theme-color" content="#000000"/>
 <meta name="mobile-web-app-capable" content="yes"/>
@@ -495,8 +496,18 @@ function toggleVocal(uid){
   if(!audio)return;
   if(audio.paused){
     document.querySelectorAll('audio').forEach(a=>{if(a!==audio){a.pause();resetVocalBtn(a.id.replace('audio_',''));}});
-    audio.play().then(()=>{if(btn)btn.textContent='⏸';}).catch(()=>{});
-  } else {audio.pause();if(btn)btn.textContent='▶';}
+    audio.play().then(()=>{
+      if(btn)btn.textContent='⏸';
+      // Mini player global
+      if(window.GlobalAudioPlayer){
+        const m=messages.find(m=>m.msg_id===uid||m.msg_id===uid);
+        const name=String(m?.from)===String(me.id)?'Toi':friend.prenom;
+        window.GlobalAudioPlayer.play(audio.src, name, null, audio.currentTime);
+      }
+    }).catch(()=>{});
+  } else {
+    audio.pause();if(btn)btn.textContent='▶';
+  }
 }
 function updateVocalBar(uid){
   const audio=document.getElementById('audio_'+uid);

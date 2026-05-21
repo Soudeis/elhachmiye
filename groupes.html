@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Groupes</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;}
+body{display:flex;justify-content:center;background:#000;}
+.shell{width:100%;max-width:480px;min-height:100vh;background:linear-gradient(180deg,#1a0a0f 0%,#0d0010 40%,#0a0015 100%);display:flex;flex-direction:column;}
+
+.topbar{padding:14px 16px;display:flex;align-items:center;gap:10px;background:rgba(0,0,0,.4);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.08);flex-shrink:0;position:sticky;top:0;z-index:10;}
+.back{cursor:pointer;font-size:20px;background:none;border:none;color:white;padding:4px 8px 4px 0;}
+.topbar h2{margin:0;font-size:17px;font-weight:700;color:white;flex:1;}
+.new-group-btn{background:linear-gradient(135deg,#e8547a,#c73b8a);border:none;color:white;padding:8px 14px;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;}
+
+.section-title{font-size:11px;font-weight:700;color:rgba(255,255,255,.4);padding:16px 16px 8px;letter-spacing:.5px;}
+
+.invite-card{margin:0 16px 8px;background:rgba(232,84,122,.1);border:1px solid rgba(232,84,122,.3);border-radius:16px;padding:14px;display:flex;align-items:center;gap:12px;}
+.invite-info{flex:1;min-width:0;}
+.invite-name{font-size:15px;font-weight:600;color:white;}
+.invite-sub{font-size:12px;color:rgba(255,255,255,.5);margin-top:2px;}
+.invite-actions{display:flex;gap:8px;}
+.btn-accept{background:linear-gradient(135deg,#e8547a,#c73b8a);border:none;color:white;padding:7px 14px;border-radius:12px;font-size:13px;font-weight:600;cursor:pointer;}
+.btn-decline{background:rgba(255,255,255,.08);border:none;color:rgba(255,255,255,.6);padding:7px 14px;border-radius:12px;font-size:13px;cursor:pointer;}
+
+.group-item{display:flex;align-items:center;gap:12px;padding:12px 16px;cursor:pointer;transition:background .1s;}
+.group-item:active{background:rgba(255,255,255,.04);}
+.group-avatar{width:52px;height:52px;border-radius:50%;object-fit:cover;flex-shrink:0;background:linear-gradient(135deg,#e8547a,#c73b8a);display:flex;align-items:center;justify-content:center;font-size:20px;color:white;font-weight:700;}
+.group-info{flex:1;min-width:0;}
+.group-name{font-size:16px;font-weight:600;color:white;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.group-role{font-size:12px;color:rgba(255,255,255,.4);margin-top:2px;}
+.group-arrow{color:rgba(255,255,255,.2);font-size:18px;}
+
+.empty{text-align:center;color:rgba(255,255,255,.3);padding:40px 20px;font-size:14px;}
+
+/* Sheet créer groupe */
+.sheet-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:100;}
+.sheet-overlay.active{display:block;}
+.sheet{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#1a1a1a;border-radius:20px 20px 0 0;z-index:101;padding:0 0 30px;max-height:85vh;overflow-y:auto;}
+.sheet-handle{width:36px;height:4px;background:rgba(255,255,255,.2);border-radius:2px;margin:12px auto;}
+.sheet-title{font-size:16px;font-weight:700;color:white;text-align:center;padding:0 0 16px;}
+.sheet-input{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:12px 14px;font-size:15px;color:white;width:calc(100% - 32px);margin:0 16px 12px;outline:none;}
+.sheet-input::placeholder{color:rgba(255,255,255,.3);}
+.friend-select-item{display:flex;align-items:center;gap:12px;padding:10px 16px;cursor:pointer;}
+.friend-select-item:active{background:rgba(255,255,255,.04);}
+.fsi-check{width:24px;height:24px;border-radius:50%;border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.15s;}
+.fsi-check.selected{background:#e8547a;border-color:#e8547a;}
+.fsi-avatar{width:40px;height:40px;border-radius:50%;object-fit:cover;flex-shrink:0;}
+.fsi-name{font-size:15px;color:white;}
+.create-btn{background:linear-gradient(135deg,#e8547a,#c73b8a);border:none;color:white;padding:14px;border-radius:14px;font-size:16px;font-weight:700;cursor:pointer;width:calc(100% - 32px);margin:12px 16px 0;}
+</style>
+</head>
+<body>
+<div class="shell">
+  <div class="topbar">
+    <button class="back" onclick="history.back()">←</button>
+    <h2>Groupes</h2>
+    <button class="new-group-btn" onclick="openCreateSheet()">+ Nouveau</button>
+  </div>
+
+  <div id="invites-section"></div>
+  <div id="groups-list"></div>
+</div>
+
+<!-- Sheet créer groupe -->
+<div class="sheet-overlay" id="sheet-overlay" onclick="closeCreateSheet()"></div>
+<div class="sheet" id="create-sheet" style="display:none;">
+  <div class="sheet-handle"></div>
+  <div class="sheet-title">Nouveau groupe</div>
+  <input class="sheet-input" id="group-name-input" placeholder="Nom du groupe"/>
+  <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,.4);padding:4px 16px 8px;letter-spacing:.5px;">AJOUTER DES MEMBRES</div>
+  <div id="friends-select-list"></div>
+  <button class="create-btn" onclick="createGroup()">Créer le groupe</button>
+</div>
+
+<script>
+const API = "https://didactic-disco-q795wwrqxg45c697p-8000.app.github.dev";
+const me  = JSON.parse(localStorage.getItem('me'));
+if(!me) window.location.href='index.html';
+
+let friends=[], selectedFriends=new Set();
+
+async function loadAll(){
+  const [groupsRes, invitesRes, friendsRes] = await Promise.all([
+    fetch(`${API}/groups/${me.id}`),
+    fetch(`${API}/group/invites/${me.id}`),
+    fetch(`${API}/friends/${me.id}`)
+  ]);
+  const groups  = await groupsRes.json();
+  const invites = await invitesRes.json();
+  friends = await friendsRes.json();
+  renderInvites(invites);
+  renderGroups(groups);
+  renderFriendsList();
+}
+
+function renderInvites(invites){
+  const el=document.getElementById('invites-section');
+  if(!invites.length){el.innerHTML='';return;}
+  el.innerHTML=`<div class="section-title">INVITATIONS</div>`+
+    invites.map(inv=>`
+      <div class="invite-card">
+        <div style="font-size:28px;">👥</div>
+        <div class="invite-info">
+          <div class="invite-name">${inv.name}</div>
+          <div class="invite-sub">Invité par ${inv.creator_prenom} ${inv.creator_nom}</div>
+        </div>
+        <div class="invite-actions">
+          <button class="btn-accept" onclick="respondInvite(${inv.id},true)">Rejoindre</button>
+          <button class="btn-decline" onclick="respondInvite(${inv.id},false)">Refuser</button>
+        </div>
+      </div>
+    `).join('');
+}
+
+function renderGroups(groups){
+  const el=document.getElementById('groups-list');
+  const accepted=groups.filter(g=>g.status==='accepted');
+  if(!accepted.length){el.innerHTML='<div class="empty">Aucun groupe pour l\'instant</div>';return;}
+  el.innerHTML=`<div class="section-title">MES GROUPES</div>`+
+    accepted.map(g=>{
+      const avatarHtml=g.photo
+        ?`<img class="group-avatar" src="${g.photo}" style="border-radius:50%;"/>`
+        :`<div class="group-avatar">${g.name[0].toUpperCase()}</div>`;
+      return `<div class="group-item" onclick="openGroup(${g.id},'${escHtml(g.name)}')">
+        ${avatarHtml}
+        <div class="group-info">
+          <div class="group-name">${g.name}</div>
+          <div class="group-role">${g.role==='admin'?'👑 Admin':'Membre'}</div>
+        </div>
+        <div class="group-arrow">›</div>
+      </div>`;
+    }).join('');
+}
+
+function renderFriendsList(){
+  const el=document.getElementById('friends-select-list');
+  el.innerHTML=friends.map(f=>`
+    <div class="friend-select-item" onclick="toggleFriend(${f.id},this)">
+      <div class="fsi-check" id="check_${f.id}"></div>
+      ${f.photo?`<img class="fsi-avatar" src="${f.photo}"/>`:`<div class="fsi-avatar" style="background:#e8547a;display:flex;align-items:center;justify-content:center;font-weight:700;color:white;">${f.prenom[0]}</div>`}
+      <div class="fsi-name">${f.prenom} ${f.nom}</div>
+    </div>
+  `).join('');
+}
+
+function toggleFriend(id, el){
+  const check=document.getElementById('check_'+id);
+  if(selectedFriends.has(id)){
+    selectedFriends.delete(id);
+    check.classList.remove('selected');
+    check.textContent='';
+  } else {
+    selectedFriends.add(id);
+    check.classList.add('selected');
+    check.textContent='✓';
+  }
+}
+
+function escHtml(s){ return s.replace(/'/g,"\\'"); }
+
+function openGroup(id, name){
+  localStorage.setItem('currentGroup',JSON.stringify({id,name}));
+  window.location.href='group-chat.html';
+}
+
+async function respondInvite(groupId, accepted){
+  const ws=new WebSocket("wss://didactic-disco-q795wwrqxg45c697p-8000.app.github.dev/ws");
+  ws.onopen=()=>{
+    ws.send(JSON.stringify({user_id:me.id}));
+    setTimeout(()=>{
+      ws.send(JSON.stringify({action:'group_invite_response',group_id:groupId,accepted}));
+      setTimeout(()=>{ws.close();loadAll();},300);
+    },200);
+  };
+}
+
+function openCreateSheet(){
+  document.getElementById('sheet-overlay').classList.add('active');
+  document.getElementById('create-sheet').style.display='block';
+  selectedFriends.clear();
+  renderFriendsList();
+}
+function closeCreateSheet(){
+  document.getElementById('sheet-overlay').classList.remove('active');
+  document.getElementById('create-sheet').style.display='none';
+}
+
+async function createGroup(){
+  const name=document.getElementById('group-name-input').value.trim();
+  if(!name){alert('Donne un nom au groupe');return;}
+  if(!selectedFriends.size){alert('Ajoute au moins un membre');return;}
+  const res=await fetch(`${API}/groups/create`,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({name,created_by:me.id,members:[...selectedFriends]})
+  });
+  const data=await res.json();
+  if(data.ok){closeCreateSheet();loadAll();}
+}
+
+loadAll();
+</script>
+</body>
+</html>

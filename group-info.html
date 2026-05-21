@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Info groupe</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;}
+body{display:flex;justify-content:center;background:#000;}
+.shell{width:100%;max-width:480px;min-height:100vh;background:linear-gradient(180deg,#1a0a0f 0%,#0d0010 40%,#0a0015 100%);}
+
+.topbar{padding:14px 16px;display:flex;align-items:center;gap:10px;background:rgba(0,0,0,.4);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.08);position:sticky;top:0;z-index:10;}
+.back{cursor:pointer;font-size:20px;background:none;border:none;color:white;padding:4px 8px 4px 0;}
+.topbar h2{margin:0;font-size:17px;font-weight:700;color:white;flex:1;}
+
+.group-header{display:flex;flex-direction:column;align-items:center;padding:30px 20px 20px;}
+.group-big-avatar{width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,#e8547a,#c73b8a);display:flex;align-items:center;justify-content:center;font-size:36px;color:white;font-weight:700;margin-bottom:12px;overflow:hidden;}
+.group-big-avatar img{width:100%;height:100%;object-fit:cover;}
+.group-big-name{font-size:22px;font-weight:700;color:white;}
+.group-big-count{font-size:14px;color:rgba(255,255,255,.4);margin-top:4px;}
+
+.section-title{font-size:11px;font-weight:700;color:rgba(255,255,255,.4);padding:16px 16px 8px;letter-spacing:.5px;}
+
+.member-item{display:flex;align-items:center;gap:12px;padding:12px 16px;}
+.member-avatar{width:44px;height:44px;border-radius:50%;object-fit:cover;flex-shrink:0;}
+.member-avatar-ph{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;color:white;flex-shrink:0;}
+.member-info{flex:1;min-width:0;}
+.member-name{font-size:15px;font-weight:600;color:white;}
+.member-role{font-size:12px;color:rgba(255,255,255,.4);margin-top:1px;}
+.member-actions{display:flex;gap:6px;}
+.member-btn{background:rgba(255,255,255,.08);border:none;color:white;padding:6px 10px;border-radius:10px;font-size:12px;cursor:pointer;}
+.member-btn.danger{color:#ff4444;}
+
+.action-btn{display:flex;align-items:center;gap:14px;padding:14px 16px;cursor:pointer;border:none;background:none;width:100%;text-align:left;}
+.action-btn:active{background:rgba(255,255,255,.04);}
+.action-btn svg{width:20px;height:20px;flex-shrink:0;opacity:.7;}
+.action-btn span{font-size:15px;color:white;}
+.action-btn.danger svg,.action-btn.danger span{color:#ff4444;opacity:1;}
+
+.divider{height:1px;background:rgba(255,255,255,.06);margin:0 16px;}
+
+/* Sheet ajouter membre */
+.sheet-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:100;}
+.sheet-overlay.active{display:block;}
+.sheet{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#1a1a1a;border-radius:20px 20px 0 0;z-index:101;padding:0 0 30px;max-height:70vh;overflow-y:auto;}
+.sheet-handle{width:36px;height:4px;background:rgba(255,255,255,.2);border-radius:2px;margin:12px auto;}
+.sheet-title{font-size:16px;font-weight:700;color:white;text-align:center;padding:0 0 14px;}
+.friend-add-item{display:flex;align-items:center;gap:12px;padding:10px 16px;cursor:pointer;}
+.friend-add-item:active{background:rgba(255,255,255,.04);}
+.fai-avatar{width:40px;height:40px;border-radius:50%;object-fit:cover;}
+.fai-name{font-size:15px;color:white;flex:1;}
+.fai-add-btn{background:linear-gradient(135deg,#e8547a,#c73b8a);border:none;color:white;padding:6px 14px;border-radius:12px;font-size:13px;cursor:pointer;}
+</style>
+</head>
+<body>
+<div class="shell">
+  <div class="topbar">
+    <button class="back" onclick="location.href='group-chat.html'">←</button>
+    <h2>Infos du groupe</h2>
+  </div>
+
+  <div class="group-header">
+    <div class="group-big-avatar" id="group-big-avatar"></div>
+    <div class="group-big-name" id="group-big-name"></div>
+    <div class="group-big-count" id="group-big-count"></div>
+  </div>
+
+  <div class="section-title">MEMBRES</div>
+  <div id="members-list"></div>
+
+  <div class="divider"></div>
+  <div id="admin-actions"></div>
+  <div class="divider"></div>
+
+  <button class="action-btn danger" onclick="leaveGroup()" style="margin-top:8px;">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+    <span>Quitter le groupe</span>
+  </button>
+</div>
+
+<div class="sheet-overlay" id="sheet-overlay" onclick="closeAddSheet()"></div>
+<div class="sheet" id="add-sheet" style="display:none;">
+  <div class="sheet-handle"></div>
+  <div class="sheet-title">Ajouter un membre</div>
+  <div id="friends-add-list"></div>
+</div>
+
+<script>
+const API    = "https://didactic-disco-q795wwrqxg45c697p-8000.app.github.dev";
+const WS_URL = "wss://didactic-disco-q795wwrqxg45c697p-8000.app.github.dev/ws";
+const me     = JSON.parse(localStorage.getItem('me'));
+const group  = JSON.parse(localStorage.getItem('currentGroup'));
+if(!me||!group) window.location.href='groups.html';
+
+let members=[], myRole='member', friends=[];
+let ws=null;
+
+function connectWS(){
+  ws=new WebSocket(WS_URL);
+  ws.onopen=()=>{ws.send(JSON.stringify({user_id:me.id}));};
+}
+
+async function loadAll(){
+  const [membersRes, friendsRes, groupsRes] = await Promise.all([
+    fetch(`${API}/group/${group.id}/members`),
+    fetch(`${API}/friends/${me.id}`),
+    fetch(`${API}/groups/${me.id}`)
+  ]);
+  members  = await membersRes.json();
+  friends  = await friendsRes.json();
+  const myGroups = await groupsRes.json();
+  const myGroup  = myGroups.find(g=>String(g.id)===String(group.id));
+  myRole   = myGroup?.role||'member';
+
+  renderGroupHeader();
+  renderMembers();
+  renderAdminActions();
+}
+
+function renderGroupHeader(){
+  const el=document.getElementById('group-big-avatar');
+  el.textContent=group.name[0].toUpperCase();
+  document.getElementById('group-big-name').textContent=group.name;
+  const accepted=members.filter(m=>m.status==='accepted');
+  document.getElementById('group-big-count').textContent=`${accepted.length} membre${accepted.length>1?'s':''}`;
+}
+
+const COLORS=['#e8547a','#9b59b6','#3498db','#e67e22','#2ecc71'];
+function memberColor(id){ return COLORS[Math.abs(parseInt(id||0))%COLORS.length]; }
+
+function renderMembers(){
+  const el=document.getElementById('members-list');
+  const accepted=members.filter(m=>m.status==='accepted');
+  el.innerHTML=accepted.map(m=>{
+    const isMe=String(m.id)===String(me.id);
+    const color=memberColor(m.id);
+    const avatarEl=m.photo
+      ?`<img class="member-avatar" src="${m.photo}"/>`
+      :`<div class="member-avatar-ph" style="background:${color};">${m.prenom[0].toUpperCase()}</div>`;
+    const roleLabel=m.role==='admin'?'👑 Admin':'Membre';
+    let actions='';
+    if(myRole==='admin'&&!isMe){
+      actions=`<div class="member-actions">
+        ${m.role!=='admin'?`<button class="member-btn" onclick="makeAdmin(${m.id})">👑 Admin</button>`:''}
+        <button class="member-btn danger" onclick="removeMember(${m.id})">Retirer</button>
+      </div>`;
+    }
+    return `<div class="member-item">
+      ${avatarEl}
+      <div class="member-info">
+        <div class="member-name">${m.prenom} ${m.nom}${isMe?' (Vous)':''}</div>
+        <div class="member-role">${roleLabel}</div>
+      </div>
+      ${actions}
+    </div>`;
+  }).join('');
+}
+
+function renderAdminActions(){
+  const el=document.getElementById('admin-actions');
+  if(myRole!=='admin'){el.innerHTML='';return;}
+  el.innerHTML=`
+    <button class="action-btn" onclick="openAddSheet()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      <span>Ajouter un membre</span>
+    </button>
+  `;
+}
+
+function makeAdmin(userId){
+  if(!confirm('Rendre cet utilisateur admin ?'))return;
+  ws?.send(JSON.stringify({action:'group_make_admin',group_id:group.id,user_id:userId}));
+  setTimeout(loadAll,400);
+}
+
+function removeMember(userId){
+  if(!confirm('Retirer ce membre ?'))return;
+  ws?.send(JSON.stringify({action:'group_remove_member',group_id:group.id,user_id:userId}));
+  setTimeout(loadAll,400);
+}
+
+function leaveGroup(){
+  if(!confirm('Quitter ce groupe ?'))return;
+  ws?.send(JSON.stringify({action:'group_leave',group_id:group.id}));
+  setTimeout(()=>window.location.href='groups.html',400);
+}
+
+function openAddSheet(){
+  // Filtrer les amis qui ne sont pas encore membres
+  const memberIds=new Set(members.map(m=>String(m.id)));
+  const available=friends.filter(f=>!memberIds.has(String(f.id)));
+  const el=document.getElementById('friends-add-list');
+  if(!available.length){el.innerHTML='<div style="text-align:center;color:rgba(255,255,255,.3);padding:20px;">Tous tes amis sont déjà membres</div>';}
+  else{
+    el.innerHTML=available.map(f=>`
+      <div class="friend-add-item">
+        ${f.photo?`<img class="fai-avatar" src="${f.photo}"/>`:`<div class="fai-avatar" style="background:#e8547a;display:flex;align-items:center;justify-content:center;font-weight:700;color:white;">${f.prenom[0]}</div>`}
+        <div class="fai-name">${f.prenom} ${f.nom}</div>
+        <button class="fai-add-btn" onclick="addMember(${f.id})">Inviter</button>
+      </div>
+    `).join('');
+  }
+  document.getElementById('sheet-overlay').classList.add('active');
+  document.getElementById('add-sheet').style.display='block';
+}
+
+function closeAddSheet(){
+  document.getElementById('sheet-overlay').classList.remove('active');
+  document.getElementById('add-sheet').style.display='none';
+}
+
+function addMember(userId){
+  ws?.send(JSON.stringify({action:'group_add_member',group_id:group.id,user_id:userId}));
+  closeAddSheet();
+  showToast('Invitation envoyée ✓');
+}
+
+function showToast(msg){
+  const t=document.createElement('div');t.textContent=msg;
+  t.style.cssText='position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.88);color:white;padding:10px 18px;border-radius:20px;font-size:13px;z-index:300;';
+  document.body.appendChild(t);setTimeout(()=>t.remove(),2000);
+}
+
+connectWS();
+loadAll();
+</script>
+</body>
+</html>

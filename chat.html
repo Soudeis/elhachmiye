@@ -499,17 +499,30 @@ function toggleVocal(uid){
     document.querySelectorAll('audio').forEach(a=>{if(a!==audio){a.pause();resetVocalBtn(a.id.replace('audio_',''));}});
     audio.play().then(()=>{
       if(btn)btn.textContent='⏸';
-      // Mini player global
-      if(window.GlobalAudioPlayer){
-        const m=messages.find(m=>m.msg_id===uid||m.msg_id===uid);
-        const name=String(m?.from)===String(me.id)?'Toi':friend.prenom;
-        window.GlobalAudioPlayer.play(audio.src, name, null, audio.currentTime);
-      }
+      // Sauvegarder avec chatId = friend.id
+      // PAS de barre globale dans ce chat — juste sauvegarder pour autres pages
+      const m=messages.find(m=>m.msg_id===uid);
+      const name=String(m?.from)===String(me.id)?'Toi':friend.prenom;
+      localStorage.setItem('currentAudio', JSON.stringify({
+        url: audio.src,
+        name: name,
+        photo: null,
+        position: audio.currentTime,
+        chatId: String(friend.id),
+      }));
     }).catch(()=>{});
   } else {
-    audio.pause();if(btn)btn.textContent='▶';
+    audio.pause();
+    if(btn)btn.textContent='▶';
+    // Mettre à jour position
+    const state=JSON.parse(localStorage.getItem('currentAudio')||'null');
+    if(state&&state.chatId===String(friend.id)){
+      state.position=audio.currentTime;
+      localStorage.setItem('currentAudio',JSON.stringify(state));
+    }
   }
 }
+
 function updateVocalBar(uid){
   const audio=document.getElementById('audio_'+uid);
   if(!audio||!audio.duration)return;
@@ -521,6 +534,12 @@ function updateVocalBar(uid){
   });
   const dur=document.getElementById('dur_'+uid);
   if(dur){const s=Math.floor(audio.currentTime);dur.textContent=`${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;}
+  // Mettre à jour position sauvegardée
+  const state=JSON.parse(localStorage.getItem('currentAudio')||'null');
+  if(state&&state.chatId===String(friend.id)){
+    state.position=audio.currentTime;
+    localStorage.setItem('currentAudio',JSON.stringify(state));
+  }
 }
 function resetVocal(uid){
   resetVocalBtn(uid);

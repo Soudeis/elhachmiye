@@ -3,263 +3,568 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-   <script src="audio-player.js"></script>
-<link rel="manifest" href="manifest.json"/>
-<meta name="theme-color" content="#1e90ff"/>
-<meta name="mobile-web-app-capable" content="yes"/>
-<meta name="apple-mobile-web-app-capable" content="yes"/>
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
-<meta name="apple-mobile-web-app-title" content="ChatApp"/>
-<link rel="apple-touch-icon" href="icon.png"/>
-<title>Viewer</title>
+<title>Viewer - NikahConnect</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
-html,body{width:100%;height:100%;font-family:Arial,sans-serif;overflow:hidden;}
-body{display:flex;justify-content:center;background:linear-gradient(135deg,#1a1a2e,#6a0572,#c0392b);}
-.shell{width:100%;max-width:480px;height:100vh;display:flex;flex-direction:column;position:relative;}
+html,body{width:100%;height:100%;background:#000;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;}
 
-.topbar{position:absolute;top:0;left:0;right:0;z-index:10;padding:14px 16px;display:flex;align-items:center;gap:10px;background:linear-gradient(to bottom,rgba(0,0,0,.5),transparent);}
-.back{cursor:pointer;font-size:22px;background:none;border:none;color:white;padding:4px 8px 4px 0;}
-.topbar-title{flex:1;color:white;font-size:16px;font-weight:600;}
-.topbar-time{color:rgba(255,255,255,.7);font-size:13px;}
+/* ── Base ── */
+.viewer{width:100%;height:100vh;position:relative;display:flex;align-items:center;justify-content:center;}
 
-#image-viewer{display:none;flex:1;align-items:center;justify-content:center;background:#000;overflow:hidden;cursor:zoom-in;}
-#image-viewer img{max-width:100%;max-height:100vh;object-fit:contain;transition:transform .3s ease;user-select:none;}
+/* ── Background blur ── */
+.bg-blur{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center;filter:blur(40px) brightness(.35) saturate(1.4);transform:scale(1.1);transition:background-image .4s ease;}
 
-#video-viewer{display:none;flex:1;flex-direction:column;align-items:center;justify-content:center;background:#000;}
-#video-viewer video{width:100%;max-height:80vh;object-fit:contain;}
+/* ── Topbar ── */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:50;padding:54px 20px 16px;display:flex;align-items:center;gap:12px;background:linear-gradient(to bottom,rgba(0,0,0,.7) 0%,transparent 100%);}
+.back-btn{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.12);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:.2s;}
+.back-btn:active{transform:scale(.9);}
+.back-btn svg{width:18px;height:18px;stroke:#fff;}
+.topbar-info{flex:1;min-width:0;}
+.topbar-name{font-size:15px;font-weight:700;color:#fff;}
+.topbar-time{font-size:12px;color:rgba(255,255,255,.5);margin-top:1px;}
+.topbar-actions{display:flex;gap:8px;}
+.action-btn{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.12);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.2s;}
+.action-btn:active{transform:scale(.9);}
+.action-btn svg{width:18px;height:18px;stroke:#fff;}
 
-#audio-viewer{
-  display:none;flex:1;flex-direction:column;align-items:center;justify-content:center;
-  background:linear-gradient(135deg,#1a1a2e 0%,#6a0572 40%,#c0392b 100%);
-  position:relative;overflow:hidden;padding:20px;
+/* ── Media container ── */
+.media-wrap{position:relative;z-index:10;width:100%;height:100%;display:flex;align-items:center;justify-content:center;}
+
+/* ── IMAGE ── */
+.img-container{position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.main-image{
+  max-width:100%;
+  max-height:100vh;
+  width:auto;
+  height:auto;
+  object-fit:contain;
+  border-radius:0;
+  display:block;
+  transition:transform .3s cubic-bezier(.4,0,.2,1),opacity .4s ease;
+  transform-origin:center center;
+  cursor:zoom-in;
+  will-change:transform;
 }
-.bg-circle{position:absolute;border-radius:50%;opacity:.1;}
-.bg-circle-1{width:300px;height:300px;background:#fff;top:-80px;right:-80px;}
-.bg-circle-2{width:200px;height:200px;background:#e74c3c;bottom:-60px;left:-60px;}
-.bg-circle-3{width:150px;height:150px;background:#9b59b6;top:50%;left:50%;transform:translate(-50%,-50%);}
+.main-image.zoomed{cursor:zoom-out;}
 
-.audio-avatar{
-  width:110px;height:110px;border-radius:50%;
-  background:linear-gradient(135deg,#9b59b6,#c0392b);
-  display:flex;align-items:center;justify-content:center;
-  font-size:44px;margin-bottom:28px;position:relative;z-index:1;
-  box-shadow:0 0 0 12px rgba(192,57,43,.2),0 0 0 24px rgba(192,57,43,.1);
+/* ── VIDEO ── */
+.video-container{position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center;}
+.main-video{
+  max-width:100%;
+  max-height:100vh;
+  width:auto;
+  height:auto;
+  object-fit:contain;
+  display:block;
+  border-radius:0;
 }
-.audio-avatar.playing{animation:avatarPulse 1.5s ease-in-out infinite;}
-@keyframes avatarPulse{
-  0%,100%{box-shadow:0 0 0 12px rgba(192,57,43,.2),0 0 0 24px rgba(192,57,43,.1);}
-  50%{box-shadow:0 0 0 20px rgba(192,57,43,.3),0 0 0 40px rgba(192,57,43,.15);}
+
+/* ── Video controls custom ── */
+.video-controls{
+  position:fixed;bottom:0;left:0;right:0;z-index:50;
+  padding:0 20px 40px;
+  background:linear-gradient(to top,rgba(0,0,0,.8) 0%,transparent 100%);
+  transition:opacity .3s;
 }
-.audio-label{color:white;font-size:18px;font-weight:700;margin-bottom:6px;position:relative;z-index:1;text-align:center;}
-.audio-from{color:rgba(255,255,255,.6);font-size:13px;margin-bottom:32px;position:relative;z-index:1;}
-.audio-error{color:#ff6b6b;font-size:12px;margin-top:8px;position:relative;z-index:1;text-align:center;display:none;}
+.video-controls.hidden{opacity:0;pointer-events:none;}
 
-.waveform-container{width:90%;max-width:340px;height:80px;position:relative;z-index:1;margin-bottom:24px;display:flex;align-items:center;gap:3px;cursor:pointer;}
-.waveform-bar{flex:1;border-radius:3px;background:rgba(255,255,255,.2);transition:background .1s;min-height:4px;}
-.waveform-bar.played{background:rgba(255,255,255,.85);}
-.waveform-bar.active{background:white;}
+.progress-wrap{margin-bottom:14px;position:relative;cursor:pointer;padding:8px 0;}
+.progress-bg{height:3px;background:rgba(255,255,255,.2);border-radius:2px;overflow:hidden;transition:height .2s;}
+.progress-wrap:hover .progress-bg{height:5px;}
+.progress-fill{height:100%;background:linear-gradient(90deg,#f5c518,#ffe066);border-radius:2px;transition:width .1s linear;}
+.progress-thumb{position:absolute;top:50%;width:14px;height:14px;border-radius:50%;background:#f5c518;transform:translate(-50%,-50%);box-shadow:0 2px 8px rgba(245,197,24,.6);opacity:0;transition:opacity .2s;pointer-events:none;}
+.progress-wrap:hover .progress-thumb{opacity:1;}
 
-.audio-progress-bar{width:90%;max-width:340px;height:4px;background:rgba(255,255,255,.2);border-radius:2px;position:relative;z-index:1;margin-bottom:12px;cursor:pointer;}
-.audio-progress-fill{height:100%;background:white;border-radius:2px;width:0%;transition:width .1s linear;position:relative;}
-.audio-progress-fill::after{content:'';position:absolute;right:-6px;top:50%;transform:translateY(-50%);width:12px;height:12px;border-radius:50%;background:white;}
-
-.audio-timer{color:rgba(255,255,255,.8);font-size:14px;margin-bottom:32px;position:relative;z-index:1;letter-spacing:.5px;}
-.audio-controls{display:flex;align-items:center;gap:24px;position:relative;z-index:1;}
-.ctrl-btn{background:none;border:none;color:rgba(255,255,255,.7);cursor:pointer;font-size:28px;padding:8px;transition:.2s;}
+.controls-row{display:flex;align-items:center;gap:16px;}
+.ctrl-btn{background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s;padding:4px;}
 .ctrl-btn:active{transform:scale(.9);}
-.play-btn{width:70px;height:70px;border-radius:50%;border:none;cursor:pointer;background:white;color:#c0392b;font-size:28px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,0,0,.3);transition:.2s;}
-.play-btn:active{transform:scale(.95);}
+.ctrl-btn svg{width:22px;height:22px;stroke:#fff;}
+.ctrl-btn.play-btn svg{width:28px;height:28px;}
+.time-display{font-size:13px;color:rgba(255,255,255,.7);font-weight:500;min-width:90px;}
+.volume-wrap{display:flex;align-items:center;gap:8px;flex:1;justify-content:flex-end;}
+.volume-slider{-webkit-appearance:none;width:80px;height:3px;border-radius:2px;background:rgba(255,255,255,.2);outline:none;cursor:pointer;}
+.volume-slider::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:#f5c518;cursor:pointer;box-shadow:0 2px 6px rgba(245,197,24,.5);}
+.fullscreen-btn{background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.fullscreen-btn svg{width:20px;height:20px;stroke:#fff;}
+
+/* ── Loader ── */
+.media-loader{position:absolute;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.3);}
+.loader-ring{width:48px;height:48px;border:3px solid rgba(255,255,255,.15);border-top-color:#f5c518;border-radius:50%;animation:spin 1s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* ── Pinch zoom indicator ── */
+.zoom-indicator{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.6);backdrop-filter:blur(10px);color:#fff;font-size:18px;font-weight:700;padding:12px 20px;border-radius:30px;z-index:100;opacity:0;transition:opacity .2s;pointer-events:none;}
+.zoom-indicator.show{opacity:1;}
+
+/* ── Swipe hint ── */
+.swipe-hint{position:fixed;bottom:120px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:6px;background:rgba(0,0,0,.5);backdrop-filter:blur(8px);padding:8px 16px;border-radius:20px;font-size:12px;color:rgba(255,255,255,.6);z-index:40;opacity:1;transition:opacity .5s;}
+.swipe-hint.hidden{opacity:0;}
+
+/* ── Download toast ── */
+.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.85);backdrop-filter:blur(12px);color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;z-index:200;white-space:nowrap;border:1px solid rgba(245,197,24,.3);opacity:0;transition:opacity .3s;}
+.toast.show{opacity:1;}
+
+/* ── Error state ── */
+.error-state{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;color:#fff;text-align:center;padding:40px;}
+.error-icon{width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:28px;}
 </style>
 </head>
 <body>
-<div class="shell">
-  <div class="topbar">
-    <button class="back" onclick="history.back()">←</button>
-    <span class="topbar-title" id="topbar-title"></span>
-    <span class="topbar-time" id="topbar-time"></span>
+
+<div class="viewer" id="viewer">
+
+  <!-- Fond flouté -->
+  <div class="bg-blur" id="bg-blur"></div>
+
+  <!-- Topbar -->
+  <div class="topbar" id="topbar">
+    <button class="back-btn" onclick="goBack()">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <div class="topbar-info">
+      <div class="topbar-name" id="topbar-name"></div>
+      <div class="topbar-time" id="topbar-time"></div>
+    </div>
+    <div class="topbar-actions">
+      <button class="action-btn" id="download-btn" onclick="downloadMedia()" title="Télécharger">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      </button>
+    </div>
   </div>
 
-  <div id="image-viewer"><img id="viewer-img" src="" alt=""/></div>
-
-  <div id="video-viewer"><video id="viewer-video" controls playsinline></video></div>
-
-  <div id="audio-viewer">
-    <div class="bg-circle bg-circle-1"></div>
-    <div class="bg-circle bg-circle-2"></div>
-    <div class="bg-circle bg-circle-3"></div>
-    <div class="audio-avatar" id="audio-avatar">🎵</div>
-    <div class="audio-label" id="audio-label">Audio</div>
-    <div class="audio-from" id="audio-from"></div>
-    <div class="audio-error" id="audio-error"></div>
-    <div class="waveform-container" id="waveform" onclick="seekByWaveform(event)"></div>
-    <div class="audio-progress-bar" id="audio-progress-bar" onclick="seekByBar(event)">
-      <div class="audio-progress-fill" id="audio-progress-fill"></div>
+  <!-- Zone média -->
+  <div class="media-wrap" id="media-wrap">
+    <div class="media-loader" id="media-loader">
+      <div class="loader-ring"></div>
     </div>
-    <div class="audio-timer" id="audio-timer">0:00 / 0:00</div>
-    <div class="audio-controls">
-      <button class="ctrl-btn" onclick="skip(-10)">⏪</button>
-      <button class="play-btn" id="play-btn" onclick="togglePlay()">▶</button>
-      <button class="ctrl-btn" onclick="skip(10)">⏩</button>
-    </div>
-    <audio id="viewer-audio"></audio>
   </div>
+
+  <!-- Indicateur zoom -->
+  <div class="zoom-indicator" id="zoom-indicator">100%</div>
+
+  <!-- Hint swipe (image only) -->
+  <div class="swipe-hint" id="swipe-hint">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+    Pincez pour zoomer
+  </div>
+
+  <div class="toast" id="toast"></div>
 </div>
 
 <script>
-const media = JSON.parse(localStorage.getItem('viewerMedia') || '{}');
-const { url, type, from, time } = media;
-if (!url) { history.back(); }
-document.getElementById('topbar-time').textContent = time || '';
+const mediaData = JSON.parse(localStorage.getItem('viewerMedia') || 'null');
 
-if (type === 'image') {
-  document.getElementById('topbar-title').textContent = 'Photo';
-  document.querySelector('body').style.background = '#000';
-  const viewer = document.getElementById('image-viewer');
-  viewer.style.display = 'flex';
-  const img = document.getElementById('viewer-img');
-  img.src = url;
-  let zoomed = false;
-  img.addEventListener('dblclick', () => {
-    zoomed = !zoomed;
-    img.style.transform = zoomed ? 'scale(2)' : 'scale(1)';
-    viewer.style.cursor = zoomed ? 'zoom-out' : 'zoom-in';
-  });
-  let initialDistance = 0;
-  viewer.addEventListener('touchstart', e => {
-    if (e.touches.length === 2) {
-      initialDistance = Math.hypot(
-        e.touches[0].clientX - e.touches[1].clientX,
-        e.touches[0].clientY - e.touches[1].clientY
-      );
-    }
-  });
-  viewer.addEventListener('touchmove', e => {
-    if (e.touches.length === 2) {
+if(!mediaData || !mediaData.url){
+  document.getElementById('media-wrap').innerHTML = `
+    <div class="error-state">
+      <div class="error-icon">⚠️</div>
+      <div style="font-size:16px;font-weight:600;">Média introuvable</div>
+      <button onclick="goBack()" style="margin-top:8px;padding:10px 24px;border:none;border-radius:12px;background:#f5c518;color:#1a1a1a;font-weight:700;cursor:pointer;">Retour</button>
+    </div>`;
+  document.getElementById('media-loader').style.display='none';
+  document.getElementById('swipe-hint').style.display='none';
+} else {
+  init();
+}
+
+function goBack(){ history.back(); }
+
+function init(){
+  const {url, type, from, time} = mediaData;
+  document.getElementById('topbar-name').textContent = from || '';
+  document.getElementById('topbar-time').textContent = time || '';
+
+  if(type === 'image' || (!type && /\.(jpg|jpeg|png|gif|webp)/i.test(url))){
+    initImage(url);
+  } else {
+    initVideo(url);
+  }
+}
+
+// ════════════════════════════════
+// IMAGE
+// ════════════════════════════════
+let scale=1, minScale=1, maxScale=5;
+let isDragging=false, startX=0, startY=0, translateX=0, translateY=0;
+let lastTapTime=0;
+let pinchStartDist=0, pinchStartScale=1;
+
+function initImage(url){
+  document.getElementById('swipe-hint').style.display='flex';
+  setTimeout(()=>document.getElementById('swipe-hint').classList.add('hidden'),3000);
+
+  // Fond flouté
+  document.getElementById('bg-blur').style.backgroundImage=`url('${url}')`;
+
+  const wrap = document.getElementById('media-wrap');
+  wrap.innerHTML=`
+    <div class="img-container" id="img-container">
+      <img class="main-image" id="main-img" src="${url}" alt=""
+        onload="onImageLoad()" onerror="onMediaError()"/>
+    </div>`;
+
+  document.getElementById('media-loader').style.display='flex';
+
+  const img = document.getElementById('main-img');
+
+  // Double tap zoom
+  img.addEventListener('click', e=>{
+    const now=Date.now();
+    if(now-lastTapTime<300){
       e.preventDefault();
-      const dist = Math.hypot(
-        e.touches[0].clientX - e.touches[1].clientX,
-        e.touches[0].clientY - e.touches[1].clientY
-      );
-      img.style.transform = `scale(${Math.min(5, Math.max(1, dist / initialDistance))})`;
+      if(scale>1){ resetZoom(); } else { zoomTo(2.5, e.clientX, e.clientY); }
     }
-  }, { passive: false });
-}
-
-else if (type === 'video') {
-  document.getElementById('topbar-title').textContent = 'Vidéo';
-  document.querySelector('body').style.background = '#000';
-  document.getElementById('video-viewer').style.display = 'flex';
-  document.getElementById('viewer-video').src = url;
-}
-
-else if (type === 'audio') {
-  const isVocal = media.isVocal || false;
-  document.getElementById('topbar-title').textContent = isVocal ? 'Message vocal' : 'Audio';
-  document.getElementById('audio-label').textContent  = isVocal ? '🎤 Vocal' : '🎵 Audio';
-  document.getElementById('audio-from').textContent   = from ? `De ${from}` : '';
-  document.getElementById('audio-avatar').textContent = isVocal ? '🎤' : '🎵';
-  document.getElementById('audio-viewer').style.display = 'flex';
-
-  const audio = document.getElementById('viewer-audio');
-
-  // Fix CORS mobile
-  audio.preload = "auto";
-audio.src     = url;
-audio.load();
-
-  const BARS   = 40;
-  const waveEl = document.getElementById('waveform');
-  const heights = Array.from({length: BARS}, () => Math.random() * 60 + 20);
-  heights.forEach((h, i) => {
-    const bar = document.createElement('div');
-    bar.className   = 'waveform-bar';
-    bar.style.height = h + '%';
-    waveEl.appendChild(bar);
+    lastTapTime=now;
   });
 
-  function formatTime(s) {
-    const m = Math.floor(s / 60);
-    return `${m}:${String(Math.floor(s % 60)).padStart(2,'0')}`;
-  }
+  // Touch pinch & drag
+  img.addEventListener('touchstart', onTouchStart, {passive:false});
+  img.addEventListener('touchmove',  onTouchMove,  {passive:false});
+  img.addEventListener('touchend',   onTouchEnd,   {passive:false});
 
-  function updateUI() {
-    const cur = audio.currentTime || 0;
-    const dur = audio.duration   || 0;
-    document.getElementById('audio-timer').textContent =
-      `${formatTime(cur)} / ${formatTime(dur)}`;
-    document.getElementById('audio-progress-fill').style.width =
-      dur ? (cur / dur * 100) + '%' : '0%';
-    if (dur) {
-      const pct    = cur / dur;
-      const played = Math.floor(pct * BARS);
-      document.querySelectorAll('.waveform-bar').forEach((bar, i) => {
-        bar.className = 'waveform-bar' +
-          (i < played ? ' played' : i === played ? ' active' : '');
-      });
-    }
-  }
+  // Mouse drag
+  img.addEventListener('mousedown',  onMouseDown);
+  document.addEventListener('mousemove', onMouseMove);
+  document.addEventListener('mouseup',   onMouseUp);
 
-  audio.addEventListener('loadedmetadata', updateUI);
-  audio.addEventListener('timeupdate',     updateUI);
-  audio.addEventListener('ended', () => {
-    document.getElementById('play-btn').textContent = '▶';
-    document.getElementById('audio-avatar').classList.remove('playing');
-    audio.currentTime = 0;
-    updateUI();
-  });
-
-  function showError(err) {
-    const el = document.getElementById('audio-error');
-    el.textContent = '⚠️ ' + (err.message || err.name || 'Erreur lecture');
-    el.style.display = 'block';
-  }
-
-  window.togglePlay = function() {
-    const btn = document.getElementById('play-btn');
-    const av  = document.getElementById('audio-avatar');
-    document.getElementById('audio-error').style.display = 'none';
-
-    if (audio.paused) {
-      audio.play()
-        .then(() => { btn.textContent='⏸'; av.classList.add('playing'); })
-        .catch(err => { showError(err); console.error(err); });
-    } else {
-      audio.pause();
-      btn.textContent = '▶';
-      av.classList.remove('playing');
-    }
-  };
-
-  window.skip = function(sec) {
-    if (!audio.duration) return;
-    audio.currentTime = Math.max(0, Math.min(audio.duration, audio.currentTime + sec));
-  };
-
-  function playIfPaused() {
-    if (audio.paused && audio.duration) {
-      audio.play()
-        .then(() => {
-          document.getElementById('play-btn').textContent = '⏸';
-          document.getElementById('audio-avatar').classList.add('playing');
-        }).catch(err => showError(err));
-    }
-  }
-
-  window.seekByWaveform = function(e) {
-    if (!audio.duration) return;
-    const rect = waveEl.getBoundingClientRect();
-    audio.currentTime = ((e.clientX - rect.left) / rect.width) * audio.duration;
-    playIfPaused();
-  };
-
-  window.seekByBar = function(e) {
-    if (!audio.duration) return;
-    const rect = document.getElementById('audio-progress-bar').getBoundingClientRect();
-    audio.currentTime = ((e.clientX - rect.left) / rect.width) * audio.duration;
-    playIfPaused();
-  };
+  // Wheel zoom
+  wrap.addEventListener('wheel', onWheel, {passive:false});
 }
+
+function onImageLoad(){
+  document.getElementById('media-loader').style.display='none';
+  const img=document.getElementById('main-img');
+  img.style.opacity='0';
+  requestAnimationFrame(()=>{
+    img.style.transition='opacity .4s ease';
+    img.style.opacity='1';
+  });
+}
+
+function onMediaError(){
+  document.getElementById('media-loader').style.display='none';
+  document.getElementById('media-wrap').innerHTML=`
+    <div class="error-state">
+      <div class="error-icon">🖼️</div>
+      <div style="font-size:15px;font-weight:600;color:#fff;">Impossible de charger le média</div>
+    </div>`;
+}
+
+// ── Zoom helpers ──
+function applyTransform(animate=false){
+  const img=document.getElementById('main-img'); if(!img) return;
+  img.style.transition=animate?'transform .3s cubic-bezier(.4,0,.2,1)':'none';
+  img.style.transform=`scale(${scale}) translate(${translateX/scale}px, ${translateY/scale}px)`;
+  img.classList.toggle('zoomed', scale>1);
+  showZoomIndicator();
+}
+
+function showZoomIndicator(){
+  const el=document.getElementById('zoom-indicator');
+  el.textContent=Math.round(scale*100)+'%';
+  el.classList.add('show');
+  clearTimeout(el._t);
+  el._t=setTimeout(()=>el.classList.remove('show'),1000);
+}
+
+function zoomTo(targetScale, cx, cy){
+  const img=document.getElementById('main-img'); if(!img) return;
+  const rect=img.getBoundingClientRect();
+  const ox=(cx-rect.left-rect.width/2);
+  const oy=(cy-rect.top-rect.height/2);
+  scale=Math.min(Math.max(targetScale, minScale), maxScale);
+  clampTranslate();
+  applyTransform(true);
+}
+
+function resetZoom(){
+  scale=1; translateX=0; translateY=0;
+  applyTransform(true);
+}
+
+function clampTranslate(){
+  const img=document.getElementById('main-img'); if(!img) return;
+  const maxTX=(img.naturalWidth*(scale-1))/2;
+  const maxTY=(img.naturalHeight*(scale-1))/2;
+  translateX=Math.min(Math.max(translateX,-maxTX),maxTX);
+  translateY=Math.min(Math.max(translateY,-maxTY),maxTY);
+}
+
+// ── Touch ──
+let touches=[];
+function onTouchStart(e){
+  touches=[...e.touches];
+  if(e.touches.length===2){
+    e.preventDefault();
+    pinchStartDist=getTouchDist(e.touches);
+    pinchStartScale=scale;
+  } else if(e.touches.length===1){
+    isDragging=true;
+    startX=e.touches[0].clientX-translateX;
+    startY=e.touches[0].clientY-translateY;
+  }
+}
+function onTouchMove(e){
+  if(e.touches.length===2){
+    e.preventDefault();
+    const dist=getTouchDist(e.touches);
+    scale=Math.min(Math.max(pinchStartScale*(dist/pinchStartDist),minScale),maxScale);
+    clampTranslate(); applyTransform();
+  } else if(isDragging&&scale>1){
+    e.preventDefault();
+    translateX=e.touches[0].clientX-startX;
+    translateY=e.touches[0].clientY-startY;
+    clampTranslate(); applyTransform();
+  }
+}
+function onTouchEnd(e){
+  isDragging=false;
+  if(scale<1.05){ resetZoom(); }
+}
+function getTouchDist(tl){
+  return Math.hypot(tl[0].clientX-tl[1].clientX, tl[0].clientY-tl[1].clientY);
+}
+
+// ── Mouse ──
+function onMouseDown(e){
+  if(scale<=1) return;
+  isDragging=true; startX=e.clientX-translateX; startY=e.clientY-translateY;
+  e.preventDefault();
+}
+function onMouseMove(e){
+  if(!isDragging||scale<=1) return;
+  translateX=e.clientX-startX; translateY=e.clientY-startY;
+  clampTranslate(); applyTransform();
+}
+function onMouseUp(){ isDragging=false; }
+
+// ── Wheel zoom ──
+function onWheel(e){
+  e.preventDefault();
+  const delta=e.deltaY>0?-0.15:0.15;
+  scale=Math.min(Math.max(scale+delta,minScale),maxScale);
+  clampTranslate(); applyTransform();
+}
+
+// ════════════════════════════════
+// VIDEO
+// ════════════════════════════════
+let videoEl=null, hideCtrlTimer=null, isSeeking=false;
+
+function initVideo(url){
+  document.getElementById('swipe-hint').style.display='none';
+
+  // Fond
+  document.getElementById('bg-blur').style.background='#000';
+
+  const wrap=document.getElementById('media-wrap');
+  wrap.innerHTML=`
+    <div class="video-container">
+      <video class="main-video" id="main-video" src="${url}" playsinline
+        onloadedmetadata="onVideoReady()"
+        ontimeupdate="onTimeUpdate()"
+        onended="onVideoEnded()"
+        onerror="onMediaError()"
+        onclick="togglePlay()">
+      </video>
+    </div>`;
+
+  // Controls
+  const controls=document.createElement('div');
+  controls.className='video-controls'; controls.id='video-controls';
+  controls.innerHTML=`
+    <div class="progress-wrap" id="progress-wrap">
+      <div class="progress-bg">
+        <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+      <div class="progress-thumb" id="progress-thumb" style="left:0%"></div>
+    </div>
+    <div class="controls-row">
+      <button class="ctrl-btn" id="skip-back-btn" onclick="skipTime(-10)">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.38"/><text x="8" y="14" font-size="6" fill="white" stroke="none" font-weight="700">10</text></svg>
+      </button>
+      <button class="ctrl-btn play-btn" id="play-btn" onclick="togglePlay()">
+        <svg id="play-icon" viewBox="0 0 24 24" fill="white" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      </button>
+      <button class="ctrl-btn" id="skip-fwd-btn" onclick="skipTime(10)">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-.49-4.38"/><text x="8" y="14" font-size="6" fill="white" stroke="none" font-weight="700">10</text></svg>
+      </button>
+      <div class="time-display" id="time-display">0:00 / 0:00</div>
+      <div class="volume-wrap">
+        <button class="ctrl-btn" onclick="toggleMute()">
+          <svg id="vol-icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+        </button>
+        <input class="volume-slider" type="range" min="0" max="1" step="0.05" value="1" oninput="setVolume(this.value)"/>
+      </div>
+      <button class="fullscreen-btn" onclick="toggleFullscreen()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+      </button>
+    </div>`;
+  document.body.appendChild(controls);
+
+  videoEl=document.getElementById('main-video');
+  document.getElementById('media-loader').style.display='flex';
+
+  // Progress seek
+  document.getElementById('progress-wrap').addEventListener('click', seekVideo);
+  document.getElementById('progress-wrap').addEventListener('mousedown', e=>{isSeeking=true;seekVideo(e);});
+  document.addEventListener('mousemove', e=>{if(isSeeking)seekVideo(e);});
+  document.addEventListener('mouseup',   ()=>isSeeking=false);
+  document.getElementById('progress-wrap').addEventListener('touchstart', e=>{isSeeking=true;seekVideoTouch(e);},{passive:true});
+  document.addEventListener('touchmove',  e=>{if(isSeeking)seekVideoTouch(e);},{passive:true});
+  document.addEventListener('touchend',   ()=>isSeeking=false);
+
+  // Auto hide controls
+  document.getElementById('video-controls').addEventListener('touchstart',resetHideCtrl);
+  document.getElementById('video-controls').addEventListener('mousemove',resetHideCtrl);
+  wrap.addEventListener('click', ()=>{ showControls(); resetHideCtrl(); });
+}
+
+function onVideoReady(){
+  document.getElementById('media-loader').style.display='none';
+  videoEl.play().catch(()=>{});
+  updatePlayIcon();
+  resetHideCtrl();
+  // Fond avec première frame
+  document.getElementById('bg-blur').style.backgroundImage=`url('${mediaData.url}')`;
+}
+
+function togglePlay(){
+  if(!videoEl) return;
+  if(videoEl.paused){ videoEl.play(); } else { videoEl.pause(); }
+  updatePlayIcon();
+  resetHideCtrl();
+}
+
+function updatePlayIcon(){
+  if(!videoEl) return;
+  const icon=document.getElementById('play-icon');
+  if(!icon) return;
+  if(videoEl.paused){
+    icon.innerHTML=`<polygon points="5 3 19 12 5 21 5 3"/>`;
+  } else {
+    icon.innerHTML=`<line x1="6" y1="4" x2="6" y2="20" stroke="white" stroke-width="3"/><line x1="18" y1="4" x2="18" y2="20" stroke="white" stroke-width="3"/>`;
+  }
+}
+
+function onTimeUpdate(){
+  if(!videoEl||isSeeking) return;
+  const pct=(videoEl.currentTime/videoEl.duration)*100||0;
+  document.getElementById('progress-fill').style.width=pct+'%';
+  document.getElementById('progress-thumb').style.left=pct+'%';
+  document.getElementById('time-display').textContent=`${fmtTime(videoEl.currentTime)} / ${fmtTime(videoEl.duration)}`;
+}
+
+function onVideoEnded(){
+  updatePlayIcon();
+  showControls();
+}
+
+function seekVideo(e){
+  if(!videoEl) return;
+  const wrap=document.getElementById('progress-wrap');
+  const rect=wrap.getBoundingClientRect();
+  const pct=Math.min(Math.max((e.clientX-rect.left)/rect.width,0),1);
+  videoEl.currentTime=pct*videoEl.duration;
+}
+function seekVideoTouch(e){
+  if(!videoEl||!e.touches[0]) return;
+  const wrap=document.getElementById('progress-wrap');
+  const rect=wrap.getBoundingClientRect();
+  const pct=Math.min(Math.max((e.touches[0].clientX-rect.left)/rect.width,0),1);
+  videoEl.currentTime=pct*videoEl.duration;
+}
+
+function skipTime(sec){
+  if(!videoEl) return;
+  videoEl.currentTime=Math.min(Math.max(videoEl.currentTime+sec,0),videoEl.duration);
+  resetHideCtrl();
+}
+
+function toggleMute(){
+  if(!videoEl) return;
+  videoEl.muted=!videoEl.muted;
+  const icon=document.getElementById('vol-icon');
+  if(!icon) return;
+  if(videoEl.muted){
+    icon.innerHTML=`<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15" stroke="white" stroke-width="2"/><line x1="17" y1="9" x2="23" y2="15" stroke="white" stroke-width="2"/>`;
+  } else {
+    icon.innerHTML=`<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>`;
+  }
+}
+
+function setVolume(v){
+  if(!videoEl) return;
+  videoEl.volume=parseFloat(v);
+  videoEl.muted=parseFloat(v)===0;
+}
+
+function toggleFullscreen(){
+  if(!document.fullscreenElement){
+    document.documentElement.requestFullscreen?.();
+  } else {
+    document.exitFullscreen?.();
+  }
+}
+
+function showControls(){
+  const ctrl=document.getElementById('video-controls');
+  const tb=document.getElementById('topbar');
+  if(ctrl) ctrl.classList.remove('hidden');
+  if(tb)   tb.style.opacity='1';
+}
+
+function resetHideCtrl(){
+  showControls();
+  clearTimeout(hideCtrlTimer);
+  hideCtrlTimer=setTimeout(()=>{
+    const ctrl=document.getElementById('video-controls');
+    const tb=document.getElementById('topbar');
+    if(ctrl&&videoEl&&!videoEl.paused) ctrl.classList.add('hidden');
+    if(tb&&videoEl&&!videoEl.paused)   tb.style.opacity='0';
+  },3500);
+}
+
+function fmtTime(s){
+  if(isNaN(s)) return '0:00';
+  const m=Math.floor(s/60), sec=Math.floor(s%60);
+  return `${m}:${String(sec).padStart(2,'0')}`;
+}
+
+// ════════════════════════════════
+// DOWNLOAD
+// ════════════════════════════════
+async function downloadMedia(){
+  const url=mediaData?.url; if(!url) return;
+  showToast('Téléchargement...');
+  try{
+    const res  =await fetch(url);
+    const blob =await res.blob();
+    const burl =URL.createObjectURL(blob);
+    const a    =document.createElement('a');
+    const ext  =url.split('.').pop().split('?')[0]||'jpg';
+    a.href=burl; a.download=`nikahconnect_${Date.now()}.${ext}`;
+    document.body.appendChild(a); a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(burl);
+    showToast('Téléchargé ✓');
+  }catch(e){ showToast('Erreur téléchargement'); }
+}
+
+// ════════════════════════════════
+// TOAST
+// ════════════════════════════════
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  clearTimeout(t._t);
+  t._t=setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+// Tap topbar/controls to toggle on video
+document.getElementById('topbar').addEventListener('click',()=>{
+  if(mediaData?.type==='video'){ showControls(); resetHideCtrl(); }
+});
 </script>
 </body>
 </html>

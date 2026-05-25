@@ -120,10 +120,23 @@ async function loadAll(){
 
 function renderGroupHeader(){
   const el=document.getElementById('group-big-avatar');
-  el.textContent=group.name[0].toUpperCase();
+  if(group.photo){
+    el.innerHTML=`<img src="${group.photo}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" onclick="openPhoto('${group.photo}')"/>`;
+  } else {
+    el.textContent=group.name[0].toUpperCase();
+    el.style.cursor='default';
+  }
   document.getElementById('group-big-name').textContent=group.name;
   const accepted=members.filter(m=>m.status==='accepted');
   document.getElementById('group-big-count').textContent=`${accepted.length} membre${accepted.length>1?'s':''}`;
+}
+
+function openPhoto(src){
+  const overlay=document.createElement('div');
+  overlay.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:1000;display:flex;align-items:center;justify-content:center;cursor:pointer;';
+  overlay.innerHTML=`<img src="${src}" style="max-width:90%;max-height:90%;border-radius:12px;object-fit:contain;"/>`;
+  overlay.onclick=()=>overlay.remove();
+  document.body.appendChild(overlay);
 }
 
 const COLORS=['#e8547a','#9b59b6','#3498db','#e67e22','#2ecc71'];

@@ -169,11 +169,11 @@ body{display:flex;justify-content:center;background:#000;}
 <div class="shell">
   <div class="topbar">
     <button class="back" onclick="location.href='friends.html'">←</button>
-    <div id="friend-avatar-top"></div>
-    <div class="topbar-info">
-      <h2 id="chat-name"></h2>
-      <div class="topbar-sub" id="chat-typing" style="display:none;">en train d'écrire...</div>
-    </div>
+    <div id="friend-avatar-top" onclick="openFriendProfile()" style="cursor:pointer;"></div>
+    <div class="topbar-info" onclick="openFriendProfile()" style="cursor:pointer;">
+  <h2 id="chat-name"></h2>
+  <div class="topbar-sub" id="chat-typing" style="display:none;">en train d'écrire...</div>
+</div>
   </div>
 
   <div class="messages-area" id="messages-area"></div>
@@ -458,11 +458,11 @@ function toggleVocal(uid){
     document.querySelectorAll('audio').forEach(a=>{if(a!==audio){a.pause();resetVocalBtn(a.id.replace('audio_',''));}});
     audio.play().then(()=>{
       if(btn)btn.textContent='⏸';
-      // Sauvegarder pour mini player — pas de barre dans ce chat
+      // Sauvegarder SEULEMENT — pas d'appel à GlobalAudioPlayer ici
       const m=messages.find(m=>String(m.msg_id)===String(uid));
       const name=String(m?.from)===String(me.id)?'Toi':friend.prenom;
       localStorage.setItem('currentAudio',JSON.stringify({
-        url:audio.src,name,photo:null,
+        url:audio.src, name, photo:null,
         position:audio.currentTime,
         chatId:String(friend.id),
       }));
@@ -477,7 +477,6 @@ function toggleVocal(uid){
     }
   }
 }
-
 function updateVocalBar(uid){
   const audio=document.getElementById('audio_'+uid);
   if(!audio||!audio.duration)return;
@@ -1092,6 +1091,10 @@ function showTyping(isTyping){
 function onKey(e){if(e.key==='Enter')sendMessage();}
 
 initStickerCategories();
+  function openFriendProfile(){
+  localStorage.setItem('viewProfile', JSON.stringify(friend));
+  window.location.href='profile-view.html';
+}
 connectWS();
 </script>
 </body>

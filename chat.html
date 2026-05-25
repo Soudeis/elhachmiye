@@ -757,19 +757,18 @@ function sendMessage(){
   const input=document.getElementById('msg-input');
   const text=input.value.trim();if(!text)return;
   const now=new Date(),time=now.getHours()+':'+String(now.getMinutes()).padStart(2,'0');
-  const msgId=`${me.id}_${Date.now()}`;
+  const tempId=`${me.id}_${Date.now()}`; // ← tempId pas msgId
   messages.push({from:String(me.id),text,media_url:null,media_type:null,
-    is_vocal:false,edited:false,time,msg_id:msgId,created_at:new Date().toISOString(),
+    is_vocal:false,edited:false,time,msg_id:tempId,created_at:new Date().toISOString(),
     is_forwarded:false,forwarded_from:null,reactions:[],
     reply_to_id:replyingTo?.msg_id||null,reply_to_text:replyingTo?.text||null,
     reply_to_type:replyingTo?.media_type||null,reply_to_from:replyingTo?.from||null});
   seen=false;renderMessages();input.value='';
-  ws?.send(JSON.stringify({action:'send_message',to:friend.id, temp_id: tempId, text,
+  ws?.send(JSON.stringify({action:'send_message',to:friend.id,temp_id:tempId,text,
     reply_to_id:replyingTo?.msg_id||null,reply_to_text:replyingTo?.text||null,
     reply_to_type:replyingTo?.media_type||null,reply_to_from:replyingTo?.from||null}));
   cancelReply();clearTypingState();
 }
-
 // ════════════════════════════════════════════
 // UPLOAD
 // ════════════════════════════════════════════
@@ -782,14 +781,14 @@ async function uploadAndSend(file,isVocal=false){
     const data=await res.json();
     if(!data.url){alert('Erreur upload.');return;}
     const now=new Date(),time=now.getHours()+':'+String(now.getMinutes()).padStart(2,'0');
-    const msgId=`${me.id}_${Date.now()}`;
+    const tempId=`${me.id}_${Date.now()}`; // ← tempId
     messages.push({from:String(me.id),text:'',media_url:data.url,media_type:data.media_type,
-      is_vocal:isVocal,edited:false,time,msg_id:msgId,created_at:new Date().toISOString(),
+      is_vocal:isVocal,edited:false,time,msg_id:tempId,created_at:new Date().toISOString(),
       is_forwarded:false,forwarded_from:null,reactions:[],
       reply_to_id:replyingTo?.msg_id||null,reply_to_text:replyingTo?.text||null,
       reply_to_type:replyingTo?.media_type||null,reply_to_from:replyingTo?.from||null});
     seen=false;renderMessages();
-    ws?.send(JSON.stringify({action:'send_message',to:friend.id, temp_id: tempId, text:'',
+    ws?.send(JSON.stringify({action:'send_message',to:friend.id,temp_id:tempId,text:'',
       media_url:data.url,media_type:data.media_type,is_vocal:isVocal,
       reply_to_id:replyingTo?.msg_id||null,reply_to_text:replyingTo?.text||null,
       reply_to_type:replyingTo?.media_type||null,reply_to_from:replyingTo?.from||null}));
@@ -887,19 +886,18 @@ function sendSticker(url){
   document.getElementById('sticker-panel').classList.remove('active');
   document.getElementById('sticker-btn').classList.remove('active-sticker');
   const now=new Date(),time=now.getHours()+':'+String(now.getMinutes()).padStart(2,'0');
-  const msgId=`${me.id}_${Date.now()}`;
+  const tempId=`${me.id}_${Date.now()}`; // ← tempId
   messages.push({from:String(me.id),text:'',media_url:url,media_type:'sticker',
-    is_vocal:false,edited:false,time,msg_id:msgId,
+    is_vocal:false,edited:false,time,msg_id:tempId,
     is_forwarded:false,forwarded_from:null,reactions:[],
     reply_to_id:replyingTo?.msg_id||null,reply_to_text:replyingTo?.text||null,
     reply_to_type:replyingTo?.media_type||null,reply_to_from:replyingTo?.from||null});
   seen=false;renderMessages();
-  ws?.send(JSON.stringify({action:'send_message',to:friend.id, temp_id: tempId, text:'',media_url:url,media_type:'sticker',
+  ws?.send(JSON.stringify({action:'send_message',to:friend.id,temp_id:tempId,text:'',media_url:url,media_type:'sticker',
     reply_to_id:replyingTo?.msg_id||null,reply_to_text:replyingTo?.text||null,
     reply_to_type:replyingTo?.media_type||null,reply_to_from:replyingTo?.from||null}));
   cancelReply();
 }
-
 // ════════════════════════════════════════════
 // ENREGISTREMENT VOCAL — vague sinusoïde fluide
 // ════════════════════════════════════════════

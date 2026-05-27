@@ -203,13 +203,7 @@ async function uploadGroupPhoto(input){
   renderGroupHeader();
 }
 
-function openPhoto(src){
-  const overlay=document.createElement('div');
-  overlay.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:1000;display:flex;align-items:center;justify-content:center;cursor:pointer;';
-  overlay.innerHTML=`<img src="${src}" style="max-width:90%;max-height:90%;border-radius:12px;object-fit:contain;"/>`;
-  overlay.onclick=()=>overlay.remove();
-  document.body.appendChild(overlay);
-}
+
 
 const COLORS=['#e8547a','#9b59b6','#3498db','#e67e22','#2ecc71'];
 function memberColor(id){ return COLORS[Math.abs(parseInt(id||0))%COLORS.length]; }

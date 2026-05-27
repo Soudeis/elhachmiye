@@ -242,7 +242,6 @@ async function loadGroupInfo(){
     localStorage.setItem('currentGroup', JSON.stringify(group));
     const avatarEl = document.getElementById('group-avatar-top');
     avatarEl.innerHTML = `<img src="${info.photo}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;"/>`;
-    avatarEl.textContent = '';
   }
 }
 // ════════════════════════════════════════════

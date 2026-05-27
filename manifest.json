@@ -1,7 +1,7 @@
 {
   "name": "ChatApp",
   "short_name": "Chat",
-  "start_url": "/chatapp/friends.html",
+  "start_url": "/friends.html",
   "display": "standalone",
   "background_color": "#f0f2f5",
   "theme_color": "#1e90ff",

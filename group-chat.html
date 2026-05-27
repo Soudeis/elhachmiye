@@ -217,7 +217,12 @@ const group = JSON.parse(localStorage.getItem('currentGroup'));
 if(!me||!group) window.location.href='groups.html';
 
 document.getElementById('group-name-top').textContent = group.name;
-document.getElementById('group-avatar-top').textContent = group.name[0].toUpperCase();
+const avatarTop = document.getElementById('group-avatar-top');
+if(group.photo){
+  avatarTop.innerHTML = `<img src="${group.photo}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;"/>`;
+} else {
+  avatarTop.textContent = group.name[0].toUpperCase();
+}
 
 let messages=[], ws=null, members=[], replyingTo=null, editingMsgId=null, typingTimer=null, isTypingSent=false;
 

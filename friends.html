@@ -17,197 +17,81 @@
 html,body{width:100%;height:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;}
 body{display:flex;justify-content:center;background:#000;}
 
-.shell{
-  width:100%;max-width:480px;height:100vh;
-  display:flex;flex-direction:column;
-  background:#0a0a0a;
-  position:relative;
-}
+.shell{width:100%;max-width:480px;height:100vh;display:flex;flex-direction:column;background:#0a0a0a;position:relative;}
 
-/* ── TOPBAR ── */
-.topbar{
-  padding:14px 16px;
-  display:flex;align-items:center;gap:10px;
-  background:#0a0a0a;
-  border-bottom:1px solid rgba(255,255,255,.06);
-  flex-shrink:0;
-}
-.topbar-title{
-  flex:1;font-size:22px;font-weight:700;color:white;
-}
-.my-avatar{
-  width:36px;height:36px;border-radius:50%;
-  overflow:hidden;cursor:pointer;
-  border:2px solid rgba(255,255,255,.2);flex-shrink:0;
-}
+.topbar{padding:14px 16px;display:flex;align-items:center;gap:10px;background:#0a0a0a;border-bottom:1px solid rgba(255,255,255,.06);flex-shrink:0;}
+.topbar-title{flex:1;font-size:22px;font-weight:700;color:white;}
+.my-avatar{width:36px;height:36px;border-radius:50%;overflow:hidden;cursor:pointer;border:2px solid rgba(255,255,255,.2);flex-shrink:0;}
 .my-avatar img{width:100%;height:100%;object-fit:cover;}
-.my-avatar-init{
-  width:36px;height:36px;border-radius:50%;
-  background:rgba(255,255,255,.15);
-  display:flex;align-items:center;justify-content:center;
-  font-weight:700;font-size:14px;color:white;
-  cursor:pointer;border:2px solid rgba(255,255,255,.2);flex-shrink:0;
-}
-.icon-btn{
-  background:none;border:none;color:rgba(255,255,255,.6);
-  cursor:pointer;padding:6px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;
-  transition:.15s;
-}
+.my-avatar-init{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:white;cursor:pointer;border:2px solid rgba(255,255,255,.2);flex-shrink:0;}
+.icon-btn{background:none;border:none;color:rgba(255,255,255,.6);cursor:pointer;padding:6px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.15s;}
 .icon-btn:active{background:rgba(255,255,255,.1);}
 .icon-btn svg{width:22px;height:22px;}
 
-/* ── TABS ── */
-.tabs{
-  display:flex;
-  padding:0 16px;
-  border-bottom:1px solid rgba(255,255,255,.06);
-  flex-shrink:0;
-  background:#0a0a0a;
-}
-.tab-btn{
-  padding:12px 0;margin-right:24px;
-  background:none;border:none;cursor:pointer;
-  font-size:15px;font-weight:600;color:rgba(255,255,255,.4);
-  border-bottom:2px solid transparent;transition:.15s;
-}
-.tab-btn.active{color:white;border-bottom-color:#e8547a;}
-
-/* ── SEARCH ── */
-.search-bar{
-  padding:10px 14px;flex-shrink:0;
-  background:#0a0a0a;
-}
-.search-bar input{
-  width:100%;padding:10px 16px;
-  border:none;border-radius:12px;
-  font-size:14px;outline:none;
-  background:rgba(255,255,255,.08);
-  color:white;
-}
+.search-bar{padding:10px 14px;flex-shrink:0;background:#0a0a0a;}
+.search-bar input{width:100%;padding:10px 16px;border:none;border-radius:12px;font-size:14px;outline:none;background:rgba(255,255,255,.08);color:white;}
 .search-bar input::placeholder{color:rgba(255,255,255,.3);}
 
-/* ── LIST ── */
-.list-area{
-  flex:1;overflow-y:auto;
-  padding-bottom:80px; /* espace pour bottombar */
-}
+.tabs{display:flex;padding:0 16px;border-bottom:1px solid rgba(255,255,255,.06);flex-shrink:0;background:#0a0a0a;}
+.tab-btn{padding:12px 0;margin-right:24px;background:none;border:none;cursor:pointer;font-size:15px;font-weight:600;color:rgba(255,255,255,.4);border-bottom:2px solid transparent;transition:.15s;}
+.tab-btn.active{color:white;border-bottom-color:#e8547a;}
+
+.list-area{flex:1;overflow-y:auto;padding-bottom:80px;}
 .list-area::-webkit-scrollbar{width:2px;}
 .list-area::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);}
 
-/* ── FRIEND ROW ── */
-.friend-row{
-  display:flex;align-items:center;
-  border-bottom:1px solid rgba(255,255,255,.04);
-}
-.friend-item{
-  display:flex;align-items:center;
-  padding:12px 16px;cursor:pointer;gap:12px;flex:1;
-}
+.friend-row{display:flex;align-items:center;border-bottom:1px solid rgba(255,255,255,.04);}
+.friend-item{display:flex;align-items:center;padding:12px 16px;cursor:pointer;gap:12px;flex:1;}
 .friend-item:active{background:rgba(255,255,255,.04);}
-
 .friend-info{flex:1;min-width:0;}
-.friend-name{
-  font-size:15px;font-weight:600;color:white;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-}
+.friend-name{font-size:15px;font-weight:600;color:white;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .friend-sub{font-size:13px;color:rgba(255,255,255,.4);margin-top:2px;}
 .friend-sub.new-msg{color:#e8547a;font-weight:600;}
 .friend-meta{text-align:right;font-size:12px;color:rgba(255,255,255,.3);flex-shrink:0;}
+.unread-dot{min-width:20px;height:20px;border-radius:10px;background:#e8547a;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 5px;flex-shrink:0;}
 
-/* ── UNREAD BADGE ── */
-.unread-dot{
-  min-width:20px;height:20px;border-radius:10px;
-  background:#e8547a;color:white;
-  font-size:11px;font-weight:700;
-  display:flex;align-items:center;justify-content:center;
-  padding:0 5px;flex-shrink:0;
-}
-
-/* ── GROUP ROW ── */
-.group-item{
-  display:flex;align-items:center;
-  padding:12px 16px;cursor:pointer;gap:12px;
-  border-bottom:1px solid rgba(255,255,255,.04);
-}
+.group-item{display:flex;align-items:center;padding:12px 16px;cursor:pointer;gap:12px;border-bottom:1px solid rgba(255,255,255,.04);}
 .group-item:active{background:rgba(255,255,255,.04);}
-.group-avatar{
-  width:52px;height:52px;border-radius:50%;
-  background:linear-gradient(135deg,#e8547a,#c73b8a);
-  display:flex;align-items:center;justify-content:center;
-  font-size:20px;color:white;font-weight:700;flex-shrink:0;
-  overflow:hidden;
-}
+.group-avatar{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#e8547a,#c73b8a);display:flex;align-items:center;justify-content:center;font-size:20px;color:white;font-weight:700;flex-shrink:0;overflow:hidden;}
 .group-avatar img{width:100%;height:100%;object-fit:cover;}
 .group-info{flex:1;min-width:0;}
 .group-name{font-size:15px;font-weight:600;color:white;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .group-role{font-size:12px;color:rgba(255,255,255,.4);margin-top:2px;}
 
-/* ── EMPTY STATE ── */
-.empty-state{
-  display:flex;flex-direction:column;align-items:center;
-  justify-content:center;padding:60px 20px;
-  color:rgba(255,255,255,.25);gap:12px;font-size:14px;text-align:center;
-}
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;color:rgba(255,255,255,.25);gap:12px;font-size:14px;text-align:center;}
 .empty-state svg{width:48px;height:48px;opacity:.3;}
 
-/* ══════════════════════════════
-   BOTTOMBAR
-══════════════════════════════ */
-.bottombar{
-  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
-  width:100%;max-width:480px;
-  background:#111;
-  border-top:1px solid rgba(255,255,255,.08);
-  display:flex;align-items:center;
-  padding:8px 0 calc(8px + env(safe-area-inset-bottom));
-  z-index:100;
-}
-.bb-btn{
-  flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;
-  background:none;border:none;cursor:pointer;padding:4px 0;
-  color:rgba(255,255,255,.35);transition:.15s;
-  position:relative;
-}
+/* ══ BOTTOMBAR ══ */
+.bottombar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#111;border-top:1px solid rgba(255,255,255,.08);display:flex;align-items:center;padding:8px 0 calc(8px + env(safe-area-inset-bottom));z-index:100;}
+.bb-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:none;cursor:pointer;padding:4px 0;color:rgba(255,255,255,.35);transition:.15s;position:relative;}
 .bb-btn.active{color:#e8547a;}
 .bb-btn svg{width:24px;height:24px;}
 .bb-label{font-size:10px;font-weight:600;}
-.bb-badge{
-  position:absolute;top:0;right:calc(50% - 18px);
-  width:8px;height:8px;border-radius:50%;
-  background:#e8547a;border:2px solid #111;
-}
+.bb-badge{position:absolute;top:0;right:calc(50% - 18px);width:8px;height:8px;border-radius:50%;background:#e8547a;border:2px solid #111;}
 </style>
 </head>
 <body>
 <div class="shell">
 
-  <!-- TOPBAR -->
   <div class="topbar">
-    <div class="topbar-title" id="topbar-title">ChatApp</div>
+    <div class="topbar-title" id="topbar-title">Discussions</div>
     <button class="icon-btn" onclick="location.href='search.html'">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
     </button>
-    <div id="my-avatar-btn" onclick="location.href='settings.html'" title="Paramètres"></div>
+    <div id="my-avatar-btn"></div>
   </div>
 
-
-   <!-- SEARCH -->
-  <div class="search-bar">
+  <div class="search-bar" id="search-bar-wrap">
     <input type="text" id="search-input" placeholder="Rechercher..." oninput="onSearch(this.value)"/>
   </div>
-  <!-- TABS -->
-  <div class="tabs">
+
+  <div class="tabs" id="tabs-wrap">
     <button class="tab-btn active" id="tab-chats" onclick="switchTab('chats')">Discussions</button>
     <button class="tab-btn" id="tab-groups" onclick="switchTab('groups')">Groupes</button>
   </div>
 
- 
-
-  <!-- LISTE -->
   <div class="list-area" id="main-list"></div>
 
-  <!-- BOTTOMBAR -->
   <div class="bottombar">
     <button class="bb-btn active" id="bb-chats" onclick="switchTab('chats')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
@@ -217,17 +101,16 @@ body{display:flex;justify-content:center;background:#000;}
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
       <span class="bb-label">Groupes</span>
     </button>
-    <button class="bb-btn" id="bb-requests" onclick="location.href='requests.html'">
+    <button class="bb-btn" id="bb-requests" onclick="switchTab('requests')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
       <span class="bb-label">Demandes</span>
       <div class="bb-badge" id="req-badge" style="display:none;"></div>
     </button>
-    <button class="bb-btn" onclick="location.href='settings.html'">
+    <button class="bb-btn" id="bb-settings" onclick="switchTab('settings')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
       <span class="bb-label">Paramètres</span>
     </button>
   </div>
-
 </div>
 
 <script>
@@ -237,7 +120,7 @@ const WS_URL = "wss://didactic-disco-q795wwrqxg45c697p-8000.app.github.dev/ws";
 let me = JSON.parse(localStorage.getItem('me'));
 if (!me) window.location.href = 'index.html';
 
-// Avatar topbar
+// Avatar
 const avatarBtn = document.getElementById('my-avatar-btn');
 if (me.photo) {
   avatarBtn.className = 'my-avatar';
@@ -253,9 +136,7 @@ let currentTab='chats', searchVal='';
 const COLORS=['#e8547a','#9b59b6','#3498db','#e67e22','#2ecc71','#e74c3c','#1abc9c'];
 
 function buildAvatar(f, size=52){
-  if(f.photo){
-    return `<img src="${f.photo}" style="width:${size}px;height:${size}px;border-radius:50%;object-fit:cover;flex-shrink:0;display:block;"/>`;
-  }
+  if(f.photo) return `<img src="${f.photo}" style="width:${size}px;height:${size}px;border-radius:50%;object-fit:cover;flex-shrink:0;display:block;"/>`;
   const color=COLORS[Math.abs(parseInt(f.id||0))%COLORS.length];
   const init=((f.prenom||'?')[0]+(f.nom||'?')[0]).toUpperCase();
   return `<div style="width:${size}px;height:${size}px;border-radius:50%;background:${color};display:flex;align-items:center;justify-content:center;font-weight:700;font-size:${Math.floor(size*.35)}px;color:white;flex-shrink:0;">${init}</div>`;
@@ -275,7 +156,6 @@ async function loadData(){
     api('GET',`/requests/${me.id}`),
     api('GET',`/groups/${me.id}`),
   ]);
-
   friends=(Array.isArray(friendsData)?friendsData:[]).map(f=>({
     ...f,id:String(f.id),lastTime:'',unread:false,hasMsg:false
   }));
@@ -286,12 +166,9 @@ async function loadData(){
       if(f){f.lastTime=m.time;f.hasMsg=true;f.unread=m.unread_count>0;}
     });
   }
-
   groups=(Array.isArray(groupsData)?groupsData:[]).filter(g=>g.status==='accepted');
-
   const reqCount=Array.isArray(requestsData)?requestsData.length:0;
-  document.getElementById('req-badge').style.display=reqCount>0?'flex':'none';
-
+  document.getElementById('req-badge').style.display=reqCount>0?'block':'none';
   render();
 }
 
@@ -307,11 +184,11 @@ function connectWS(){
         const f=friends.splice(idx,1)[0];
         f.lastTime=data.time;f.hasMsg=true;f.unread=true;
         friends.unshift(f);
-        render();
+        if(currentTab==='chats') render();
       }
     }
     if(data.action==='friend_request'){
-      document.getElementById('req-badge').style.display='flex';
+      document.getElementById('req-badge').style.display='block';
     }
     if(data.action==='friend_removed'){
       friends=friends.filter(f=>f.id!==String(data.from));render();
@@ -328,34 +205,34 @@ function switchTab(tab){
   searchVal='';
   document.getElementById('search-input').value='';
 
-  // tabs
+  const showSearch=tab==='chats'||tab==='groups';
+  document.getElementById('search-bar-wrap').style.display=showSearch?'block':'none';
+  document.getElementById('tabs-wrap').style.display=showSearch?'flex':'none';
+
   document.getElementById('tab-chats').classList.toggle('active',tab==='chats');
   document.getElementById('tab-groups').classList.toggle('active',tab==='groups');
 
-  // bottombar
   document.getElementById('bb-chats').classList.toggle('active',tab==='chats');
   document.getElementById('bb-groups').classList.toggle('active',tab==='groups');
+  document.getElementById('bb-requests').classList.toggle('active',tab==='requests');
+  document.getElementById('bb-settings').classList.toggle('active',tab==='settings');
 
-  // titre
-  document.getElementById('topbar-title').textContent=tab==='chats'?'Discussions':'Groupes';
-
-  // placeholder
-  document.getElementById('search-input').placeholder=tab==='chats'?'Rechercher un ami...':'Rechercher un groupe...';
+  const titles={chats:'Discussions',groups:'Groupes',requests:'Demandes',settings:'Paramètres'};
+  document.getElementById('topbar-title').textContent=titles[tab];
 
   render();
 }
 
-function onSearch(v){
-  searchVal=v;
-  render();
-}
+function onSearch(v){ searchVal=v; render(); }
 
 function render(){
   if(currentTab==='chats') renderFriends();
-  else renderGroups();
+  else if(currentTab==='groups') renderGroups();
+  else if(currentTab==='requests') renderRequests();
+  else if(currentTab==='settings') renderSettings();
 }
 
-// ── Render friends ──
+// ── Friends ──
 function renderFriends(){
   const list=document.getElementById('main-list');
   const q=(searchVal||'').toLowerCase();
@@ -382,15 +259,13 @@ function renderFriends(){
         </div>
         <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;">
           <div class="friend-meta">${f.lastTime||''}</div>
-          ${f.unread?'<div class="unread-dot">●</div>':''}
         </div>
       </div>
-   
     </div>
   `).join('');
 }
 
-// ── Render groups ──
+// ── Groups ──
 function renderGroups(){
   const list=document.getElementById('main-list');
   const q=(searchVal||'').toLowerCase();
@@ -411,7 +286,7 @@ function renderGroups(){
     const avatarHtml=g.photo
       ?`<div class="group-avatar"><img src="${g.photo}"/></div>`
       :`<div class="group-avatar">${g.name[0].toUpperCase()}</div>`;
-    return `<div class="group-item" onclick="openGroup(${g.id},'${escHtml(g.name)}')">
+    return `<div class="group-item" onclick="openGroup(${g.id},'${escHtml(g.name)}','${g.photo||''}')">
       ${avatarHtml}
       <div class="group-info">
         <div class="group-name">${g.name}</div>
@@ -422,17 +297,107 @@ function renderGroups(){
   }).join('');
 }
 
-function escHtml(s){return s.replace(/'/g,"\\'");}
+// ── Requests ──
+async function renderRequests(){
+  const list=document.getElementById('main-list');
+  list.innerHTML='<div style="text-align:center;color:rgba(255,255,255,.3);padding:30px;font-size:13px;">Chargement...</div>';
+  const data=await api('GET',`/requests/${me.id}`);
+  const requests=Array.isArray(data)?data:[];
+  if(!requests.length){
+    list.innerHTML=`<div class="empty-state">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      <span>Aucune demande en attente</span>
+    </div>`;
+    return;
+  }
+  list.innerHTML=requests.map(r=>`
+    <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.04);">
+      ${buildAvatar(r)}
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:15px;font-weight:600;color:white;">${r.prenom} ${r.nom}</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.4);margin-top:2px;">Veut vous ajouter</div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button onclick="respondRequest('${r.id}',true)" style="background:linear-gradient(135deg,#e8547a,#c73b8a);border:none;color:white;padding:8px 14px;border-radius:12px;font-size:13px;font-weight:600;cursor:pointer;">✓</button>
+        <button onclick="respondRequest('${r.id}',false)" style="background:rgba(255,255,255,.08);border:none;color:rgba(255,255,255,.6);padding:8px 14px;border-radius:12px;font-size:13px;cursor:pointer;">✕</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function respondRequest(fromId, accepted){
+  ws?.send(JSON.stringify({action:'friend_response',to:fromId,accepted}));
+  setTimeout(()=>renderRequests(),400);
+  if(accepted) setTimeout(loadData,600);
+}
+
+// ── Settings ──
+function renderSettings(){
+  const list=document.getElementById('main-list');
+  list.innerHTML=`
+    <div style="padding:20px 16px;">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:12px;padding:20px 0 28px;">
+        <div style="cursor:pointer;" onclick="location.href='settings.html'">
+          ${me.photo
+            ?`<img src="${me.photo}" style="width:90px;height:90px;border-radius:50%;object-fit:cover;border:3px solid rgba(232,84,122,.5);box-shadow:0 0 30px rgba(232,84,122,.3);"/>`
+            :`<div style="width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,#e8547a,#c73b8a);display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:700;color:white;">${((me.prenom||'?')[0]+(me.nom||'?')[0]).toUpperCase()}</div>`
+          }
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:20px;font-weight:700;color:white;">${me.prenom} ${me.nom}</div>
+          <div style="font-size:13px;color:rgba(255,255,255,.4);margin-top:4px;">Mon profil</div>
+        </div>
+      </div>
+
+      <div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:20px;overflow:hidden;">
+
+        <div onclick="location.href='settings.html'" style="display:flex;align-items:center;gap:14px;padding:16px;cursor:pointer;border-bottom:1px solid rgba(255,255,255,.05);transition:.1s;" onmouseenter="this.style.background='rgba(255,255,255,.04)'" onmouseleave="this.style.background=''">
+          <div style="width:40px;height:40px;border-radius:13px;background:rgba(232,84,122,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#e8547a" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <div style="flex:1;">
+            <div style="font-size:15px;color:white;font-weight:500;">Modifier le profil</div>
+            <div style="font-size:12px;color:rgba(255,255,255,.35);margin-top:2px;">Nom, photo, mot de passe</div>
+          </div>
+          <div style="color:rgba(255,255,255,.2);font-size:20px;">›</div>
+        </div>
+
+        <div onclick="location.href='search.html'" style="display:flex;align-items:center;gap:14px;padding:16px;cursor:pointer;border-bottom:1px solid rgba(255,255,255,.05);transition:.1s;" onmouseenter="this.style.background='rgba(255,255,255,.04)'" onmouseleave="this.style.background=''">
+          <div style="width:40px;height:40px;border-radius:13px;background:rgba(52,152,219,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3498db" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+          </div>
+          <div style="flex:1;">
+            <div style="font-size:15px;color:white;font-weight:500;">Ajouter des amis</div>
+            <div style="font-size:12px;color:rgba(255,255,255,.35);margin-top:2px;">Rechercher des utilisateurs</div>
+          </div>
+          <div style="color:rgba(255,255,255,.2);font-size:20px;">›</div>
+        </div>
+
+        <div onclick="doLogout()" style="display:flex;align-items:center;gap:14px;padding:16px;cursor:pointer;transition:.1s;" onmouseenter="this.style.background='rgba(255,68,68,.06)'" onmouseleave="this.style.background=''">
+          <div style="width:40px;height:40px;border-radius:13px;background:rgba(255,68,68,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ff4444" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          </div>
+          <div style="flex:1;">
+            <div style="font-size:15px;color:#ff4444;font-weight:500;">Se déconnecter</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  `;
+}
+
+function escHtml(s){ return s.replace(/'/g,"\\'"); }
 
 function openChat(friendId){
   const f=friends.find(f=>f.id===friendId);
-  if(!f)return;
+  if(!f) return;
   localStorage.setItem('currentFriend',JSON.stringify(f));
   window.location.href='chat.html';
 }
 
-function openGroup(id,name){
-  localStorage.setItem('currentGroup',JSON.stringify({id,name}));
+function openGroup(id, name, photo){
+  localStorage.setItem('currentGroup',JSON.stringify({id,name,photo:photo||null}));
   window.location.href='group-chat.html';
 }
 
@@ -440,16 +405,18 @@ function openCreateGroup(){
   window.location.href='groups.html';
 }
 
-
+function doLogout(){
+  ws?.close();
+  localStorage.clear();
+  window.location.href='index.html';
+}
 
 loadData();
-  // Restaurer l'onglet actif au retour
-if(window.location.hash === '#groups'){
-  switchTab('groups');
-} else {
-  switchTab('chats');
-}
 connectWS();
+
+if(window.location.hash==='#groups') switchTab('groups');
+else if(window.location.hash==='#requests') switchTab('requests');
+else if(window.location.hash==='#settings') switchTab('settings');
 </script>
 </body>
 </html>

@@ -427,10 +427,18 @@ OneSignalDeferred.push(async function(OneSignal){
     notifyButton: { enable: false },
     allowLocalhostAsSecureOrigin: true,
     serviceWorkerPath: "OneSignalSDKWorker.js",
+    serviceWorkerParam: { scope: "/" },
   });
-  await OneSignal.Notifications.requestPermission();
-  if(me){
-    await OneSignal.login(String(me.id));
+
+  // Sur iOS PWA il faut attendre que la page soit complètement chargée
+  if(document.readyState === 'complete'){
+    await OneSignal.Notifications.requestPermission();
+    if(me) await OneSignal.login(String(me.id));
+  } else {
+    window.addEventListener('load', async () => {
+      await OneSignal.Notifications.requestPermission();
+      if(me) await OneSignal.login(String(me.id));
+    });
   }
 });
 </script>

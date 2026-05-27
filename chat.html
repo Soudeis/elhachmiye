@@ -1101,7 +1101,7 @@ function showTyping(isTyping){
 function onKey(e){if(e.key==='Enter')sendMessage();}
 
 initStickerCategories();
-  function openFriendProfile(){
+function openFriendProfile(){
   localStorage.setItem('viewProfile', JSON.stringify(friend));
   window.location.href='profile-view.html';
 }

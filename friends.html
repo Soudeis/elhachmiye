@@ -196,16 +196,18 @@ body{display:flex;justify-content:center;background:#000;}
     <div id="my-avatar-btn" onclick="location.href='settings.html'" title="Paramètres"></div>
   </div>
 
+
+   <!-- SEARCH -->
+  <div class="search-bar">
+    <input type="text" id="search-input" placeholder="Rechercher..." oninput="onSearch(this.value)"/>
+  </div>
   <!-- TABS -->
   <div class="tabs">
     <button class="tab-btn active" id="tab-chats" onclick="switchTab('chats')">Discussions</button>
     <button class="tab-btn" id="tab-groups" onclick="switchTab('groups')">Groupes</button>
   </div>
 
-  <!-- SEARCH -->
-  <div class="search-bar">
-    <input type="text" id="search-input" placeholder="Rechercher..." oninput="onSearch(this.value)"/>
-  </div>
+ 
 
   <!-- LISTE -->
   <div class="list-area" id="main-list"></div>
@@ -457,6 +459,12 @@ async function removeFriend(friendId){
 }
 
 loadData();
+  // Restaurer l'onglet actif au retour
+if(window.location.hash === '#groups'){
+  switchTab('groups');
+} else {
+  switchTab('chats');
+}
 connectWS();
 </script>
 </body>

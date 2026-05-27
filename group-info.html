@@ -146,15 +146,45 @@ function renderGroupHeader(){
 }
 
 function openPhoto(src){
-  localStorage.setItem('viewProfile', JSON.stringify({
-    id: group.id,
-    prenom: group.name,
-    nom: '',
-    photo: src,
-    isGroup: true,
-    memberCount: members.filter(m=>m.status==='accepted').length
-  }));
-  window.location.href='profile-view.html';
+  const overlay=document.createElement('div');
+  overlay.style.cssText=`
+    position:fixed;inset:0;z-index:2000;
+    background:rgba(0,0,0,.95);
+    display:flex;align-items:center;justify-content:center;
+    animation:fadeIn .2s ease;
+  `;
+  overlay.innerHTML=`
+    <style>
+      @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+      @keyframes zoomIn{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
+    </style>
+    <button onclick="this.parentElement.remove()" style="
+      position:absolute;top:20px;right:20px;
+      background:rgba(255,255,255,.12);border:none;
+      width:42px;height:42px;border-radius:50%;
+      color:white;font-size:22px;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;
+      backdrop-filter:blur(10px);
+    ">×</button>
+    <div style="animation:zoomIn .25s ease;display:flex;align-items:center;justify-content:center;">
+      <div style="
+        width:290px;height:290px;border-radius:50%;overflow:hidden;
+        border:3px solid rgba(232,84,122,.7);
+        box-shadow:0 0 60px rgba(232,84,122,.5),0 0 120px rgba(232,84,122,.15);
+      ">
+        <img src="${src}" style="width:100%;height:100%;object-fit:cover;display:block;"/>
+      </div>
+    </div>
+    <div style="
+      position:absolute;inset:0;z-index:-1;
+      background-image:url('${src}');
+      background-size:cover;background-position:center;
+      filter:blur(40px) brightness(.25);
+      transform:scale(1.1);
+    "></div>
+  `;
+  overlay.onclick=e=>{ if(e.target===overlay) overlay.remove(); };
+  document.body.appendChild(overlay);
 }
 async function uploadGroupPhoto(input){
   if(!input.files[0])return;

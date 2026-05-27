@@ -77,6 +77,7 @@ body{display:flex;justify-content:center;background:#000;}
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
     <span>Quitter le groupe</span>
   </button>
+  <input type="file" id="group-photo-input" accept="image/*" style="display:none" onchange="uploadGroupPhoto(this)"/>
 </div>
 
 <div class="sheet-overlay" id="sheet-overlay" onclick="closeAddSheet()"></div>
@@ -122,6 +123,7 @@ function renderGroupHeader(){
   const el=document.getElementById('group-big-avatar');
   if(group.photo){
     el.innerHTML=`<img src="${group.photo}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" onclick="openPhoto('${group.photo}')"/>`;
+    el.style.cursor='pointer';
   } else {
     el.textContent=group.name[0].toUpperCase();
     el.style.cursor='default';
@@ -129,6 +131,43 @@ function renderGroupHeader(){
   document.getElementById('group-big-name').textContent=group.name;
   const accepted=members.filter(m=>m.status==='accepted');
   document.getElementById('group-big-count').textContent=`${accepted.length} membre${accepted.length>1?'s':''}`;
+
+  // Bouton changer photo — visible seulement si admin
+  const existingBtn=document.getElementById('change-photo-btn');
+  if(existingBtn)existingBtn.remove();
+  if(myRole==='admin'){
+    const btn=document.createElement('button');
+    btn.id='change-photo-btn';
+    btn.textContent='📷 Changer la photo';
+    btn.style.cssText='margin-top:12px;background:rgba(255,255,255,.08);border:none;color:white;padding:8px 18px;border-radius:20px;font-size:13px;cursor:pointer;';
+    btn.onclick=()=>document.getElementById('group-photo-input').click();
+    document.querySelector('.group-header').appendChild(btn);
+  }
+}
+
+function openPhoto(src){
+  const overlay=document.createElement('div');
+  overlay.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:1000;display:flex;align-items:center;justify-content:center;cursor:pointer;';
+  overlay.innerHTML=`<img src="${src}" style="max-width:90%;max-height:90%;border-radius:12px;object-fit:contain;"/>`;
+  overlay.onclick=()=>overlay.remove();
+  document.body.appendChild(overlay);
+}
+
+async function uploadGroupPhoto(input){
+  if(!input.files[0])return;
+  const fd=new FormData();fd.append('file',input.files[0]);
+  const res=await fetch(`${API}/upload-avatar`,{method:'POST',body:fd});
+  const data=await res.json();
+  if(!data.url)return;
+  // Mettre à jour le groupe
+  await fetch(`${API}/group/${group.id}/update`,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({name:group.name,photo:data.url})
+  });
+  group.photo=data.url;
+  localStorage.setItem('currentGroup',JSON.stringify(group));
+  renderGroupHeader();
 }
 
 function openPhoto(src){

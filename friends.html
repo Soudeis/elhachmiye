@@ -3,75 +3,234 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-   <script src="audio-player.js"></script>
+<script src="audio-player.js"></script>
 <link rel="manifest" href="manifest.json"/>
-<meta name="theme-color" content="#1e90ff"/>
+<meta name="theme-color" content="#000000"/>
 <meta name="mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="apple-mobile-web-app-title" content="ChatApp"/>
 <link rel="apple-touch-icon" href="icon.png"/>
-<title>Amis</title>
+<title>ChatApp</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
-html{min-height:100%;background:linear-gradient(135deg,#1a1a2e,#6a0572,#c0392b);}
-body{width:100%;font-family:Arial,sans-serif;display:flex;justify-content:center;min-height:100vh;background:transparent;}
-.shell{width:100%;max-width:480px;background:white;min-height:100vh;display:flex;flex-direction:column;}
-.topbar{background:#1e90ff;color:white;padding:14px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;}
-.topbar h2{flex:1;font-size:16px;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.icon-btn{background:none;border:none;color:white;cursor:pointer;padding:6px;border-radius:50%;position:relative;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.icon-btn:hover{background:rgba(255,255,255,.2);}
-.icon-btn svg{width:22px;height:22px;}
-.my-avatar{width:36px;height:36px;border-radius:50%;overflow:hidden;cursor:pointer;border:2px solid rgba(255,255,255,.5);flex-shrink:0;}
+html,body{width:100%;height:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;}
+body{display:flex;justify-content:center;background:#000;}
+
+.shell{
+  width:100%;max-width:480px;height:100vh;
+  display:flex;flex-direction:column;
+  background:#0a0a0a;
+  position:relative;
+}
+
+/* ── TOPBAR ── */
+.topbar{
+  padding:14px 16px;
+  display:flex;align-items:center;gap:10px;
+  background:#0a0a0a;
+  border-bottom:1px solid rgba(255,255,255,.06);
+  flex-shrink:0;
+}
+.topbar-title{
+  flex:1;font-size:22px;font-weight:700;color:white;
+}
+.my-avatar{
+  width:36px;height:36px;border-radius:50%;
+  overflow:hidden;cursor:pointer;
+  border:2px solid rgba(255,255,255,.2);flex-shrink:0;
+}
 .my-avatar img{width:100%;height:100%;object-fit:cover;}
-.my-avatar-init{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;cursor:pointer;border:2px solid rgba(255,255,255,.5);flex-shrink:0;}
-.search-bar{padding:10px 14px;border-bottom:1px solid #f0f0f0;flex-shrink:0;}
-.search-bar input{width:100%;padding:9px 14px;border:1.5px solid #e8e8e8;border-radius:20px;font-size:14px;outline:none;background:#f8f8f8;}
-.search-bar input:focus{border-color:#1e90ff;background:white;}
-.list-area{flex:1;overflow-y:auto;}
-.friend-row{display:flex;align-items:center;border-bottom:1px solid #f5f5f5;}
-.friend-item{display:flex;align-items:center;padding:12px 16px;cursor:pointer;gap:12px;flex:1;}
-.friend-item:active{background:#f8f8f8;}
-.remove-btn{background:none;border:none;padding:12px;cursor:pointer;color:#ddd;flex-shrink:0;}
-.remove-btn:hover{color:#e74c3c;}
+.my-avatar-init{
+  width:36px;height:36px;border-radius:50%;
+  background:rgba(255,255,255,.15);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:14px;color:white;
+  cursor:pointer;border:2px solid rgba(255,255,255,.2);flex-shrink:0;
+}
+.icon-btn{
+  background:none;border:none;color:rgba(255,255,255,.6);
+  cursor:pointer;padding:6px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  transition:.15s;
+}
+.icon-btn:active{background:rgba(255,255,255,.1);}
+.icon-btn svg{width:22px;height:22px;}
+
+/* ── TABS ── */
+.tabs{
+  display:flex;
+  padding:0 16px;
+  border-bottom:1px solid rgba(255,255,255,.06);
+  flex-shrink:0;
+  background:#0a0a0a;
+}
+.tab-btn{
+  padding:12px 0;margin-right:24px;
+  background:none;border:none;cursor:pointer;
+  font-size:15px;font-weight:600;color:rgba(255,255,255,.4);
+  border-bottom:2px solid transparent;transition:.15s;
+}
+.tab-btn.active{color:white;border-bottom-color:#e8547a;}
+
+/* ── SEARCH ── */
+.search-bar{
+  padding:10px 14px;flex-shrink:0;
+  background:#0a0a0a;
+}
+.search-bar input{
+  width:100%;padding:10px 16px;
+  border:none;border-radius:12px;
+  font-size:14px;outline:none;
+  background:rgba(255,255,255,.08);
+  color:white;
+}
+.search-bar input::placeholder{color:rgba(255,255,255,.3);}
+
+/* ── LIST ── */
+.list-area{
+  flex:1;overflow-y:auto;
+  padding-bottom:80px; /* espace pour bottombar */
+}
+.list-area::-webkit-scrollbar{width:2px;}
+.list-area::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);}
+
+/* ── FRIEND ROW ── */
+.friend-row{
+  display:flex;align-items:center;
+  border-bottom:1px solid rgba(255,255,255,.04);
+}
+.friend-item{
+  display:flex;align-items:center;
+  padding:12px 16px;cursor:pointer;gap:12px;flex:1;
+}
+.friend-item:active{background:rgba(255,255,255,.04);}
+.remove-btn{
+  background:none;border:none;
+  padding:12px;cursor:pointer;
+  color:rgba(255,255,255,.2);flex-shrink:0;
+}
+.remove-btn:active{color:#e74c3c;}
 .friend-info{flex:1;min-width:0;}
-.friend-name{font-size:15px;font-weight:600;color:#111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.friend-sub{font-size:13px;color:#999;margin-top:2px;}
-.friend-sub.new-msg{color:#1e90ff;font-weight:600;}
-.friend-meta{text-align:right;font-size:12px;color:#bbb;flex-shrink:0;}
-.empty-state{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#ccc;gap:12px;font-size:14px;padding:40px 20px;text-align:center;}
-.empty-state svg{width:52px;height:52px;opacity:.35;}
-::-webkit-scrollbar{width:3px;}
-::-webkit-scrollbar-thumb{background:#ddd;border-radius:3px;}
+.friend-name{
+  font-size:15px;font-weight:600;color:white;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.friend-sub{font-size:13px;color:rgba(255,255,255,.4);margin-top:2px;}
+.friend-sub.new-msg{color:#e8547a;font-weight:600;}
+.friend-meta{text-align:right;font-size:12px;color:rgba(255,255,255,.3);flex-shrink:0;}
+
+/* ── UNREAD BADGE ── */
+.unread-dot{
+  min-width:20px;height:20px;border-radius:10px;
+  background:#e8547a;color:white;
+  font-size:11px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+  padding:0 5px;flex-shrink:0;
+}
+
+/* ── GROUP ROW ── */
+.group-item{
+  display:flex;align-items:center;
+  padding:12px 16px;cursor:pointer;gap:12px;
+  border-bottom:1px solid rgba(255,255,255,.04);
+}
+.group-item:active{background:rgba(255,255,255,.04);}
+.group-avatar{
+  width:52px;height:52px;border-radius:50%;
+  background:linear-gradient(135deg,#e8547a,#c73b8a);
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;color:white;font-weight:700;flex-shrink:0;
+  overflow:hidden;
+}
+.group-avatar img{width:100%;height:100%;object-fit:cover;}
+.group-info{flex:1;min-width:0;}
+.group-name{font-size:15px;font-weight:600;color:white;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.group-role{font-size:12px;color:rgba(255,255,255,.4);margin-top:2px;}
+
+/* ── EMPTY STATE ── */
+.empty-state{
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:center;padding:60px 20px;
+  color:rgba(255,255,255,.25);gap:12px;font-size:14px;text-align:center;
+}
+.empty-state svg{width:48px;height:48px;opacity:.3;}
+
+/* ══════════════════════════════
+   BOTTOMBAR
+══════════════════════════════ */
+.bottombar{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:480px;
+  background:#111;
+  border-top:1px solid rgba(255,255,255,.08);
+  display:flex;align-items:center;
+  padding:8px 0 calc(8px + env(safe-area-inset-bottom));
+  z-index:100;
+}
+.bb-btn{
+  flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;
+  background:none;border:none;cursor:pointer;padding:4px 0;
+  color:rgba(255,255,255,.35);transition:.15s;
+  position:relative;
+}
+.bb-btn.active{color:#e8547a;}
+.bb-btn svg{width:24px;height:24px;}
+.bb-label{font-size:10px;font-weight:600;}
+.bb-badge{
+  position:absolute;top:0;right:calc(50% - 18px);
+  width:8px;height:8px;border-radius:50%;
+  background:#e8547a;border:2px solid #111;
+}
 </style>
 </head>
 <body>
 <div class="shell">
+
+  <!-- TOPBAR -->
   <div class="topbar">
-    <!-- Avatar cliquable → settings -->
-    <div id="my-avatar-btn" onclick="location.href='settings.html'" title="Paramètres"></div>
-    <h2 id="topbar-name">Amis</h2>
-     <button class="icon-btn" onclick="location.href='groups.html'" title="Groupes">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-    <circle cx="9" cy="7" r="4"/>
-    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-  </svg>
-</button>
-    <button class="icon-btn" onclick="location.href='requests.html'" style="position:relative;">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-      <span id="req-badge" style="display:none;position:absolute;top:4px;right:4px;width:9px;height:9px;background:#e74c3c;border-radius:50%;"></span>
-    </button>
+    <div class="topbar-title" id="topbar-title">ChatApp</div>
     <button class="icon-btn" onclick="location.href='search.html'">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
     </button>
-    <button class="icon-btn" onclick="doLogout()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+    <div id="my-avatar-btn" onclick="location.href='settings.html'" title="Paramètres"></div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab-btn active" id="tab-chats" onclick="switchTab('chats')">Discussions</button>
+    <button class="tab-btn" id="tab-groups" onclick="switchTab('groups')">Groupes</button>
+  </div>
+
+  <!-- SEARCH -->
+  <div class="search-bar">
+    <input type="text" id="search-input" placeholder="Rechercher..." oninput="onSearch(this.value)"/>
+  </div>
+
+  <!-- LISTE -->
+  <div class="list-area" id="main-list"></div>
+
+  <!-- BOTTOMBAR -->
+  <div class="bottombar">
+    <button class="bb-btn active" id="bb-chats" onclick="switchTab('chats')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <span class="bb-label">Chats</span>
+    </button>
+    <button class="bb-btn" id="bb-groups" onclick="switchTab('groups')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <span class="bb-label">Groupes</span>
+    </button>
+    <button class="bb-btn" id="bb-requests" onclick="location.href='requests.html'">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      <span class="bb-label">Demandes</span>
+      <div class="bb-badge" id="req-badge" style="display:none;"></div>
+    </button>
+    <button class="bb-btn" onclick="location.href='settings.html'">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      <span class="bb-label">Paramètres</span>
     </button>
   </div>
-  <div class="search-bar"><input type="text" placeholder="Rechercher un ami..." oninput="filterFriends(this.value)"/></div>
-  <div class="list-area" id="friends-list"></div>
+
 </div>
 
 <script>
@@ -81,10 +240,7 @@ const WS_URL = "wss://didactic-disco-q795wwrqxg45c697p-8000.app.github.dev/ws";
 let me = JSON.parse(localStorage.getItem('me'));
 if (!me) window.location.href = 'index.html';
 
-// Afficher le nom
-document.getElementById('topbar-name').textContent = `${me.prenom} ${me.nom}`;
-
-// Afficher l'avatar dans la topbar
+// Avatar topbar
 const avatarBtn = document.getElementById('my-avatar-btn');
 if (me.photo) {
   avatarBtn.className = 'my-avatar';
@@ -94,99 +250,143 @@ if (me.photo) {
   avatarBtn.textContent = ((me.prenom||'?')[0]+(me.nom||'?')[0]).toUpperCase();
 }
 
-let friends = [], ws = null;
+let friends=[], groups=[], ws=null;
+let currentTab='chats', searchVal='';
 
-const COLORS = ['#1e90ff','#e74c3c','#2ecc71','#9b59b6','#f39c12','#16a085','#e67e22','#c0392b'];
+const COLORS=['#e8547a','#9b59b6','#3498db','#e67e22','#2ecc71','#e74c3c','#1abc9c'];
 
-function buildAvatar(f, size=48) {
-  if (f.photo) {
+function buildAvatar(f, size=52){
+  if(f.photo){
     return `<img src="${f.photo}" style="width:${size}px;height:${size}px;border-radius:50%;object-fit:cover;flex-shrink:0;display:block;"/>`;
   }
-  const color = COLORS[Math.abs(parseInt(f.id||0)) % COLORS.length];
-  const init  = ((f.prenom||'?')[0]+(f.nom||'?')[0]).toUpperCase();
+  const color=COLORS[Math.abs(parseInt(f.id||0))%COLORS.length];
+  const init=((f.prenom||'?')[0]+(f.nom||'?')[0]).toUpperCase();
   return `<div style="width:${size}px;height:${size}px;border-radius:50%;background:${color};display:flex;align-items:center;justify-content:center;font-weight:700;font-size:${Math.floor(size*.35)}px;color:white;flex-shrink:0;">${init}</div>`;
 }
 
-async function api(method, path, body) {
-  const opts = { method, headers:{'Content-Type':'application/json'} };
-  if (body) opts.body = JSON.stringify(body);
-  try { return (await fetch(API+path, opts)).json(); }
-  catch(e) { return {}; }
+async function api(method, path, body){
+  const opts={method,headers:{'Content-Type':'application/json'}};
+  if(body) opts.body=JSON.stringify(body);
+  try{return (await fetch(API+path,opts)).json();}
+  catch(e){return {};}
 }
 
-async function loadData() {
-  const [friendsData, lastMsgs, requestsData] = await Promise.all([
-    api('GET', `/friends/${me.id}`),
-    api('GET', `/last-messages/${me.id}`),
-    api('GET', `/requests/${me.id}`)
+async function loadData(){
+  const [friendsData, lastMsgs, requestsData, groupsData] = await Promise.all([
+    api('GET',`/friends/${me.id}`),
+    api('GET',`/last-messages/${me.id}`),
+    api('GET',`/requests/${me.id}`),
+    api('GET',`/groups/${me.id}`),
   ]);
-  friends = (Array.isArray(friendsData)?friendsData:[]).map(f=>({
-    ...f, id:String(f.id), lastTime:'', unread:false, hasMsg:false
+
+  friends=(Array.isArray(friendsData)?friendsData:[]).map(f=>({
+    ...f,id:String(f.id),lastTime:'',unread:false,hasMsg:false
   }));
-  if (Array.isArray(lastMsgs)) {
-    lastMsgs.forEach(m => {
-      const otherId = String(m.from_user)===String(me.id)?String(m.to_user):String(m.from_user);
-      const f = friends.find(f=>f.id===otherId);
-      if (f) { f.lastTime=m.time; f.hasMsg=true; f.unread=m.unread_count>0; }
+  if(Array.isArray(lastMsgs)){
+    lastMsgs.forEach(m=>{
+      const otherId=String(m.from_user)===String(me.id)?String(m.to_user):String(m.from_user);
+      const f=friends.find(f=>f.id===otherId);
+      if(f){f.lastTime=m.time;f.hasMsg=true;f.unread=m.unread_count>0;}
     });
   }
-  const reqCount = Array.isArray(requestsData)?requestsData.length:0;
-  document.getElementById('req-badge').style.display = reqCount>0?'block':'none';
-  renderFriends();
+
+  groups=(Array.isArray(groupsData)?groupsData:[]).filter(g=>g.status==='accepted');
+
+  const reqCount=Array.isArray(requestsData)?requestsData.length:0;
+  document.getElementById('req-badge').style.display=reqCount>0?'flex':'none';
+
+  render();
 }
 
-function connectWS() {
-  ws = new WebSocket(WS_URL);
-  ws.onopen = () => ws.send(JSON.stringify({ user_id: me.id }));
-  ws.onmessage = e => {
-    const data = JSON.parse(e.data);
-    if (data.action === 'new_message') {
-      const fromId = String(data.from);
-      const idx = friends.findIndex(f=>f.id===fromId);
-      if (idx !== -1) {
-        const f = friends.splice(idx,1)[0];
-        f.lastTime=data.time; f.hasMsg=true; f.unread=true;
+function connectWS(){
+  ws=new WebSocket(WS_URL);
+  ws.onopen=()=>ws.send(JSON.stringify({user_id:me.id}));
+  ws.onmessage=e=>{
+    const data=JSON.parse(e.data);
+    if(data.action==='new_message'){
+      const fromId=String(data.from);
+      const idx=friends.findIndex(f=>f.id===fromId);
+      if(idx!==-1){
+        const f=friends.splice(idx,1)[0];
+        f.lastTime=data.time;f.hasMsg=true;f.unread=true;
         friends.unshift(f);
-        renderFriends();
+        render();
       }
     }
-    if (data.action === 'friend_request') {
-      document.getElementById('req-badge').style.display='block';
+    if(data.action==='friend_request'){
+      document.getElementById('req-badge').style.display='flex';
     }
-    if (data.action === 'friend_removed') {
-      friends = friends.filter(f=>f.id!==String(data.from));
-      renderFriends();
+    if(data.action==='friend_removed'){
+      friends=friends.filter(f=>f.id!==String(data.from));render();
     }
-    if (data.action === 'friend_accepted') {
-      loadData();
-    }
+    if(data.action==='friend_accepted'){loadData();}
+    if(data.action==='group_invite'){loadData();}
   };
-  ws.onclose = () => setTimeout(connectWS, 3000);
+  ws.onclose=()=>setTimeout(connectWS,3000);
 }
 
-function renderFriends(filter='') {
-  const list  = document.getElementById('friends-list');
-  const items = friends.filter(f=>(f.prenom+' '+f.nom).toLowerCase().includes((filter||'').toLowerCase()));
-  if (!items.length) {
+// ── Tab switch ──
+function switchTab(tab){
+  currentTab=tab;
+  searchVal='';
+  document.getElementById('search-input').value='';
+
+  // tabs
+  document.getElementById('tab-chats').classList.toggle('active',tab==='chats');
+  document.getElementById('tab-groups').classList.toggle('active',tab==='groups');
+
+  // bottombar
+  document.getElementById('bb-chats').classList.toggle('active',tab==='chats');
+  document.getElementById('bb-groups').classList.toggle('active',tab==='groups');
+
+  // titre
+  document.getElementById('topbar-title').textContent=tab==='chats'?'Discussions':'Groupes';
+
+  // placeholder
+  document.getElementById('search-input').placeholder=tab==='chats'?'Rechercher un ami...':'Rechercher un groupe...';
+
+  render();
+}
+
+function onSearch(v){
+  searchVal=v;
+  render();
+}
+
+function render(){
+  if(currentTab==='chats') renderFriends();
+  else renderGroups();
+}
+
+// ── Render friends ──
+function renderFriends(){
+  const list=document.getElementById('main-list');
+  const q=(searchVal||'').toLowerCase();
+  const items=friends.filter(f=>(f.prenom+' '+f.nom).toLowerCase().includes(q));
+  if(!items.length){
     list.innerHTML=`<div class="empty-state">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-      <span>Aucun ami pour le moment</span></div>`;
+      <span>Aucun ami pour le moment</span>
+    </div>`;
     return;
   }
-  list.innerHTML = items.map(f=>`
+  list.innerHTML=items.map(f=>`
     <div class="friend-row">
       <div class="friend-item" onclick="openChat('${f.id}')">
         <div style="position:relative;flex-shrink:0;">
           ${buildAvatar(f)}
-          ${f.unread?'<div style="position:absolute;top:0;right:0;width:13px;height:13px;background:#e74c3c;border-radius:50%;border:2px solid white;"></div>':''}
+          ${f.unread?'<div style="position:absolute;bottom:0;right:0;width:14px;height:14px;background:#e8547a;border-radius:50%;border:2px solid #0a0a0a;"></div>':''}
         </div>
         <div class="friend-info">
-          <div class="friend-name" style="${f.unread?'color:#000;font-weight:700;':''}">${f.prenom} ${f.nom}</div>
+          <div class="friend-name">${f.prenom} ${f.nom}</div>
           <div class="friend-sub ${f.unread?'new-msg':''}">
             ${f.unread?'● Nouveau message':f.hasMsg?'Voir la discussion':'Aucun message'}
           </div>
         </div>
-        <div class="friend-meta">${f.unread&&f.lastTime?f.lastTime:''}</div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;">
+          <div class="friend-meta">${f.lastTime||''}</div>
+          ${f.unread?'<div class="unread-dot">●</div>':''}
+        </div>
       </div>
       <button class="remove-btn" onclick="removeFriend('${f.id}')">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -198,26 +398,62 @@ function renderFriends(filter='') {
     </div>
   `).join('');
 }
-function filterFriends(v) { renderFriends(v); }
 
-function openChat(friendId) {
-  const f = friends.find(f=>f.id===friendId);
-  if (!f) return;
-  localStorage.setItem('currentFriend', JSON.stringify(f));
-  window.location.href = 'chat.html';
+// ── Render groups ──
+function renderGroups(){
+  const list=document.getElementById('main-list');
+  const q=(searchVal||'').toLowerCase();
+  const items=groups.filter(g=>g.name.toLowerCase().includes(q));
+  if(!items.length){
+    list.innerHTML=`<div class="empty-state">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <span>Aucun groupe pour le moment</span>
+      <button onclick="openCreateGroup()" style="background:linear-gradient(135deg,#e8547a,#c73b8a);border:none;color:white;padding:10px 20px;border-radius:20px;font-size:14px;font-weight:600;cursor:pointer;margin-top:8px;">+ Créer un groupe</button>
+    </div>`;
+    return;
+  }
+  list.innerHTML=`
+    <div style="padding:12px 16px 4px;">
+      <button onclick="openCreateGroup()" style="background:linear-gradient(135deg,#e8547a,#c73b8a);border:none;color:white;padding:10px 20px;border-radius:20px;font-size:14px;font-weight:600;cursor:pointer;width:100%;">+ Nouveau groupe</button>
+    </div>
+  `+items.map(g=>{
+    const avatarHtml=g.photo
+      ?`<div class="group-avatar"><img src="${g.photo}"/></div>`
+      :`<div class="group-avatar">${g.name[0].toUpperCase()}</div>`;
+    return `<div class="group-item" onclick="openGroup(${g.id},'${escHtml(g.name)}')">
+      ${avatarHtml}
+      <div class="group-info">
+        <div class="group-name">${g.name}</div>
+        <div class="group-role">${g.role==='admin'?'👑 Admin':'Membre'}</div>
+      </div>
+      <div style="color:rgba(255,255,255,.2);font-size:18px;">›</div>
+    </div>`;
+  }).join('');
 }
 
-async function removeFriend(friendId) {
-  if (!confirm('Retirer cet ami ?')) return;
-  ws?.send(JSON.stringify({ action:'remove_friend', to:friendId }));
-  friends = friends.filter(f=>f.id!==friendId);
-  renderFriends();
+function escHtml(s){return s.replace(/'/g,"\\'");}
+
+function openChat(friendId){
+  const f=friends.find(f=>f.id===friendId);
+  if(!f)return;
+  localStorage.setItem('currentFriend',JSON.stringify(f));
+  window.location.href='chat.html';
 }
 
-function doLogout() {
-  ws?.close();
-  localStorage.clear();
-  window.location.href = 'index.html';
+function openGroup(id,name){
+  localStorage.setItem('currentGroup',JSON.stringify({id,name}));
+  window.location.href='group-chat.html';
+}
+
+function openCreateGroup(){
+  window.location.href='groups.html';
+}
+
+async function removeFriend(friendId){
+  if(!confirm('Retirer cet ami ?'))return;
+  ws?.send(JSON.stringify({action:'remove_friend',to:friendId}));
+  friends=friends.filter(f=>f.id!==friendId);
+  render();
 }
 
 loadData();

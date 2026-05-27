@@ -138,7 +138,7 @@ body{display:flex;justify-content:center;background:#000;}
 <body>
 <div class="shell">
   <div class="topbar">
-    <button class="back" onclick="location.href='groups.html'">←</button>
+    <button class="back" onclick="location.href='friends.html'">←</button>
     <div id="group-avatar-top" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#e8547a,#c73b8a);display:flex;align-items:center;justify-content:center;font-size:16px;color:white;font-weight:700;flex-shrink:0;cursor:pointer;" onclick="location.href='group-info.html'"></div>
     <div class="topbar-info" onclick="location.href='group-info.html'">
       <h2 id="group-name-top"></h2>
@@ -229,7 +229,17 @@ async function loadMembers(){
   const accepted=members.filter(m=>m.status==='accepted');
   document.getElementById('members-count').textContent=`${accepted.length} membre${accepted.length>1?'s':''}`;
 }
-
+async function loadGroupInfo(){
+  const res = await fetch(`${API}/group/${group.id}/info`);
+  const info = await res.json();
+  if(info && info.photo){
+    group.photo = info.photo;
+    localStorage.setItem('currentGroup', JSON.stringify(group));
+    const avatarEl = document.getElementById('group-avatar-top');
+    avatarEl.innerHTML = `<img src="${info.photo}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;"/>`;
+    avatarEl.textContent = '';
+  }
+}
 // ════════════════════════════════════════════
 // WAVEFORM — barres déterministes
 // ════════════════════════════════════════════
@@ -1032,6 +1042,7 @@ function onKey(e){if(e.key==='Enter')sendMessage();}
 
 initStickerCategories();
 loadMembers();
+  loadGroupInfo();
 connectWS();
 </script>
 </body>

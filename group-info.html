@@ -146,13 +146,16 @@ function renderGroupHeader(){
 }
 
 function openPhoto(src){
-  const overlay=document.createElement('div');
-  overlay.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:1000;display:flex;align-items:center;justify-content:center;cursor:pointer;';
-  overlay.innerHTML=`<img src="${src}" style="max-width:90%;max-height:90%;border-radius:12px;object-fit:contain;"/>`;
-  overlay.onclick=()=>overlay.remove();
-  document.body.appendChild(overlay);
+  localStorage.setItem('viewProfile', JSON.stringify({
+    id: group.id,
+    prenom: group.name,
+    nom: '',
+    photo: src,
+    isGroup: true,
+    memberCount: members.filter(m=>m.status==='accepted').length
+  }));
+  window.location.href='profile-view.html';
 }
-
 async function uploadGroupPhoto(input){
   if(!input.files[0])return;
   const fd=new FormData();fd.append('file',input.files[0]);

@@ -41,7 +41,7 @@
       <button id="gap-close" style="background:none;border:none;color:rgba(255,255,255,.4);font-size:22px;cursor:pointer;padding:4px;line-height:1;">×</button>
     `;
     document.body.prepend(playerBar);
-    // padding-top pour ne pas masquer le contenu sous la barre
+
     const shell = document.querySelector('.shell');
     if(shell) shell.style.paddingTop = '54px';
 
@@ -97,14 +97,36 @@
     if(state){ state.position = playerAudio.currentTime; setState(state); }
   }
 
+  // ── Vérifier si on est dans le chat source ──
+  function isInSourceChat(state){
+    if(!state||!state.chatId) return false;
+
+    // Chat DM
+    try{
+      const f = JSON.parse(localStorage.getItem('currentFriend')||'null');
+      if(f && state.chatId === String(f.id)) return true;
+    }catch(e){}
+
+    // Groupe
+    try{
+      const g = JSON.parse(localStorage.getItem('currentGroup')||'null');
+      if(g && state.chatId === 'group_'+String(g.id)) return true;
+    }catch(e){}
+
+    return false;
+  }
+
   window.GlobalAudioPlayer = {
     play: function(url, name, photo, startPosition, chatId){
       if(playerAudio){ playerAudio.pause(); playerAudio=null; }
       clearInterval(updateInterval);
       setState({ url, name, photo, position: startPosition||0, chatId: chatId||null });
-      createBar();
-      const nameEl = document.getElementById('gap-name');
-      if(nameEl) nameEl.textContent = name||'Vocal';
+      // Ne pas afficher la barre si on est dans le chat source
+      if(!isInSourceChat(getState())){
+        createBar();
+        const nameEl = document.getElementById('gap-name');
+        if(nameEl) nameEl.textContent = name||'Vocal';
+      }
       playerAudio = new Audio(url);
       playerAudio.currentTime = startPosition||0;
       playerAudio.play().catch(()=>{});
@@ -122,21 +144,20 @@
     const state = getState();
     if(!state||!state.url) return;
 
-    // Ne pas afficher la barre si on est dans le bon chat DM
-    const currentFriend = JSON.parse(localStorage.getItem('currentFriend')||'null');
-    if(currentFriend && state.chatId === String(currentFriend.id)) return;
+    // Si on est dans le chat source → pas de barre
+    if(isInSourceChat(state)) return;
 
-    // Ne pas afficher la barre si on est dans le bon groupe
-    const currentGroup = JSON.parse(localStorage.getItem('currentGroup')||'null');
-    if(currentGroup && state.chatId === 'group_'+String(currentGroup.id)) return;
-
+    // Sinon afficher la barre
     createBar();
     const nameEl = document.getElementById('gap-name');
     if(nameEl) nameEl.textContent = state.name||'Vocal';
+
     playerAudio = new Audio(state.url);
     playerAudio.currentTime = state.position||0;
+
     const btn = document.getElementById('gap-play');
     if(btn) btn.textContent = '▶';
+
     playerAudio.onended = ()=>{ clearInterval(updateInterval); setState(null); removeBar(); };
     updateInterval = setInterval(updateUI, 200);
   });

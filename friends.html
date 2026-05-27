@@ -420,25 +420,32 @@ else if(window.location.hash==='#requests') switchTab('requests');
 else if(window.location.hash==='#settings') switchTab('settings');
 
 // OneSignal
+// OneSignal
 window.OneSignalDeferred = window.OneSignalDeferred || [];
 OneSignalDeferred.push(async function(OneSignal){
   await OneSignal.init({
     appId: "6fe6889d-eedc-49f9-bae7-6d8a217c24a5",
     notifyButton: { enable: false },
-    allowLocalhostAsSecureOrigin: true,
     serviceWorkerPath: "OneSignalSDKWorker.js",
     serviceWorkerParam: { scope: "/" },
   });
 
-  // Sur iOS PWA il faut attendre que la page soit complètement chargée
-  if(document.readyState === 'complete'){
-    await OneSignal.Notifications.requestPermission();
-    if(me) await OneSignal.login(String(me.id));
-  } else {
-    window.addEventListener('load', async () => {
+  const meData = JSON.parse(localStorage.getItem('me'));
+  if(meData) await OneSignal.login(String(meData.id));
+
+  if(!localStorage.getItem('push_asked')){
+    const btn = document.createElement('div');
+    btn.style.cssText = `position:fixed;bottom:90px;left:50%;transform:translateX(-50%);
+      background:#e8547a;color:white;padding:12px 24px;border-radius:30px;
+      font-size:14px;font-weight:700;cursor:pointer;z-index:500;
+      box-shadow:0 4px 16px rgba(232,84,122,.5);white-space:nowrap;`;
+    btn.textContent = '🔔 Activer les notifications';
+    btn.onclick = async () => {
+      btn.remove();
+      localStorage.setItem('push_asked','1');
       await OneSignal.Notifications.requestPermission();
-      if(me) await OneSignal.login(String(me.id));
-    });
+    };
+    document.body.appendChild(btn);
   }
 });
 </script>
